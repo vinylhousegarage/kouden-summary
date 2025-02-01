@@ -1,33 +1,8 @@
 services:
-  db:
-    image: mariadb:10.11
-    restart: always
-    env_file:
-      - .env
-    volumes:
-      - mariadb-data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-    ports:
-      - "3306:3306"
-
   web:
-    build:
-      context: .
-      dockerfile: .Dockerfile
-    env_file:
-      - .env
-    volumes:
-      - ./app:/app
+    build: .
     ports:
       - "5000:5000"
-    depends_on:
-      db:
-        condition: service_healthy
-    command: flask run --host=0.0.0.0 --port=5000
-
-volumes:
-  mariadb-data:
+    volumes:
+      - ./app:/app
+    command: ["flask", "run"]
