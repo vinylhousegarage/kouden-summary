@@ -1,8 +1,26 @@
 services:
+  db:
+    image: mariadb:10.11
+    restart: always
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
   web:
-    build: .
+    image: web
     ports:
       - "5000:5000"
-    volumes:
-      - ./app:/app
-    command: ["flask", "run"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mariadb_data:
