@@ -15,7 +15,8 @@ services:
       retries: 3
 
   web:
-    image: web
+    build: .
+    image: kouden_summary
     ports:
       - "5000:5000"
     depends_on:
