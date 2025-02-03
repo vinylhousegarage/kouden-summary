@@ -21,7 +21,7 @@ services:
       - "5000:5000"
     depends_on:
       db:
-        condition: service_healthy
+        condition: healthy
 
 volumes:
   mariadb_data:
