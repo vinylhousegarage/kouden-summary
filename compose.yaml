@@ -9,8 +9,8 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p$$MYSQL_ROOT_PASSWORD"]
-      interval: 10s
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p$MYSQL_ROOT_PASSWORD"]
+      interval: 20s
       timeout: 5s
       retries: 3
 
@@ -19,6 +19,8 @@ services:
     image: kouden_summary
     ports:
       - "5000:5000"
+    env_file:
+      - .env
     depends_on:
       db:
         condition: service_healthy
