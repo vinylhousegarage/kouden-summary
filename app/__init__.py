@@ -1,6 +1,6 @@
 from flask import Flask
 from .config import Config
-from .db import db
+from .db import db, init_db
 from .routes.main import main_bp
 
 def create_app():
