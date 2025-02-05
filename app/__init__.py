@@ -1,4 +1,6 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from .config import Config
 from .db import db, init_db
 from .routes.main import main_bp
