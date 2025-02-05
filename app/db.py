@@ -8,4 +8,3 @@ def init_db(app):
     global migrate
     db.init_app(app)
     migrate = Migrate(app, db)
-    migrate.init_app(app, db)
