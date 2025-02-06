@@ -2,3 +2,8 @@
 .gitignore
 .env
 README.md
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
