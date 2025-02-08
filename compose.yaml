@@ -1,6 +1,6 @@
 services:
   db:
-    image: mariadb:10.11
+    image: mariadb:11.4.4
     restart: always
     ports:
       - "3306:3306"
@@ -9,7 +9,7 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p$MYSQL_ROOT_PASSWORD"]
+      test: ["CMD-SHELL", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p$MYSQL_ROOT_PASSWORD"]
       interval: 10s
       timeout: 5s
       retries: 8
