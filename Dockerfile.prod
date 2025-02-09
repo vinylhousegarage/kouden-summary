@@ -1,0 +1,16 @@
+FROM python:3.13-slim-bookworm
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl && \
+    rm -rf /var/lib/apt/lists/*
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+COPY . /app
+ENV FLASK_APP="app:create_app()"
+ENV FLASK_DEBUG=0
+ENV PYTHONUNBUFFERED=1
+RUN useradd -m flaskuser
+USER flaskuser
+EXPOSE 5000
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:create_app()"]
