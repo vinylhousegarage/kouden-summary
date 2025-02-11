@@ -1,1 +1,1 @@
-kouden_summary
+kouden-summary
