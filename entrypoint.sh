@@ -9,5 +9,5 @@ fi
 echo "Applying database migrations..."
 flask db upgrade
 
-echo "Starting Gunicorn..."
-exec gunicorn -b 0.0.0.0:5000 app:create_app()
+echo "Starting Flask development server..."
+exec flask run --host=0.0.0.0 --port=5000
