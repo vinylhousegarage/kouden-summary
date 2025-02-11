@@ -9,14 +9,13 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "mariadb -uroot -p${MYSQL_ROOT_PASSWORD} -e 'SELECT 1' || exit 1"]
+      test: ["CMD-SHELL", "mariadb -u${MYSQL_USER} -p${MYSQL_PASSWORD} -e 'SELECT 1' || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 8
 
   web:
-    build: .
-    image: kouden_summary
+    image: kouden_summary:latest
     ports:
       - "5000:5000"
     env_file:
