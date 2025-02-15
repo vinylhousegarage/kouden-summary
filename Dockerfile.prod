@@ -4,16 +4,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     bash curl nano && \
     rm -rf /var/lib/apt/lists/*
 COPY requirements.txt /app/
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
-RUN pip install gunicorn
+COPY requirements.txt /app/
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt gunicorn
 COPY . /app
 COPY entrypoint.prod.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
-RUN useradd -m flaskuser && chown -R flaskuser:flaskuser /app
-USER flaskuser
+RUN useradd -m -d /home/flaskuser -s /bin/bash flaskuser && \
+    chown -R flaskuser:flaskuser /app
 ENV FLASK_APP="app:create_app()"
 ENV FLASK_DEBUG=0
 ENV PYTHONUNBUFFERED=1
 EXPOSE 5000
-CMD ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
