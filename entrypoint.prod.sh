@@ -1,8 +1,10 @@
 #!/bin/bash
+set -e
 
-if [ ! -d "migrations/versions" ]; then
+if [ ! -d "migrations" ] || [ ! -d "migrations/versions" ]; then
     echo "Database migration files not found!"
-    echo "Please generate migrations in development and apply them in production."
+    echo "Run 'flask db init' and 'flask db migrate' in development to generate migrations."
+    echo "Then apply them in production with 'flask db upgrade'."
     exit 1
 fi
 
@@ -13,4 +15,4 @@ if ! flask db upgrade; then
 fi
 
 echo "Starting Gunicorn..."
-exec gunicorn -b 0.0.0.0:5000 --workers 2 app:create_app
+exec gunicorn -w 2 -b 0.0.0.0:5000 "app:create_app()"
