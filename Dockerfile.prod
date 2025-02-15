@@ -16,4 +16,4 @@ ENV FLASK_APP="app:create_app()"
 ENV FLASK_DEBUG=0
 ENV PYTHONUNBUFFERED=1
 EXPOSE 5000
-CMD ["/entrypoint.sh"]
+CMD ["/entrypoint.prod.sh"]
