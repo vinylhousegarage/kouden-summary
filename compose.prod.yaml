@@ -12,7 +12,8 @@ services:
       test: ["CMD-SHELL", "mariadb -u${MYSQL_USER} -p${MYSQL_PASSWORD} -e 'SELECT 1' || exit 1"]
       interval: 10s
       timeout: 5s
-      retries: 8
+      retries: 5
+      start_period: 90s
 
   web:
     build:
