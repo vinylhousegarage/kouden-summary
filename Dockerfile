@@ -11,4 +11,4 @@ RUN chmod +x /entrypoint.sh
 ENV FLASK_APP="app:create_app()"
 ENV FLASK_DEBUG=1
 EXPOSE 5000
-CMD ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
