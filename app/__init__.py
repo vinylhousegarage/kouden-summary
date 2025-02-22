@@ -1,5 +1,5 @@
 from flask import Flask, session, redirect, url_for, request
-from .config import config
+from .config import Config
 from .db import db, init_db
 from .routes.main import main_bp
 from .routes.health import health_bp

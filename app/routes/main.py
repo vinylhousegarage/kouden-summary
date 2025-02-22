@@ -2,7 +2,7 @@ from flask import Blueprint, redirect, url_for, session
 from authlib.integrations.flask_client import OAuth
 from sqlalchemy import text
 from app.db import db
-from app.config import config
+from app.config import Config
 from app import oauth
 
 main_bp = Blueprint('main', __name__)
