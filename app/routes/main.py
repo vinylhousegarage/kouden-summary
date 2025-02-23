@@ -1,16 +1,13 @@
 from flask import Blueprint, redirect, url_for, session
-from authlib.integrations.flask_client import OAuth
-from sqlalchemy import text
-from app.db import db
-from app.config import Config
-from app import oauth
+from app.extensions import db, oauth
+from app.models import User
 
 main_bp = Blueprint('main', __name__)
 
-@main_bp.route('/')
+@main_bp.route("/")
 def index():
     try:
-        db.session.execute(text("SELECT 1"))
+        db.session.query(User).first()
         return "Database connection successful!"
     except Exception as e:
         return f"Database connection failed: {str(e)}", 500
