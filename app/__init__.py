@@ -4,6 +4,7 @@ from app.extensions import init_oauth
 from app.db import init_db
 from app.routes.main import main_bp
 from app.routes.health import health_bp
+from app.middleware.before_request import require_login
 
 def create_app():
     app = Flask(__name__)
@@ -17,11 +18,6 @@ def create_app():
     app.register_blueprint(main_bp)
     app.register_blueprint(health_bp)
 
-    @app.before_request
-    def require_login():
-        if request.endpoint in ["health.health", "main.login", "main.authorize"]:
-            return
-        if "user" not in session:
-            return redirect(url_for("main.login"))
+    require_login(app)
 
     return app
