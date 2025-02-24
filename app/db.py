@@ -1,10 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-
-db = SQLAlchemy()
-migrate = None
+from app.extensions import db, migrate
 
 def init_db(app):
-    global migrate
     db.init_app(app)
-    migrate = Migrate(app, db)
+    migrate.init_app(app, db)
