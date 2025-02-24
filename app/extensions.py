@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from authlib.integrations.flask_client import OAuth
+from app.config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
