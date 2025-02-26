@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-push:
-    name: Build and Push Docker Image to ECR
+    name: Build and Deploy to AWS ECS
     runs-on: ubuntu-latest
 
     steps:
@@ -28,6 +28,9 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: Set IMAGE_TAG
+        run: echo "IMAGE_TAG=${{ github.sha }}" >> $GITHUB_ENV
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -35,7 +38,7 @@ jobs:
         run: |
           docker buildx build --platform linux/amd64 \
             --push \
-            -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-1.amazonaws.com/flask-repository:${{ github.sha }} \
+            -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-1.amazonaws.com/flask-repository:$IMAGE_TAG \
             -f Dockerfile.prod .
 
       - name: Get Image Digest
@@ -43,23 +46,27 @@ jobs:
         run: |
           IMAGE_DIGEST=$(aws ecr describe-images \
             --repository-name flask-repository \
-            --image-ids imageTag=${{ github.sha }} \
+            --image-ids imageTag=$IMAGE_TAG \
             --query 'imageDetails[0].imageDigest' \
             --output text)
           echo "IMAGE_DIGEST=$IMAGE_DIGEST" >> $GITHUB_ENV
 
       - name: Update Task Definition
-        run: |
-          sed -i 's#${IMAGE_TAG}#@sha256:${IMAGE_DIGEST}#g' task-definition.json
+        id: render-task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: flask-web
+          image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-1.amazonaws.com/flask-repository@sha256:${{ env.IMAGE_DIGEST }}
 
       - name: Register New Task Definition
         run: |
-          aws ecs register-task-definition --cli-input-json file://task-definition.json
+          aws ecs register-task-definition --cli-input-json file://${{ steps.render-task-def.outputs.task-definition }}
 
       - name: Deploy to ECS via CodeDeploy
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
-          task-definition: task-definition.json
+          task-definition: ${{ steps.render-task-def.outputs.task-definition }}
           service: flask-service
           cluster: flask-cluster
           wait-for-service-stability: true
