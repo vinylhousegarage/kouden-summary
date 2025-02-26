@@ -35,8 +35,26 @@ jobs:
         run: |
           docker buildx build --platform linux/amd64 \
             --push \
-            -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-1.amazonaws.com/flask-repository:latest \
+            -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-1.amazonaws.com/flask-repository:${{ github.sha }} \
             -f Dockerfile.prod .
+
+      - name: Get Image Digest
+        id: get-image-digest
+        run: |
+          IMAGE_DIGEST=$(aws ecr describe-images \
+            --repository-name flask-repository \
+            --image-ids imageTag=${{ github.sha }} \
+            --query 'imageDetails[0].imageDigest' \
+            --output text)
+          echo "IMAGE_DIGEST=$IMAGE_DIGEST" >> $GITHUB_ENV
+
+      - name: Update Task Definition
+        run: |
+          sed -i 's#${IMAGE_TAG}#@sha256:${IMAGE_DIGEST}#g' task-definition.json
+
+      - name: Register New Task Definition
+        run: |
+          aws ecs register-task-definition --cli-input-json file://task-definition.json
 
       - name: Deploy to ECS via CodeDeploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
