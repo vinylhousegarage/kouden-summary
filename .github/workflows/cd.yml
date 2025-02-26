@@ -38,6 +38,10 @@ jobs:
             -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-1.amazonaws.com/flask-repository:latest \
             -f Dockerfile.prod .
 
+      - name: Replace AWS_ACCOUNT_ID in AppSpec
+        run: |
+          sed -i 's#\${AWS_ACCOUNT_ID}#${{ secrets.AWS_ACCOUNT_ID }}#g' appspec.yml
+
       - name: Deploy to ECS via CodeDeploy
         run: |
           TASK_DEFINITION_ARN=$(aws ecs list-task-definitions --sort DESC --query "taskDefinitionArns[0]" --output text)
@@ -49,14 +53,10 @@ jobs:
           DEPLOY_RESPONSE=$(aws deploy create-deployment \
             --application-name flask-deploy \
             --deployment-group-name flask-deploy-group \
-            --cli-input-json '{
-              "applicationName": "flask-deploy",
-              "deploymentGroupName": "flask-deploy-group",
-              "revision": {
-                "revisionType": "AppSpecContent",
-                "appSpecContent": {
-                  "content": "{\\\"version\\\":0.0,\\\"Resources\\\":[{\\\"TargetService\\\":{\\\"Type\\\":\\\"AWS::ECS::Service\\\",\\\"Properties\\\":{\\\"TaskDefinition\\\":\\\"'"${TASK_DEFINITION_ARN}"'\\\",\\\"LoadBalancerInfo\\\":{\\\"ContainerName\\\":\\\"flask-web\\\",\\\"ContainerPort\\\":5000}}}}]}"}}
-            }' \
+            --revision "$(jq -n --arg content "$(cat appspec.yml)" '{
+              revisionType: "AppSpecContent",
+              appSpecContent: { content: $content }
+            }')" \
             --region ap-northeast-1 2>&1)
 
           echo "======== Deployment Response ========"
