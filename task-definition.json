@@ -30,9 +30,6 @@
           "value": "mariadb"
         }
       ],
-      "environmentFiles": [],
-      "mountPoints": [],
-      "volumesFrom": [],
       "secrets": [
         {
           "name": "MYSQL_PASSWORD",
@@ -43,9 +40,6 @@
           "valueFrom": "arn:aws:ssm:ap-northeast-1:${{ secrets.AWS_ACCOUNT_ID }}:parameter/param-store/MYSQL_USER"
         }
       ],
-      "startTimeout": 150,
-      "stopTimeout": 30,
-      "ulimits": [],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
@@ -55,8 +49,7 @@
           "mode": "non-blocking",
           "awslogs-create-group": "true",
           "max-buffer-size": "25m"
-        },
-        "secretOptions": []
+        }
       },
       "healthCheck": {
         "command": [
@@ -67,8 +60,7 @@
         "timeout": 10,
         "retries": 5,
         "startPeriod": 30
-      },
-      "systemControls": []
+      }
     }
   ],
   "requiresCompatibilities": ["EC2"],
@@ -76,7 +68,6 @@
   "memory": "512",
   "volumes": [],
   "placementConstraints": [],
-  "compatibilities": ["EC2"],
   "runtimePlatform": {
     "cpuArchitecture": "X86_64",
     "operatingSystemFamily": "LINUX"
