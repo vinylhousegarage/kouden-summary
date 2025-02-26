@@ -38,21 +38,45 @@ jobs:
             -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-1.amazonaws.com/flask-repository:latest \
             -f Dockerfile.prod .
 
-      - name: Deploy to ECS via CodeDeploy
+      - name: Get latest task definition ARN
         run: |
           TASK_DEFINITION_ARN=$(aws ecs list-task-definitions --sort DESC --query "taskDefinitionArns[0]" --output text)
+          echo "TASK_DEFINITION_ARN=${TASK_DEFINITION_ARN}"
+
+      - name: Create AWS CodeDeploy deployment
+        run: |
+          JSON_PAYLOAD=$(cat <<EOF
+          {
+            "applicationName": "flask-deploy",
+            "deploymentGroupName": "flask-deploy-group",
+            "revision": {
+              "revisionType": "AppSpecContent",
+              "appSpecContent": {
+                "version": 0.0,
+                "Resources": [
+                  {
+                    "TargetService": {
+                      "Type": "AWS::ECS::Service",
+                      "Properties": {
+                        "TaskDefinition": "${TASK_DEFINITION_ARN}",
+                        "LoadBalancerInfo": {
+                          "ContainerName": "flask-container",
+                          "ContainerPort": 5000
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+          EOF
+          )
+
+          echo "======== JSON Payload ========"
+          echo "$JSON_PAYLOAD" | jq
+          echo "=============================="
 
           aws deploy create-deployment \
-            --application-name flask-deploy \
-            --deployment-group-name flask-deploy-group \
-            --cli-input-json '{
-              "applicationName": "flask-deploy",
-              "deploymentGroupName": "flask-deploy-group",
-              "revision": {
-                "revisionType": "AppSpecContent",
-                "appSpecContent": {
-                  "content": "{\\\"version\\\":0.0,\\\"Resources\\\":[{\\\"TargetService\\\":{\\\"Type\\\":\\\"AWS::ECS::Service\\\",\\\"Properties\\\":{\\\"TaskDefinition\\\":\\\"'"${TASK_DEFINITION_ARN}"'\\\"}}}}]}"
-                }
-              }
-            }' \
+            --cli-input-json "$JSON_PAYLOAD" \
             --region ap-northeast-1
