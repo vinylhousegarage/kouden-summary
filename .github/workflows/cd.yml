@@ -57,13 +57,7 @@ jobs:
                 "appSpecContent": {
                   "content": "{\\\"version\\\":0.0,\\\"Resources\\\":[{\\\"TargetService\\\":{\\\"Type\\\":\\\"AWS::ECS::Service\\\",\\\"Properties\\\":{\\\"TaskDefinition\\\":\\\"'"${TASK_DEFINITION_ARN}"'\\\",\\\"LoadBalancerInfo\\\":{\\\"ContainerName\\\":\\\"flask-web\\\",\\\"ContainerPort\\\":5000}}}}]}"}}
             }' \
-            --region ap-northeast-1 2>&1) || {
-              echo "AWS CodeDeploy Deployment Failed!"
-              echo "======== Error Response ========"
-              echo "$DEPLOY_RESPONSE"
-              echo "====================================="
-              exit 1
-            }
+            --region ap-northeast-1 2>&1)
 
           echo "======== Deployment Response ========"
           if echo "$DEPLOY_RESPONSE" | jq '.' >/dev/null 2>&1; then
@@ -71,5 +65,23 @@ jobs:
           else
             echo "Warning: Response is not valid JSON!"
             echo "$DEPLOY_RESPONSE"
+            exit 1
+          fi
+          echo "====================================="
+
+          DEPLOYMENT_ID=$(echo "$DEPLOY_RESPONSE" | jq -r '.deploymentId')
+
+          echo "Deployment started successfully! Deployment ID: $DEPLOYMENT_ID"
+
+          echo "======== Deployment Details ========"
+          DEPLOYMENT_DETAILS=$(aws deploy get-deployment \
+            --deployment-id "$DEPLOYMENT_ID" \
+            --region ap-northeast-1 2>&1)
+
+          if echo "$DEPLOYMENT_DETAILS" | jq '.' >/dev/null 2>&1; then
+            echo "$DEPLOYMENT_DETAILS" | jq '.'
+          else
+            echo "Warning: Deployment details response is not valid JSON!"
+            echo "$DEPLOYMENT_DETAILS"
           fi
           echo "====================================="
