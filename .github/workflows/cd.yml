@@ -51,17 +51,7 @@ jobs:
               "revision": {
                 "revisionType": "AppSpecContent",
                 "appSpecContent": {
-                  "version": 0.0,
-                  "Resources": [
-                    {
-                      "TargetService": {
-                        "Type": "AWS::ECS::Service",
-                        "Properties": {
-                          "TaskDefinition": "'"${TASK_DEFINITION_ARN}"'"
-                        }
-                      }
-                    }
-                  ]
+                  "content": "{\\\"version\\\":0.0,\\\"Resources\\\":[{\\\"TargetService\\\":{\\\"Type\\\":\\\"AWS::ECS::Service\\\",\\\"Properties\\\":{\\\"TaskDefinition\\\":\\\"'"${TASK_DEFINITION_ARN}"'\\\"}}}}]}"
                 }
               }
             }' \
