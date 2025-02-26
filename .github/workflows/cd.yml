@@ -39,46 +39,12 @@ jobs:
             -f Dockerfile.prod .
 
       - name: Deploy to ECS via CodeDeploy
-        run: |
-          TASK_DEFINITION_ARN=$(aws ecs list-task-definitions --sort DESC --query "taskDefinitionArns[0]" --output text)
-
-          JSON_PAYLOAD=$(jq -n \
-            --arg taskDefArn "$TASK_DEFINITION_ARN" \
-            '{
-              applicationName: "flask-deploy",
-              deploymentGroupName: "flask-deploy-group",
-              revision: {
-                revisionType: "AppSpecContent",
-                appSpecContent: {
-                  content: {
-                    version: 0.0,
-                    Resources: [
-                      {
-                        TargetService: {
-                          Type: "AWS::ECS::Service",
-                          Properties: {
-                            TaskDefinition: $taskDefArn,
-                            LoadBalancerInfo: {
-                              ContainerName: "flask-web",
-                              ContainerPort: 5000
-                            }
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            }')
-
-          echo "======== JSON Payload ========"
-          echo "$JSON_PAYLOAD" | jq '.'
-          echo "=============================="
-
-          DEPLOY_RESPONSE=$(aws deploy create-deployment \
-            --cli-input-json "$JSON_PAYLOAD" \
-            --region ap-northeast-1 2>&1)
-
-          echo "======== Deployment Response ========"
-          echo "$DEPLOY_RESPONSE" | jq '.'
-          echo "====================================="
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          service: flask-service
+          cluster: flask-cluster
+          wait-for-service-stability: true
+          codedeploy-appspec: appspec.yml
+          codedeploy-application: flask-deploy
+          codedeploy-deployment-group: flask-deploy-group
