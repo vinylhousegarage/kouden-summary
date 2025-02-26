@@ -9,10 +9,8 @@
       "image": "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-1.amazonaws.com/flask-repository:${IMAGE_TAG}",
       "cpu": 512,
       "memory": 512,
-      "memoryReservation": 307,
       "portMappings": [
         {
-          "name": "flask-web-5000-tcp",
           "containerPort": 5000,
           "hostPort": 5000,
           "protocol": "tcp",
@@ -46,8 +44,6 @@
           "awslogs-group": "/ecs/flask-task",
           "awslogs-region": "ap-northeast-1",
           "awslogs-stream-prefix": "ecs",
-          "mode": "non-blocking",
-          "awslogs-create-group": "true",
           "max-buffer-size": "25m"
         }
       },
@@ -62,14 +58,5 @@
         "startPeriod": 30
       }
     }
-  ],
-  "requiresCompatibilities": ["EC2"],
-  "cpu": "512",
-  "memory": "512",
-  "volumes": [],
-  "placementConstraints": [],
-  "runtimePlatform": {
-    "cpuArchitecture": "X86_64",
-    "operatingSystemFamily": "LINUX"
-  }
+  ]
 }
