@@ -1,0 +1,84 @@
+{
+  "family": "flask-task",
+  "executionRoleArn": "arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskRole",
+  "networkMode": "host",
+  "containerDefinitions": [
+    {
+      "name": "flask-web",
+      "image": "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-1.amazonaws.com/flask-repository:latest",
+      "cpu": 512,
+      "memory": 512,
+      "memoryReservation": 307,
+      "portMappings": [
+        {
+          "name": "flask-web-5000-tcp",
+          "containerPort": 5000,
+          "hostPort": 5000,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "essential": true,
+      "environment": [
+        {
+          "name": "DB_HOST",
+          "value": "flask-db-instance.cvy420ay6io1.ap-northeast-1.rds.amazonaws.com"
+        },
+        {
+          "name": "MYSQL_DATABASE",
+          "value": "mariadb"
+        }
+      ],
+      "environmentFiles": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "secrets": [
+        {
+          "name": "MYSQL_PASSWORD",
+          "valueFrom": "arn:aws:ssm:ap-northeast-1:${{ secrets.AWS_ACCOUNT_ID }}:parameter/param-store/MYSQL_PASSWORD"
+        },
+        {
+          "name": "MYSQL_USER",
+          "valueFrom": "arn:aws:ssm:ap-northeast-1:${{ secrets.AWS_ACCOUNT_ID }}:parameter/param-store/MYSQL_USER"
+        }
+      ],
+      "startTimeout": 150,
+      "stopTimeout": 30,
+      "ulimits": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/flask-task",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "ecs",
+          "mode": "non-blocking",
+          "awslogs-create-group": "true",
+          "max-buffer-size": "25m"
+        },
+        "secretOptions": []
+      },
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "curl -f http://localhost:5000/health || exit 1"
+        ],
+        "interval": 30,
+        "timeout": 10,
+        "retries": 5,
+        "startPeriod": 30
+      },
+      "systemControls": []
+    }
+  ],
+  "requiresCompatibilities": ["EC2"],
+  "cpu": "512",
+  "memory": "512",
+  "volumes": [],
+  "placementConstraints": [],
+  "compatibilities": ["EC2"],
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  }
+}
