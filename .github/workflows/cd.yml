@@ -21,6 +21,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-1
 
+      - name: Verify AWS Authentication
+        run: aws sts get-caller-identity
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -32,7 +35,7 @@ jobs:
         run: |
           docker buildx build --platform linux/amd64 \
             --push \
-            -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-1.amazonaws.com/kouden-summary:latest \
+            -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-1.amazonaws.com/flask-repository:latest \
             -f Dockerfile.prod .
 
       - name: Deploy to ECS
