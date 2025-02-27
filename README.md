@@ -1,1 +1,1 @@
-https://kouden-summary.com
+kouden-summary
