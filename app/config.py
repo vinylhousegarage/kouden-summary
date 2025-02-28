@@ -11,8 +11,10 @@ class Config:
 
     SECRET_KEY = os.getenv("SECRET_KEY", "default-secret-key")
 
+    COGNITO_DOMAIN = os.getenv("COGNITO_DOMAIN")
     COGNITO_CLIENT_ID = os.getenv("COGNITO_CLIENT_ID")
     COGNITO_CLIENT_SECRET = os.getenv("COGNITO_CLIENT_SECRET")
     COGNITO_AUTHORITY = os.getenv("COGNITO_AUTHORITY")
     COGNITO_METADATA_URL = os.getenv("COGNITO_METADATA_URL")
     COGNITO_SCOPE = os.getenv("COGNITO_SCOPE", "email openid")
+    COGNITO_REDIRECT_URI = os.getenv("COGNITO_REDIRECT_URI")

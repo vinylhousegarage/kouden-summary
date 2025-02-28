@@ -1,9 +1,37 @@
-from flask import Flask, redirect
+from flask import Blueprint, redirect, session, request
+from app.services.auth_service import exchange_code_for_token
+from app.config import Config
 
-app = Flask(__name__)
+auth_bp = Blueprint("auth", __name__)
 
-COGNITO_SIGNUP_URL = "https://ap-northeast-1mlcv35dkj.auth.ap-northeast-1.amazoncognito.com/signup?client_id=7ln0qbqk35mjv7dp9uuvsav1a&response_type=code&scope=openid&redirect_uri=https%3A%2F%2Fkouden-summary.com%2Foauth2%2Fidpresponse"
+@auth_bp.route("/login")
+def login():
+    if "access_token" in session:
+        return redirect("/")
 
-@app.route("/signup")
-def signup():
-    return redirect(COGNITO_SIGNUP_URL)
+    cognito_login_url = (
+        f"https://{Config.COGNITO_DOMAIN}/login?"
+        f"client_id={Config.COGNITO_CLIENT_ID}&response_type=code&"
+        f"scope=openid+profile+email&redirect_uri={Config.COGNITO_REDIRECT_URI}"
+    )
+    return redirect(cognito_login_url)
+
+@auth_bp.route("/oauth2/idpresponse")
+def callback():
+    code = request.args.get("code")
+    if not code:
+        return redirect("/login")
+
+    tokens = exchange_code_for_token(code)
+    if tokens:
+        session["access_token"] = tokens.get("access_token")
+        session["id_token"] = tokens.get("id_token")
+        session["refresh_token"] = tokens.get("refresh_token")
+        return redirect("/")
+    else:
+        return redirect("/login")
+
+@auth_bp.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/login")
