@@ -5,6 +5,7 @@ from app.extensions import cognito_auth, init_oauth
 from app.db import init_db
 from app.routes.main import main_bp
 from app.routes.health import health_bp
+from app.routes.auth import auth_bp
 from app.middleware.before_request import require_login
 from app.logging_config import setup_logging
 
