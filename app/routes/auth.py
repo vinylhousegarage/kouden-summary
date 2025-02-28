@@ -7,7 +7,7 @@ auth_bp = Blueprint("auth", __name__)
 @auth_bp.route("/login")
 def login():
     if "access_token" in session:
-        return redirect("/dashboard")
+        return redirect("/")
 
     cognito_login_url = (
         f"https://{Config.COGNITO_DOMAIN}/login?"
@@ -20,18 +20,18 @@ def login():
 def callback():
     code = request.args.get("code")
     if not code:
-        return jsonify({"error": "No authorization code received"}), 400
+        return redirect("/login")
 
     tokens = exchange_code_for_token(code)
     if tokens:
         session["access_token"] = tokens.get("access_token")
         session["id_token"] = tokens.get("id_token")
         session["refresh_token"] = tokens.get("refresh_token")
-        return redirect("/dashboard")
+        return redirect("/")
     else:
-        return jsonify({"error": "Token exchange failed"}), 400
+        return redirect("/login")
 
 @auth_bp.route("/logout")
 def logout():
     session.clear()
-    return redirect("/")
+    return redirect("/login")
