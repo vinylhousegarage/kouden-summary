@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, session, request, jsonify
+from flask import Blueprint, redirect, session, request
 from app.services.auth_service import exchange_code_for_token
 from app.config import Config
 
