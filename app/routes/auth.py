@@ -4,9 +4,20 @@ from app.config import Config
 
 auth_bp = Blueprint("auth", __name__)
 
+@auth_bp.route("/login")
+def login():
+    if "access_token" in session:
+        return redirect("/dashboard")
+
+    cognito_login_url = (
+        f"https://{Config.COGNITO_DOMAIN}/login?"
+        f"client_id={Config.COGNITO_CLIENT_ID}&response_type=code&"
+        f"scope=openid+profile+email&redirect_uri={Config.COGNITO_REDIRECT_URI}"
+    )
+    return redirect(cognito_login_url)
+
 @auth_bp.route("/oauth2/idpresponse")
 def callback():
-    """Cognito からのリダイレクト後、トークンを取得"""
     code = request.args.get("code")
     if not code:
         return jsonify({"error": "No authorization code received"}), 400
@@ -15,7 +26,12 @@ def callback():
     if tokens:
         session["access_token"] = tokens.get("access_token")
         session["id_token"] = tokens.get("id_token")
-        session["refresh_token"] = tokens.get("refresh_token")  # ここで refresh_token も保存
+        session["refresh_token"] = tokens.get("refresh_token")
         return redirect("/dashboard")
     else:
         return jsonify({"error": "Token exchange failed"}), 400
+
+@auth_bp.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
