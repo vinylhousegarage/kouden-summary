@@ -16,3 +16,4 @@ class Config:
     COGNITO_AUTHORITY = os.getenv("COGNITO_AUTHORITY")
     COGNITO_METADATA_URL = os.getenv("COGNITO_METADATA_URL")
     COGNITO_SCOPE = os.getenv("COGNITO_SCOPE", "email openid")
+    COGNITO_REDIRECT_URI = os.getenv("COGNITO_REDIRECT_URI")
