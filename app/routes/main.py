@@ -1,9 +1,10 @@
-from flask import Flask
-from app.config import Config
-from app.routes.auth import auth_bp
-from app.routes.dashboard import dashboard_bp
+from flask import Blueprint, session, redirect, render_template
 
-app = Flask(__name__)
-app.config.from_object(Config)
-app.register_blueprint(auth_bp)
-app.register_blueprint(dashboard_bp)
+main_bp = Blueprint("main", __name__)
+
+@main_bp.route("/")
+def main():
+    if "access_token" not in session:
+        return redirect("/login")
+
+    return render_template("main.html")
