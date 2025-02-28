@@ -11,6 +11,7 @@ class Config:
 
     SECRET_KEY = os.getenv("SECRET_KEY", "default-secret-key")
 
+    COGNITO_DOMAIN = os.getenv("COGNITO_DOMAIN")
     COGNITO_CLIENT_ID = os.getenv("COGNITO_CLIENT_ID")
     COGNITO_CLIENT_SECRET = os.getenv("COGNITO_CLIENT_SECRET")
     COGNITO_AUTHORITY = os.getenv("COGNITO_AUTHORITY")
