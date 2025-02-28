@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_wtf import CSRFProtect
 from app.config import Config
-from app.extensions import init_oauth
+from app.extensions import cognito_auth, init_oauth
 from app.db import init_db
 from app.routes.main import main_bp
 from app.routes.health import health_bp
@@ -14,12 +14,15 @@ def create_app():
     app.secret_key = Config.SECRET_KEY
 
     CSRFProtect(app)
+    cognito_auth.init_app(app)
+
     setup_logging(app)
     init_db(app)
     init_oauth(app)
 
     app.register_blueprint(main_bp)
     app.register_blueprint(health_bp)
+    app.register_blueprint(auth_bp, url_prefix="/auth")
 
     require_login(app)
 
