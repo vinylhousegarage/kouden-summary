@@ -1,13 +1,11 @@
-from flask import Blueprint, redirect, url_for, session
-from app.extensions import db, oauth
-from app.models import Summary
+from flask import Flask
+from app.routes.auth import auth_bp
+from app.routes.dashboard import dashboard_bp
 
-main_bp = Blueprint('main', __name__)
+app = Flask(__name__)
+app.secret_key = "supersecretkey"
+app.register_blueprint(auth_bp)
+app.register_blueprint(dashboard_bp)
 
-@main_bp.route("/")
-def index():
-    try:
-        db.session.query(Summary).first()
-        return "Database connection successful!"
-    except Exception as e:
-        return f"Database connection failed: {str(e)}", 500
+if __name__ == "__main__":
+    app.run(debug=True)
