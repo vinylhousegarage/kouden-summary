@@ -1,4 +1,5 @@
-from flask import Flask, session, redirect, url_for, request
+from flask import Flask
+from flask_wtf import CSRFProtect
 from app.config import Config
 from app.extensions import init_oauth
 from app.db import init_db
@@ -12,6 +13,7 @@ def create_app():
     app.config.from_object(Config)
     app.secret_key = Config.SECRET_KEY
 
+    CSRFProtect(app)
     setup_logging(app)
     init_db(app)
     init_oauth(app)
