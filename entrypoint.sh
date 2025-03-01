@@ -14,5 +14,5 @@ if ! flask db upgrade; then
     exit 1
 fi
 
-echo "Starting Gunicorn..."
+echo "Starting flask run..."
 exec flask run --host=0.0.0.0 --port=5000
