@@ -7,6 +7,3 @@ Resources:
         LoadBalancerInfo:
           ContainerName: "flask-web"
           ContainerPort: 5000
-        TargetGroupArn:
-          - "arn:aws:elasticloadbalancing:ap-northeast-1:626635405187:targetgroup/flask-tg-blue/917f108766d09a04"
-          - "arn:aws:elasticloadbalancing:ap-northeast-1:626635405187:targetgroup/flask-tg-green/fdfeacb04b753ea5"
