@@ -1,6 +1,6 @@
 from flask import request, redirect
 from app.extensions import cognito_auth
-from app.config import Config
+from app.utils.auth_helpers import generate_cognito_login_url
 
 def require_login(app):
     @app.before_request
@@ -25,9 +25,4 @@ def require_login(app):
             return redirect_to_login()
 
 def redirect_to_login():
-    cognito_login_url = (
-        f"{Config.COGNITO_DOMAIN}/login?"
-        f"client_id={Config.COGNITO_CLIENT_ID}&response_type=code&"
-        f"scope=openid+email&redirect_uri={Config.COGNITO_REDIRECT_URI}"
-    )
-    return redirect(cognito_login_url)
+    return redirect(generate_cognito_login_url())

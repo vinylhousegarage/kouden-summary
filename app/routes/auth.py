@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, session, request
 from app.services.auth_service import exchange_code_for_token
-from app.config import Config
+from app.utils.auth_helpers import generate_cognito_login_url
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -9,12 +9,7 @@ def login():
     if "access_token" in session:
         return redirect("/")
 
-    cognito_login_url = (
-        f"https://{Config.COGNITO_DOMAIN}/login?"
-        f"client_id={Config.COGNITO_CLIENT_ID}&response_type=code&"
-        f"scope=openid+profile+email&redirect_uri={Config.COGNITO_REDIRECT_URI}"
-    )
-    return redirect(cognito_login_url)
+    return redirect(generate_cognito_login_url())
 
 @auth_bp.route("/oauth2/idpresponse")
 def callback():
