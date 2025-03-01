@@ -38,50 +38,17 @@ jobs:
             -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-1.amazonaws.com/flask-repository:latest \
             -f Dockerfile.prod .
 
-      - name: Replace AWS_ACCOUNT_ID in AppSpec
+      - name: Deploy to ECS via CodeDeploy using S3
         run: |
-          sed -i 's#\${AWS_ACCOUNT_ID}#${{ secrets.AWS_ACCOUNT_ID }}#g' appspec.yml
-
-      - name: Deploy to ECS via CodeDeploy
-        run: |
-          TASK_DEFINITION_ARN=$(aws ecs list-task-definitions --sort DESC --query "taskDefinitionArns[0]" --output text)
-
-          echo "======== TASK_DEFINITION_ARN ========"
-          echo "$TASK_DEFINITION_ARN"
-          echo "====================================="
-
-          DEPLOY_RESPONSE=$(aws deploy create-deployment \
+          aws deploy create-deployment \
             --application-name flask-deploy \
             --deployment-group-name flask-deploy-group \
-            --revision "$(jq -n --arg content "$(cat appspec.yml)" '{
-              revisionType: "AppSpecContent",
-              appSpecContent: { content: $content }
-            }')" \
-            --region ap-northeast-1 2>&1)
-
-          echo "======== Deployment Response ========"
-          if echo "$DEPLOY_RESPONSE" | jq '.' >/dev/null 2>&1; then
-            echo "$DEPLOY_RESPONSE" | jq '.'
-          else
-            echo "Warning: Response is not valid JSON!"
-            echo "$DEPLOY_RESPONSE"
-            exit 1
-          fi
-          echo "====================================="
-
-          DEPLOYMENT_ID=$(echo "$DEPLOY_RESPONSE" | jq -r '.deploymentId')
-
-          echo "Deployment started successfully! Deployment ID: $DEPLOYMENT_ID"
-
-          echo "======== Deployment Details ========"
-          DEPLOYMENT_DETAILS=$(aws deploy get-deployment \
-            --deployment-id "$DEPLOYMENT_ID" \
-            --region ap-northeast-1 2>&1)
-
-          if echo "$DEPLOYMENT_DETAILS" | jq '.' >/dev/null 2>&1; then
-            echo "$DEPLOYMENT_DETAILS" | jq '.'
-          else
-            echo "Warning: Deployment details response is not valid JSON!"
-            echo "$DEPLOYMENT_DETAILS"
-          fi
-          echo "====================================="
+            --revision "{
+              \"revisionType\": \"S3\",
+              \"s3Location\": {
+                \"bucket\": \"kouden-summary-deploy-bucket\",
+                \"key\": \"appspec.yml\",
+                \"bundleType\": \"YAML\"
+              }
+            }" \
+            --region ap-northeast-1
