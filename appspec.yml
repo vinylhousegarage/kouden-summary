@@ -3,17 +3,18 @@ Resources:
   - TargetService:
       Type: AWS::ECS::Service
       Properties:
-        TaskDefinition: "arn:aws:ecs:ap-northeast-1:${AWS_ACCOUNT_ID}:task-definition/flask-task:11"
+        TaskDefinition: "arn:aws:ecs:ap-northeast-1:626635405187:task-definition/flask-task:11"
         LoadBalancerInfo:
           ContainerName: "flask-web"
           ContainerPort: 5000
-          TargetGroupPairInfo:
-            ProdTrafficRoute:
-              ListenerArns:
-                - "arn:aws:elasticloadbalancing:ap-northeast-1:626635405187:listener/app/flask-alb/a038f59afa7e9191/981742d1002057f3"
-            TestTrafficRoute:
-              ListenerArns:
-                - "arn:aws:elasticloadbalancing:ap-northeast-1:626635405187:listener/app/flask-alb/a038f59afa7e9191/1205685cc6087b64"
-            TargetGroups:
-              - Name: "flask-tg-blue"
-              - Name: "flask-tg-green"
+        TrafficRoutingConfig:
+          Type: "AllAtOnce"
+          ProdTrafficRoute:
+            ListenerArns:
+              - "arn:aws:elasticloadbalancing:ap-northeast-1:626635405187:listener/app/flask-alb/a038f59afa7e9191/981742d1002057f3"
+          TestTrafficRoute:
+            ListenerArns:
+              - "arn:aws:elasticloadbalancing:ap-northeast-1:626635405187:listener/app/flask-alb/a038f59afa7e9191/1205685cc6087b64"
+        TargetGroups:
+          - Name: "flask-tg-blue"
+          - Name: "flask-tg-green"
