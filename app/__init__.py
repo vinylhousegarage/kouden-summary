@@ -1,7 +1,6 @@
 from flask import Flask
-from flask_wtf import CSRFProtect
 from app.config import Config
-from app.extensions import cognito_auth
+from app.extensions import csrf, cognito_auth
 from app.db import init_db
 from app.oauth import init_oauth
 from app.routes.main import main_bp
@@ -19,7 +18,7 @@ def create_app():
     setup_logging(app)
     setup_request_logging(app)
 
-    CSRFProtect(app)
+    csrf.init_app(app)
     cognito_auth.init_app(app)
 
     init_db(app)
