@@ -18,8 +18,3 @@ class Config:
     COGNITO_METADATA_URL = os.getenv("COGNITO_METADATA_URL")
     COGNITO_SCOPE = os.getenv("COGNITO_SCOPE", "email openid")
     COGNITO_REDIRECT_URI = os.getenv("COGNITO_REDIRECT_URI")
-
-    SESSION_TYPE = "filesystem"
-    SESSION_PERMANENT = False
-    SESSION_USE_SIGNER = True
-    SESSION_FILE_DIR = os.getenv("SESSION_FILE_DIR", "./flask_session")
