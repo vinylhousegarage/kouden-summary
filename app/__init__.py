@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_session import Session
 from flask_wtf import CSRFProtect
 from app.config import Config
 from app.extensions import cognito_auth
@@ -15,6 +16,7 @@ def create_app():
     app.config.from_object(Config)
     app.secret_key = Config.SECRET_KEY
 
+    Session(app)
     CSRFProtect(app)
     cognito_auth.init_app(app)
 
