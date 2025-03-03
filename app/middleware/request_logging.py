@@ -20,4 +20,3 @@ def setup_request_logging(app):
         app.logger.info(f"Response Headers: {dict(response.headers)}")
         app.logger.info(f"Response Body: {response_body}")
         return response
-
