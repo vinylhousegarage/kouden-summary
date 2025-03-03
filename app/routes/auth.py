@@ -24,22 +24,14 @@ def callback():
             session["access_token"] = tokens.get("access_token")
             session["id_token"] = tokens.get("id_token")
             session["refresh_token"] = tokens.get("refresh_token")
-
-            response = make_response("ログイン成功！リダイレクトします", 302)
-            response.headers["Location"] = "/"
+            return redirect("/")
         else:
-            response = make_response("ログイン失敗", 302)
-            response.headers["Location"] = "/login"
+            return redirect("/logoin")
 
-    except AttributeError as e:
-        response = make_response("エラーが発生しました", 302)
-        response.headers["Location"] = "/login"
-
-    except Exception as e:
-        response = make_response("サーバーエラー", 302)
-        response.headers["Location"] = "/login"
-
-    return response
+    except AttributeError:
+            return redirect("/logoin")
+    except Exception:
+            return redirect("/logoin")
 
 @auth_bp.route("/logout")
 def logout():
