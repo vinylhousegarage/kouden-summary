@@ -5,9 +5,9 @@ from app.utils.auth_helpers import generate_cognito_login_url
 def require_login(app):
     @app.before_request
     def _require_login():
-        public_routes = ["health.health_check"]
+        public_routes = ["health.health_check", "auth.callback"]
         if request.endpoint in public_routes:
-            return
+            return  # 認証チェックをスキップ
 
         auth_header = request.headers.get("Authorization")
         if auth_header and auth_header.startswith("Bearer "):
