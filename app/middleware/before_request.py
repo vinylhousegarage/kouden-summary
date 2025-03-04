@@ -7,7 +7,7 @@ def require_login(app):
     def _require_login():
         public_routes = ["health.health_check", "auth.callback"]
         if request.endpoint in public_routes:
-            return  # 認証チェックをスキップ
+            return
 
         auth_header = request.headers.get("Authorization")
         if auth_header and auth_header.startswith("Bearer "):
