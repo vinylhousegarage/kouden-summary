@@ -26,12 +26,12 @@ def callback():
             session["refresh_token"] = tokens.get("refresh_token")
             return redirect("/")
         else:
-            return redirect("/logoin")
+            return redirect("/login")
 
     except AttributeError:
-            return redirect("/logoin")
+            return redirect("/login")
     except Exception:
-            return redirect("/logoin")
+            return redirect("/login")
 
 @auth_bp.route("/logout")
 def logout():
