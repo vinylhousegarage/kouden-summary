@@ -1,5 +1,5 @@
 import sys
-from flask import request
+from flask import request, session
 from app.extensions import cognito_auth
 from app.utils.auth_helpers import redirect_to_cognito_login
 
@@ -18,20 +18,16 @@ def require_login(app):
             print("✅ `public_routes` に含まれているためリダイレクトしません", file=sys.stderr, flush=True)
             return
 
-        auth_header = request.headers.get("Authorization")
-        if auth_header and auth_header.startswith("Bearer "):
-            token = auth_header.split(" ")[1]
-        else:
-            token = None
-
+        token = session.get("access_token")
         if token:
+            print("✅ セッションから `access_token` を取得", file=sys.stderr, flush=True)
             try:
                 claims = cognito_auth.verify_access_token(token, leeway=10)
                 request.user = claims
                 print("✅ トークン検証成功！", file=sys.stderr, flush=True)
+                return
             except Exception as e:
-                print(f"❌ トークン検証エラー: {e}", file=sys.stderr, flush=True)
-                return redirect_to_cognito_login()
-        else:
-            print("❌ `Authorization` ヘッダーがないのでリダイレクトします", file=sys.stderr, flush=True)
-            return redirect_to_cognito_login()
+                print(f"❌ セッションの `access_token` 検証エラー: {e}", file=sys.stderr, flush=True)
+
+        print("❌ `session['access_token']` が無効または存在しないのでリダイレクトします", file=sys.stderr, flush=True)
+        return redirect_to_cognito_login()
