@@ -7,7 +7,7 @@ from app.routes.main import main_bp
 from app.routes.health import health_bp
 from app.routes.auth import auth_bp
 from app.middleware.before_request import require_login
-from app.logging_config import setup_logging
+from app.logging_config import check_existing_handlers, setup_logging
 from app.middleware.request_logging import setup_request_logging
 
 def create_app():
@@ -15,6 +15,7 @@ def create_app():
     app.config.from_object(Config)
     app.secret_key = Config.SECRET_KEY
 
+    check_existing_handlers(app)
     setup_logging(app)
     setup_request_logging(app)
 
