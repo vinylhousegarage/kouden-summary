@@ -1,18 +1,24 @@
 import requests
-import urllib
-from flask import current_app
+from flask import redirect, current_app
 from app.config import Config
 
-def generate_cognito_login_url():
-    encoded_scope = urllib.parse.quote(Config.COGNITO_SCOPE)
+def redirect_to_root():
+    return redirect("/")
 
+def redirect_to_login():
+    return redirect("/login")
+
+def generate_cognito_login_url():
     return (
         f"{Config.COGNITO_DOMAIN}/login?"
         f"client_id={Config.COGNITO_CLIENT_ID}&"
         f"response_type=code&"
-        f"scope={encoded_scope}&"
+        f"scope={Config.COGNITO_SCOPE}&"
         f"redirect_uri={Config.COGNITO_REDIRECT_URI}"
     )
+
+def redirect_to_cognito_login():
+    return redirect(generate_cognito_login_url())
 
 def send_cognito_token_request(grant_type, extra_data):
     url = f"{Config.COGNITO_DOMAIN}/oauth2/token"

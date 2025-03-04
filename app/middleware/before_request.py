@@ -1,6 +1,6 @@
-from flask import request, redirect
+from flask import request
 from app.extensions import cognito_auth
-from app.utils.auth_helpers import generate_cognito_login_url
+from app.utils.auth_helpers import redirect_to_cognito_login
 
 def require_login(app):
     @app.before_request
@@ -20,9 +20,6 @@ def require_login(app):
                 claims = cognito_auth.verify_access_token(token, leeway=10)
                 request.user = claims
             except Exception:
-                return redirect_to_login()
+                return redirect_to_cognito_login()
         else:
-            return redirect_to_login()
-
-def redirect_to_login():
-    return redirect(generate_cognito_login_url())
+            return redirect_to_cognito_login()
