@@ -26,10 +26,19 @@ def callback():
         tokens = exchange_code_for_token(code)
 
         if tokens:
-            session["access_token"] = tokens.get("access_token")
-            session["id_token"] = tokens.get("id_token")
-            session["refresh_token"] = tokens.get("refresh_token")
-            print(f"✅ トークン取得成功！tokens={tokens}", file=sys.stderr, flush=True)
+            access_token = tokens.get("access_token")
+            id_token = tokens.get("id_token")
+            refresh_token = tokens.get("refresh_token")
+
+            print(f"✅ トークン取得成功！", file=sys.stderr, flush=True)
+            print(f"  🔹 access_token: {'取得成功' if access_token else '取得失敗'}", file=sys.stderr, flush=True)
+            print(f"  🔹 id_token: {'取得成功' if id_token else '取得失敗'}", file=sys.stderr, flush=True)
+            print(f"  🔹 refresh_token: {'取得成功' if refresh_token else '取得失敗'}", file=sys.stderr, flush=True)
+
+            session["access_token"] = access_token
+            session["id_token"] = id_token
+            session["refresh_token"] = refresh_token
+
             return redirect_to_root()
         else:
             print(f"❌ トークン取得失敗！code={code}", file=sys.stderr, flush=True)
