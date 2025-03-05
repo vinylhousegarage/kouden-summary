@@ -1,28 +1,33 @@
-from flask import request, redirect
+import sys
+from flask import request, session
 from app.extensions import cognito_auth
-from app.utils.auth_helpers import generate_cognito_login_url
+from app.utils.auth_helpers import redirect_to_cognito_login
 
 def require_login(app):
     @app.before_request
     def _require_login():
-        public_routes = ["health.health_check"]
-        if request.endpoint in public_routes:
+        print(f"📌 `request.endpoint`: {request.endpoint}", file=sys.stderr, flush=True)
+
+        public_routes = ["health.health_check", "auth.callback"]
+
+        if request.endpoint is None:
+            print("⚠️ `request.endpoint` が `None` なのでリダイレクトしません", file=sys.stderr, flush=True)
             return
 
-        auth_header = request.headers.get("Authorization")
-        if auth_header and auth_header.startswith("Bearer "):
-            token = auth_header.split(" ")[1]
-        else:
-            token = None
+        if request.endpoint in public_routes:
+            print("✅ `public_routes` に含まれているためリダイレクトしません", file=sys.stderr, flush=True)
+            return
 
+        token = session.get("access_token")
         if token:
+            print("✅ セッションから `access_token` を取得", file=sys.stderr, flush=True)
             try:
                 claims = cognito_auth.verify_access_token(token, leeway=10)
                 request.user = claims
-            except Exception:
-                return redirect_to_login()
-        else:
-            return redirect_to_login()
+                print("✅ トークン検証成功！", file=sys.stderr, flush=True)
+                return
+            except Exception as e:
+                print(f"❌ セッションの `access_token` 検証エラー: {e}", file=sys.stderr, flush=True)
 
-def redirect_to_login():
-    return redirect(generate_cognito_login_url())
+        print("❌ `session['access_token']` が無効または存在しないのでリダイレクトします", file=sys.stderr, flush=True)
+        return redirect_to_cognito_login()

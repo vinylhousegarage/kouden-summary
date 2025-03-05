@@ -10,6 +10,9 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     SECRET_KEY = os.getenv("SECRET_KEY", "default-secret-key")
+    AWS_REGION = os.getenv("AWS_REGION", "ap-northeast-1")
+    AWS_COGNITO_USER_POOL_ID = os.getenv("AWS_COGNITO_USER_POOL_ID")
+    AWS_COGNITO_USER_POOL_CLIENT_ID = os.getenv("AWS_COGNITO_USER_POOL_CLIENT_ID")
 
     COGNITO_DOMAIN = os.getenv("COGNITO_DOMAIN")
     COGNITO_CLIENT_ID = os.getenv("COGNITO_CLIENT_ID")
