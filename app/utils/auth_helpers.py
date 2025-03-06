@@ -10,23 +10,23 @@ def redirect_to_login():
 
 def generate_cognito_login_url():
     return (
-        f"{Config.COGNITO_DOMAIN}/login?"
-        f"client_id={Config.COGNITO_CLIENT_ID}&"
+        f"{Config.AWS_COGNITO_DOMAIN}/login?"
+        f"client_id={Config.AWS_COGNITO_USER_POOL_CLIENT_ID}&"
         f"response_type=code&"
-        f"scope={Config.COGNITO_SCOPE}&"
-        f"redirect_uri={Config.COGNITO_REDIRECT_URI}"
+        f"scope={Config.AWS_COGNITO_SCOPE}&"
+        f"redirect_uri={Config.AWS_COGNITO_REDIRECT_URI}"
     )
 
 def redirect_to_cognito_login():
     return redirect(generate_cognito_login_url())
 
 def send_cognito_token_request(grant_type, extra_data):
-    url = f"{Config.COGNITO_DOMAIN}/oauth2/token"
+    url = f"{Config.AWS_COGNITO_DOMAIN}/oauth2/token"
 
     data = {
         "grant_type": grant_type,
-        "client_id": Config.COGNITO_CLIENT_ID,
-        "client_secret": Config.COGNITO_CLIENT_SECRET,
+        "client_id": Config.AWS_COGNITO_USER_POOL_CLIENT_ID,
+        "client_secret": Config.AWS_COGNITO_CLIENT_SECRET,
     }
     data.update(extra_data)
 
