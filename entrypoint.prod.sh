@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
-export AWS_REGION="${AWS_REGION:-ap-northeast-1}"
 
 export SECRET_KEY=$(aws ssm get-parameter --name "/param-store/SECRET_KEY" --with-decryption --query "Parameter.Value" --output text)
+export AWS_REGION=$(aws ssm get-parameter --name "/param-store/AWS_REGION" --query "Parameter.Value" --output text)
 export AWS_COGNITO_USER_POOL_ID=$(aws ssm get-parameter --name "/param-store/AWS_COGNITO_USER_POOL_ID" --query "Parameter.Value" --output text)
 export AWS_COGNITO_USER_POOL_CLIENT_ID=$(aws ssm get-parameter --name "/param-store/AWS_COGNITO_USER_POOL_CLIENT_ID" --query "Parameter.Value" --output text)
 export COGNITO_DOMAIN=$(aws ssm get-parameter --name "/param-store/COGNITO_DOMAIN" --with-decryption --query "Parameter.Value" --output text)
