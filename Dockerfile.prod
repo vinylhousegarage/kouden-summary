@@ -19,4 +19,4 @@ ENV FLASK_DEBUG=0
 ENV PYTHONUNBUFFERED=1
 EXPOSE 5000
 USER flaskuser
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.prod.sh"]
