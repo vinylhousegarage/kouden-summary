@@ -10,8 +10,8 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 COPY requirements.txt /app/
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt gunicorn
 COPY . /app
-COPY entrypoint.prod.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY entrypoint.prod.sh /entrypoint.prod.sh
+RUN chmod +x /entrypoint.prod.sh
 RUN useradd -m -d /home/flaskuser -s /bin/bash flaskuser && \
     chown -R flaskuser:flaskuser /app
 ENV FLASK_APP="app:create_app()"
