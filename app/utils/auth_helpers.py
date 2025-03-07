@@ -1,5 +1,6 @@
 import requests
 from flask import redirect, current_app
+from urllib.parse import quote
 from app.config import Config
 
 def redirect_to_root():
@@ -13,8 +14,8 @@ def generate_cognito_login_url():
         f"{Config.AWS_COGNITO_DOMAIN}/login?"
         f"client_id={Config.AWS_COGNITO_USER_POOL_CLIENT_ID}&"
         f"response_type=code&"
-        f"scope={Config.AWS_COGNITO_SCOPE}&"
-        f"redirect_uri={Config.AWS_COGNITO_REDIRECT_URI}"
+        f"scope={quote(Config.AWS_COGNITO_SCOPE)}&"
+        f"redirect_uri={quote(Config.AWS_COGNITO_REDIRECT_URI)}"
     )
 
 def redirect_to_cognito_login():
