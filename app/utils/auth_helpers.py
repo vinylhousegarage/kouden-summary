@@ -15,7 +15,7 @@ def generate_cognito_login_url():
         f"client_id={Config.AWS_COGNITO_USER_POOL_CLIENT_ID}&"
         f"response_type=code&"
         f"scope={quote(Config.AWS_COGNITO_SCOPE)}&"
-        f"redirect_uri={quote(Config.AWS_COGNITO_REDIRECT_URI)}"
+        f"redirect_uri={Config.AWS_COGNITO_REDIRECT_URI}"
     )
 
 def redirect_to_cognito_login():
