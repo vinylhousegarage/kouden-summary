@@ -1,6 +1,6 @@
 import requests
 from flask import redirect, current_app
-from urllib.parse import quote
+from urllib.parse import quote_plus
 from app.config import Config
 
 def redirect_to_root():
@@ -10,14 +10,20 @@ def redirect_to_login():
     return redirect("/login")
 
 def generate_cognito_login_url():
+    scope_value = Config.AWS_COGNITO_SCOPE
+    scope_encoded = quote_plus(scope_value) if scope_value else "None"
+
+    print(f"🔍 AWS_COGNITO_SCOPE: {scope_value}", file=sys.stderr, flush=True)
+    print(f"🔍 Encoded Scope: {scope_encoded}", file=sys.stderr, flush=True)
+
     url = (
         f"{Config.AWS_COGNITO_DOMAIN}/login?"
         f"client_id={Config.AWS_COGNITO_USER_POOL_CLIENT_ID}&"
         f"response_type=code&"
-        f"scope={quote(Config.AWS_COGNITO_SCOPE)}&"
+        f"scope={scope_encoded}&"
         f"redirect_uri={Config.AWS_COGNITO_REDIRECT_URI}"
     )
-    print(f"🔍 Cognito リダイレクト URL: {url}")
+
     return url
 
 def redirect_to_cognito_login():
