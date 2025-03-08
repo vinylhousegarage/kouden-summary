@@ -10,13 +10,15 @@ def redirect_to_login():
     return redirect("/login")
 
 def generate_cognito_login_url():
-    return (
+    url = (
         f"{Config.AWS_COGNITO_DOMAIN}/login?"
         f"client_id={Config.AWS_COGNITO_USER_POOL_CLIENT_ID}&"
         f"response_type=code&"
         f"scope={quote(Config.AWS_COGNITO_SCOPE)}&"
         f"redirect_uri={Config.AWS_COGNITO_REDIRECT_URI}"
     )
+    print(f"🔍 Cognito リダイレクト URL: {url}")
+    return url
 
 def redirect_to_cognito_login():
     return redirect(generate_cognito_login_url())
