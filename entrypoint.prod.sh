@@ -15,4 +15,4 @@ if ! flask db upgrade; then
 fi
 
 echo "Starting Gunicorn..."
-exec gunicorn -w 2 -b 0.0.0.0:5000 "app:create_app()"
+exec gunicorn -w 1 --threads 2 --timeout 90 -b 0.0.0.0:5000 "app:create_app()"

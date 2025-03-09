@@ -1,9 +1,57 @@
-from flask import Flask, redirect
+import sys
+from flask import Blueprint, session, request
+from app.services.auth_service import exchange_code_for_token
+from app.utils.auth_helpers import redirect_to_root, redirect_to_login, redirect_to_cognito_login
 
-app = Flask(__name__)
+auth_bp = Blueprint("auth", __name__)
 
-COGNITO_SIGNUP_URL = "https://ap-northeast-1mlcv35dkj.auth.ap-northeast-1.amazoncognito.com/signup?client_id=7ln0qbqk35mjv7dp9uuvsav1a&response_type=code&scope=openid&redirect_uri=https%3A%2F%2Fkouden-summary.com%2Foauth2%2Fidpresponse"
+@auth_bp.route("/login")
+def login():
+    if "access_token" in session:
+        return redirect_to_root()
 
-@app.route("/signup")
-def signup():
-    return redirect(COGNITO_SIGNUP_URL)
+    return redirect_to_cognito_login()
+
+@auth_bp.route("/oauth2/idpresponse")
+def callback():
+    try:
+        code = request.args.get("code")
+        print(f"📌 受け取ったコード: {code}", file=sys.stderr, flush=True)
+
+        if not code:
+            print("❌ `code` が取得できませんでした！ログインページへリダイレクトします。", file=sys.stderr, flush=True)
+            return redirect_to_login()
+
+        print(f"🔄 `exchange_code_for_token()` を実行します。code={code}", file=sys.stderr, flush=True)
+        tokens = exchange_code_for_token(code)
+
+        if tokens:
+            access_token = tokens.get("access_token")
+            id_token = tokens.get("id_token")
+            refresh_token = tokens.get("refresh_token")
+
+            print(f"✅ トークン取得成功！", file=sys.stderr, flush=True)
+            print(f"  🔹 access_token: {'取得成功' if access_token else '取得失敗'}", file=sys.stderr, flush=True)
+            print(f"  🔹 id_token: {'取得成功' if id_token else '取得失敗'}", file=sys.stderr, flush=True)
+            print(f"  🔹 refresh_token: {'取得成功' if refresh_token else '取得失敗'}", file=sys.stderr, flush=True)
+
+            session["access_token"] = access_token
+            session["id_token"] = id_token
+            session["refresh_token"] = refresh_token
+
+            return redirect_to_root()
+        else:
+            print(f"❌ トークン取得失敗！code={code}", file=sys.stderr, flush=True)
+            return redirect_to_login()
+
+    except AttributeError as e:
+        print(f"❌ AttributeError: {e}", file=sys.stderr, flush=True)
+        return redirect_to_login()
+    except Exception as e:
+        print(f"❌ 例外発生: {e}", file=sys.stderr, flush=True)
+        return redirect_to_login()
+
+@auth_bp.route("/logout")
+def logout():
+    session.clear()
+    return redirect_to_login()
