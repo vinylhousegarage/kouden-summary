@@ -1,4 +1,6 @@
 .env
+.env.prod
+.env.prod-local
 __pycache__/
 **/__pycache__/
 *.pyc
