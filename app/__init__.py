@@ -11,6 +11,8 @@ from app.logging_config import check_existing_handlers, setup_logging
 from app.middleware.request_logging import setup_request_logging
 
 def create_app():
+    from app.models import Summary
+
     app = Flask(__name__)
     app.config.from_object(Config)
     app.secret_key = Config.SECRET_KEY
