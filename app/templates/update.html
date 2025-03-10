@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>編集</title>
+</head>
+<body>
+    <h1>データ編集</h1>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        {{ form.id }}
+
+        <p>
+            {{ form.giver_name.label }}<br>
+            {{ form.giver_name(size=40) }}
+            {% if form.giver_name.errors %}
+                {{ form.giver_name.errors[0] }}
+            {% endif %}
+        </p>
+
+        <p>
+            {{ form.amount.label }}<br>
+            {{ form.amount() }}
+            {% if form.amount.errors %}
+                {{ form.amount.errors[0] }}
+            {% endif %}
+        </p>
+
+        <p>
+            {{ form.address.label }}<br>
+            {{ form.address(size=60) }}
+            {% if form.address.errors %}
+                {{ form.address.errors[0] }}
+            {% endif %}
+        </p>
+
+        <p>
+            {{ form.tel.label }}<br>
+            {{ form.tel(size=20) }}
+            {% if form.tel.errors %}
+                {{ form.tel.errors[0] }}
+            {% endif %}
+        </p>
+
+        <p>
+            {{ form.note.label }}<br>
+            {{ form.note(size=60) }}
+            {% if form.note.errors %}
+                {{ form.note.errors[0] }}
+            {% endif %}
+        </p>
+
+        <p>
+            <button type="submit">更新</button>
+        </p>
+    </form>
+
+    <p>
+        <a href="{{ url_for('summary.index') }}">一覧に戻る</a>
+    </p>
+</body>
+</html>
