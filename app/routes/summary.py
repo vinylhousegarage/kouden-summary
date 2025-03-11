@@ -7,18 +7,32 @@ from app.extensions import db
 
 summary_bp = Blueprint('summary', __name__)
 
+@summary_bp.route('/summary')
+def index():
+    summaries = Summary.query.all()
+    return render_template('index.html', summaries=summaries)
+
+@summary_bp.route('/summary/<int:id>')
+def show(id):
+    summary = Summary.query.get_or_404(id)
+    return render_template('show.html', summary=summary)
+
 @summary_bp.route('/create', methods=['GET', 'POST'])
 def create():
     form = CreateForm()
     if form.validate_on_submit():
-        giver_name = form.giver_name.data
-        amount = form.amount.data
-        address = form.address.data
-        tel = form.tel.data
-        note = form.note.data
+        new_entry = Summary(
+            giver_name=form.giver_name.data,
+            amount=form.amount.data,
+            address=form.address.data,
+            tel=form.tel.data,
+            note=form.note.data
+        )
+        db.session.add(new_entry)
+        db.session.commit()
 
         flash("データが正常に作成されました！", "success")
-        return redirect(url_for('summary.create'))
+        return redirect(url_for('summary.index'))
 
     return render_template('create.html', form=form)
 

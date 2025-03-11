@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>詳細ページ</title>
+</head>
+<body>
+    <h1>詳細ページ</h1>
+    <p><strong>ID:</strong> {{ summary.id }}</p>
+    <p><strong>名前:</strong> {{ summary.giver_name }}</p>
+    <p><strong>金額:</strong> {{ summary.amount }}</p>
+    <p><strong>住所:</strong> {{ summary.address }}</p>
+    <p><strong>電話番号:</strong> {{ summary.tel }}</p>
+    <p><strong>備考:</strong> {{ summary.note }}</p>
+
+    <p>
+        <a href="{{ url_for('summary.update', id=summary.id) }}">編集</a> |
+        <a href="{{ url_for('summary.index') }}">一覧に戻る</a>
+    </p>
+</body>
+</html>
