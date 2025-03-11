@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>一覧ページ</title>
+</head>
+<body>
+    <h1>データ一覧</h1>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>名前</th>
+            <th>金額</th>
+            <th>操作</th>
+        </tr>
+        {% for summary in summaries %}
+        <tr>
+            <td>{{ summary.id }}</td>
+            <td>{{ summary.giver_name }}</td>
+            <td>{{ summary.amount }}</td>
+            <td>
+                <a href="{{ url_for('summary.show', id=summary.id) }}">詳細</a> |
+                <a href="{{ url_for('summary.update', id=summary.id) }}">編集</a> |
+                <form method="POST" action="{{ url_for('summary.delete', id=summary.id) }}" style="display:inline;">
+                    <button type="submit">削除</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p><a href="{{ url_for('summary.create') }}">新規作成</a></p>
+</body>
+</html>
