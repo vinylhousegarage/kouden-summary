@@ -1,18 +1,12 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
 from app.forms import SummaryForm
-from app.forms import UpdateForm
 from app.forms import DeleteForm
 from app.models import Summary
 from app.extensions import db
 
 summary_bp = Blueprint('summary', __name__)
 
-@summary_bp.route('/summary')
-def index():
-    summaries = Summary.query.all()
-    return render_template('index.html', summaries=summaries)
-
-@summary_bp.route('/summary/<int:id>')
+@summary_bp.route('/show/<int:id>')
 def show(id):
     summary = Summary.query.get_or_404(id)
     return render_template('show.html', summary=summary)
@@ -34,7 +28,7 @@ def create():
             db.session.commit()
 
             flash("データが正常に作成されました！", "success")
-            return redirect(url_for('summary.index'))
+            return redirect(url_for('main.main'))
 
         except Exception as e:
             db.session.rollback()
@@ -59,7 +53,7 @@ def update(id):
             db.session.commit()
 
             flash("データが正常に更新されました！", "success")
-            return redirect(url_for('summary.index'))
+            return redirect(url_for('main.main'))
 
         except Exception as e:
             db.session.rollback()
@@ -80,7 +74,7 @@ def delete(id):
             db.session.commit()
 
             flash("データが削除されました！", "success")
-            return redirect(url_for('summary.index'))
+            return redirect(url_for('main.main'))
 
         except Exception as e:
             db.session.rollback()
