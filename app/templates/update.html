@@ -1,65 +1,77 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>編集</title>
-</head>
-<body>
-    <h1>データ編集</h1>
+{% extends "base.html" %}
 
-    <form method="POST">
-        {{ form.hidden_tag() }}
+{% block title %}編集{% endblock %}
 
-        {{ form.id }}
+{% block content %}
+<h1>編集</h1>
 
-        <p>
-            {{ form.giver_name.label }}<br>
-            {{ form.giver_name(size=40) }}
-            {% if form.giver_name.errors %}
-                {{ form.giver_name.errors[0] }}
-            {% endif %}
-        </p>
+<form method="POST" action="{{ url_for('summary.update', id=form.id.data) }}">
+    {{ form.hidden_tag() }}
+    <input type="hidden" name="_method" value="POST">
+    {{ form.id(type="hidden") }}
 
-        <p>
-            {{ form.amount.label }}<br>
-            {{ form.amount() }}
-            {% if form.amount.errors %}
-                {{ form.amount.errors[0] }}
-            {% endif %}
-        </p>
+    <table>
+        <tr>
+            <th>{{ form.giver_name.label }}</th>
+            <td>
+                {{ form.giver_name(size=40) }}<br>
+                {% if form.giver_name.errors %}
+                    {{ form.giver_name.errors[0] }}
+                {% endif %}
+            </td>
+        </tr>
 
-        <p>
-            {{ form.address.label }}<br>
-            {{ form.address(size=60) }}
-            {% if form.address.errors %}
-                {{ form.address.errors[0] }}
-            {% endif %}
-        </p>
+        <tr>
+            <th>{{ form.amount.label }}</th>
+            <td>
+                {{ form.amount() }}<br>
+                {% if form.amount.errors %}
+                    {{ form.amount.errors[0] }}
+                {% endif %}
+            </td>
+        </tr>
 
-        <p>
-            {{ form.tel.label }}<br>
-            {{ form.tel(size=20) }}
-            {% if form.tel.errors %}
-                {{ form.tel.errors[0] }}
-            {% endif %}
-        </p>
+        <tr>
+            <th>{{ form.address.label }}</th>
+            <td>
+                {{ form.address(size=60) }}<br>
+                {% if form.address.errors %}
+                    {{ form.address.errors[0] }}
+                {% endif %}
+            </td>
+        </tr>
 
-        <p>
-            {{ form.note.label }}<br>
-            {{ form.note(size=60) }}
-            {% if form.note.errors %}
-                {{ form.note.errors[0] }}
-            {% endif %}
-        </p>
+        <tr>
+            <th>{{ form.tel.label }}</th>
+            <td>
+                {{ form.tel(size=20) }}<br>
+                {% if form.tel.errors %}
+                    {{ form.tel.errors[0] }}
+                {% endif %}
+            </td>
+        </tr>
 
-        <p>
-            <button type="submit">更新</button>
-        </p>
-    </form>
+        <tr>
+            <th>{{ form.note.label }}</th>
+            <td>
+                {{ form.note(size=60) }}<br>
+                {% if form.note.errors %}
+                    {{ form.note.errors[0] }}
+                {% endif %}
+            </td>
+        </tr>
 
-    <p>
-        <a href="{{ url_for('summary.index') }}">一覧に戻る</a>
-    </p>
-</body>
-</html>
+        <tr>
+            <td>
+                <button type="submit">更新</button>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <a href="{{ url_for('summary.index') }}">一覧に戻る</a>
+            </td>
+        </tr>
+    </table>
+</form>
+{% endblock %}
