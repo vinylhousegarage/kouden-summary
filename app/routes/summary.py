@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
-from app.forms.create import CreateForm
-from app.forms.update import UpdateForm
-from app.forms.delete import DeleteForm
+from app.forms import SummaryForm
+from app.forms import UpdateForm
+from app.forms import DeleteForm
 from app.models import Summary
 from app.extensions import db
 
@@ -19,40 +19,55 @@ def show(id):
 
 @summary_bp.route('/create', methods=['GET', 'POST'])
 def create():
-    form = CreateForm()
-    if form.validate_on_submit():
-        new_entry = Summary(
-            giver_name=form.giver_name.data,
-            amount=form.amount.data,
-            address=form.address.data,
-            tel=form.tel.data,
-            note=form.note.data
-        )
-        db.session.add(new_entry)
-        db.session.commit()
+    form = SummaryForm()
 
-        flash("データが正常に作成されました！", "success")
-        return redirect(url_for('summary.index'))
+    if form.validate_on_submit():
+        try:
+            new_entry = Summary(
+                giver_name=form.giver_name.data,
+                amount=form.amount.data,
+                address=form.address.data,
+                tel=form.tel.data,
+                note=form.note.data
+            )
+            db.session.add(new_entry)
+            db.session.commit()
+
+            flash("データが正常に作成されました！", "success")
+            return redirect(url_for('summary.index'))
+
+        except Exception as e:
+            db.session.rollback()
+            flash(f"エラーが発生しました: {str(e)}", "danger")
+            return render_template('create.html', form=form)
 
     return render_template('create.html', form=form)
 
 @summary_bp.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
     summary = Summary.query.get_or_404(id)
-    form = UpdateForm(obj=summary)
+    form = SummaryForm(obj=summary)
 
     if form.validate_on_submit():
-        summary.giver_name = form.giver_name.data
-        summary.amount = form.amount.data
-        summary.address = form.address.data
-        summary.tel = form.tel.data
-        summary.note = form.note.data
+        try:
+            summary.giver_name = form.giver_name.data
+            summary.amount = form.amount.data
+            summary.address = form.address.data
+            summary.tel = form.tel.data
+            summary.note = form.note.data
 
-        db.session.commit()
-        flash("データが正常に更新されました！", "success")
-        return redirect(url_for('summary.index'))
+            db.session.commit()
+
+            flash("データが正常に更新されました！", "success")
+            return redirect(url_for('summary.index'))
+
+        except Exception as e:
+            db.session.rollback()
+            flash(f"エラーが発生しました: {str(e)}", "danger")
+            return render_template('update.html', form=form)
 
     return render_template('update.html', form=form)
+
 
 @summary_bp.route('/delete/<int:id>', methods=['GET', 'POST'])
 def delete(id):
@@ -60,9 +75,16 @@ def delete(id):
     form = DeleteForm()
 
     if form.validate_on_submit():
-        db.session.delete(summary)
-        db.session.commit()
-        flash("データが削除されました！", "success")
-        return redirect(url_for('summary.index'))
+        try:
+            db.session.delete(summary)
+            db.session.commit()
+
+            flash("データが削除されました！", "success")
+            return redirect(url_for('summary.index'))
+
+        except Exception as e:
+            db.session.rollback()
+            flash(f"削除中にエラーが発生しました: {str(e)}", "danger")
+            return render_template('delete.html', form=form, summary=summary)
 
     return render_template('delete.html', form=form, summary=summary)
