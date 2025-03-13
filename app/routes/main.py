@@ -1,5 +1,6 @@
 from flask import Blueprint, session, render_template
 from app.utils.auth_helpers import redirect_to_cognito_login
+from app.models import Summary
 
 main_bp = Blueprint("main", __name__)
 
@@ -8,4 +9,5 @@ def main():
     if "access_token" not in session:
         return redirect_to_cognito_login()
 
-    return render_template("main.html")
+    summaries = Summary.query.all()
+    return render_template('index.html', summaries=summaries)
