@@ -1,7 +1,7 @@
 from app.extensions import db
 
 class Summary(db.Model):
-    __tablename__ = "summary"
+    __tablename__ = "summaries"
 
     id = db.Column(db.Integer, primary_key=True)
     giver_name = db.Column(db.String(100), nullable=False, info={"label": "氏名"})
