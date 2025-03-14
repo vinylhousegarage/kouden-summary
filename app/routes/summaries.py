@@ -4,7 +4,7 @@ from app.forms import DeleteForm
 from app.models import Summary
 from app.extensions import db
 
-summary_bp = Blueprint('summary', __name__)
+summary_bp = Blueprint('summaries', __name__)
 
 @summary_bp.route('/show/<int:id>')
 def show(id):
