@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang='ja'>
 <head>
-    <meta charset="UTF-8">
+    <meta charset='UTF-8'>
     <title>一覧</title>
 </head>
 <body>
@@ -22,8 +22,8 @@
             <td>
                 <a href="{{ url_for('summaries.show', id=summary.id) }}">詳細</a> |
                 <a href="{{ url_for('summaries.update', id=summary.id) }}">編集</a> |
-                <form method="POST" action="{{ url_for('summaries.delete', id=summary.id) }}" style="display:inline;">
-                    <button type="submit">削除</button>
+                <form method='POST' action="{{ url_for('summaries.delete', id=summary.id) }}" style='display:inline;'>
+                    <button type='submit'>削除</button>
                 </form>
             </td>
         </tr>

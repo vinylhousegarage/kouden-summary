@@ -1,14 +1,14 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block title %}編集{% endblock %}
 
 {% block content %}
 <h1>編集</h1>
 
-<form method="POST" action="{{ url_for('summaries.update', id=form.id.data) }}">
+<form method='POST' action="{{ url_for('summaries.update', id=form.id.data) }}">
     {{ form.hidden_tag() }}
-    <input type="hidden" name="_method" value="POST">
-    {{ form.id(type="hidden") }}
+    <input type='hidden' name='_method' value='POST'>
+    {{ form.id(type='hidden') }}
 
     <table>
         <tr>
@@ -63,7 +63,7 @@
 
         <tr>
             <td>
-                <button type="submit">更新</button>
+                <button type='submit'>更新</button>
             </td>
         </tr>
 

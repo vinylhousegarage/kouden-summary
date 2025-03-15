@@ -1,11 +1,11 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block title %}新規作成{% endblock %}
 
 {% block content %}
 <h1>新規作成</h1>
 
-<form method="POST" action="{{ url_for('summaries.create') }}">
+<form method='POST' action="{{ url_for('summaries.create') }}">
     {{ form.hidden_tag() }}
 
     <table>
@@ -61,7 +61,7 @@
 
         <tr>
             <td>
-                <button type="submit">送信</button>
+                <button type='submit'>送信</button>
             </td>
         </tr>
     </table>

@@ -27,12 +27,12 @@ def create():
             db.session.add(new_entry)
             db.session.commit()
 
-            flash("データが正常に作成されました！", "success")
+            flash('データが正常に作成されました！', 'success')
             return redirect(url_for('main.main'))
 
         except Exception as e:
             db.session.rollback()
-            flash(f"エラーが発生しました: {str(e)}", "danger")
+            flash(f'エラーが発生しました: {str(e)}', 'danger')
             return render_template('create.html', form=form)
 
     return render_template('create.html', form=form)
@@ -52,12 +52,12 @@ def update(id):
 
             db.session.commit()
 
-            flash("データが正常に更新されました！", "success")
+            flash('データが正常に更新されました！', 'success')
             return redirect(url_for('main.main'))
 
         except Exception as e:
             db.session.rollback()
-            flash(f"エラーが発生しました: {str(e)}", "danger")
+            flash(f'エラーが発生しました: {str(e)}', 'danger')
             return render_template('update.html', form=form)
 
     return render_template('update.html', form=form)
@@ -73,12 +73,12 @@ def delete(id):
             db.session.delete(summary)
             db.session.commit()
 
-            flash("データが削除されました！", "success")
+            flash('データが削除されました！', 'success')
             return redirect(url_for('main.main'))
 
         except Exception as e:
             db.session.rollback()
-            flash(f"削除中にエラーが発生しました: {str(e)}", "danger")
+            flash(f'削除中にエラーが発生しました: {str(e)}', 'danger')
             return render_template('delete.html', form=form, summary=summary)
 
     return render_template('delete.html', form=form, summary=summary)
