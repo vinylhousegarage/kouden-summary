@@ -4,14 +4,14 @@ from app.forms import DeleteForm
 from app.models import Summary
 from app.extensions import db
 
-summary_bp = Blueprint('summaries', __name__)
+summaries_bp = Blueprint('summaries', __name__)
 
-@summary_bp.route('/show/<int:id>')
+@summaries_bp.route('/show/<int:id>')
 def show(id):
     summary = Summary.query.get_or_404(id)
     return render_template('show.html', summary=summary)
 
-@summary_bp.route('/create', methods=['GET', 'POST'])
+@summaries_bp.route('/create', methods=['GET', 'POST'])
 def create():
     form = SummaryForm()
 
@@ -37,7 +37,7 @@ def create():
 
     return render_template('create.html', form=form)
 
-@summary_bp.route('/update/<int:id>', methods=['GET', 'POST'])
+@summaries_bp.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
     summary = Summary.query.get_or_404(id)
     form = SummaryForm(obj=summary)
@@ -63,7 +63,7 @@ def update(id):
     return render_template('update.html', form=form)
 
 
-@summary_bp.route('/delete/<int:id>', methods=['GET', 'POST'])
+@summaries_bp.route('/delete/<int:id>', methods=['GET', 'POST'])
 def delete(id):
     summary = Summary.query.get_or_404(id)
     form = DeleteForm()

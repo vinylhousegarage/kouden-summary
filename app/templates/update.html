@@ -5,7 +5,7 @@
 {% block content %}
 <h1>編集</h1>
 
-<form method="POST" action="{{ url_for('summary.update', id=form.id.data) }}">
+<form method="POST" action="{{ url_for('summaries.update', id=form.id.data) }}">
     {{ form.hidden_tag() }}
     <input type="hidden" name="_method" value="POST">
     {{ form.id(type="hidden") }}
@@ -69,7 +69,7 @@
 
         <tr>
             <td>
-                <a href="{{ url_for('summary.index') }}">一覧に戻る</a>
+                <a href="{{ url_for('summaries.index') }}">一覧に戻る</a>
             </td>
         </tr>
     </table>

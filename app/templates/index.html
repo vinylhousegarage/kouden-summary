@@ -20,9 +20,9 @@
             <td>{{ summary.giver_name }}</td>
             <td>{{ summary.amount }}</td>
             <td>
-                <a href="{{ url_for('summary.show', id=summary.id) }}">詳細</a> |
-                <a href="{{ url_for('summary.update', id=summary.id) }}">編集</a> |
-                <form method="POST" action="{{ url_for('summary.delete', id=summary.id) }}" style="display:inline;">
+                <a href="{{ url_for('summaries.show', id=summary.id) }}">詳細</a> |
+                <a href="{{ url_for('summaries.update', id=summary.id) }}">編集</a> |
+                <form method="POST" action="{{ url_for('summaries.delete', id=summary.id) }}" style="display:inline;">
                     <button type="submit">削除</button>
                 </form>
             </td>
@@ -30,6 +30,6 @@
         {% endfor %}
     </table>
 
-    <p><a href="{{ url_for('summary.create') }}">新規作成</a></p>
+    <p><a href="{{ url_for('summaries.create') }}">新規作成</a></p>
 </body>
 </html>
