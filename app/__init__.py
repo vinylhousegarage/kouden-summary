@@ -6,6 +6,7 @@ from app.oauth import init_oauth
 from app.routes.main import main_bp
 from app.routes.health import health_bp
 from app.routes.auth import auth_bp
+from app.routes.summaries import summaries_bp
 from app.middleware.before_request import require_login
 from app.logging_config import check_existing_handlers, setup_logging
 from app.middleware.request_logging import setup_request_logging
@@ -30,6 +31,7 @@ def create_app():
     app.register_blueprint(main_bp)
     app.register_blueprint(health_bp)
     app.register_blueprint(auth_bp)
+    app.register_blueprint(summaries_bp)
 
     require_login(app)
 
