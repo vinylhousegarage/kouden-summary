@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang='ja'>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>削除</title>
 </head>
 <body>
@@ -10,17 +10,17 @@
 
     <p>本当に削除しますか？</p>
 
-    <form method="POST">
+    <form method='POST'>
         {{ form.hidden_tag() }}
         {{ form.id }}
 
         <p>
-            <button type="submit">削除する</button>
+            <button type='submit'>削除する</button>
         </p>
     </form>
 
     <p>
-        <a href="{{ url_for('summary.index') }}">キャンセル</a>
+        <a href="{{ url_for('main.main') }}">キャンセル</a>
     </p>
 </body>
 </html>

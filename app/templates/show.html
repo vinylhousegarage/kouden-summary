@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang='ja'>
 <head>
-    <meta charset="UTF-8">
+    <meta charset='UTF-8'>
     <title>詳細</title>
 </head>
 <body>
@@ -14,8 +14,8 @@
     <p><strong>備考:</strong> {{ summary.note }}</p>
 
     <p>
-        <a href="{{ url_for('summary.update', id=summary.id) }}">編集</a> |
-        <a href="{{ url_for('summary.index') }}">一覧に戻る</a>
+        <a href="{{ url_for('summaries.update', id=summary.id) }}">編集</a> |
+        <a href="{{ url_for('main.main') }}">一覧に戻る</a>
     </p>
 </body>
 </html>
