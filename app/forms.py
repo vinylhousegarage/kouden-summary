@@ -7,7 +7,7 @@ from app.models import Summary
 class SummaryForm(ModelForm):
     class Meta:
         model = Summary
-        exclude = ['user_cognito_id', 'created_at']
+        exclude = ['user_cognito_id', 'created_at', 'updated_at']
 
 class DeleteForm(FlaskForm):
     id = HiddenField('ID', validators=[DataRequired()])
