@@ -3,18 +3,16 @@
 {% block title %}編集{% endblock %}
 
 {% block content %}
-<h1>編集</h1>
+<h3>編集</h3>
 
 <form method='POST' action="{{ url_for('summaries.update', id=form.id.data) }}">
     {{ form.hidden_tag() }}
-    <input type='hidden' name='_method' value='POST'>
-    {{ form.id(type='hidden') }}
 
     <table>
         <tr>
             <th>{{ form.giver_name.label }}</th>
             <td>
-                {{ form.giver_name(size=40) }}<br>
+                {{ form.giver_name(size=20) }}<br>
                 {% if form.giver_name.errors %}
                     {{ form.giver_name.errors[0] }}
                 {% endif %}
@@ -24,7 +22,7 @@
         <tr>
             <th>{{ form.amount.label }}</th>
             <td>
-                {{ form.amount() }}<br>
+                {{ form.amount(size=20) }}<br>
                 {% if form.amount.errors %}
                     {{ form.amount.errors[0] }}
                 {% endif %}
@@ -34,7 +32,7 @@
         <tr>
             <th>{{ form.address.label }}</th>
             <td>
-                {{ form.address(size=60) }}<br>
+                {{ form.address(size=20) }}<br>
                 {% if form.address.errors %}
                     {{ form.address.errors[0] }}
                 {% endif %}
@@ -54,7 +52,7 @@
         <tr>
             <th>{{ form.note.label }}</th>
             <td>
-                {{ form.note(size=60) }}<br>
+                {{ form.note(size=20) }}<br>
                 {% if form.note.errors %}
                     {{ form.note.errors[0] }}
                 {% endif %}
@@ -63,15 +61,15 @@
 
         <tr>
             <td>
-                <button type='submit'>更新</button>
+                <button type='submit'>編集</button>
             </td>
         </tr>
 
-        <tr>
-            <td>
-                <a href="{{ url_for('main.main') }}">一覧に戻る</a>
-            </td>
-        </tr>
-    </table>
+      </table>
 </form>
+    <br>
+    <form method='GET' action="{{ url_for('main.main')}}">
+      <button type='submit'>一覧</button>
+    </form>
+
 {% endblock %}
