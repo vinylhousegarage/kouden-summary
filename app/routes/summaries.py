@@ -6,11 +6,6 @@ from app.extensions import db
 
 summaries_bp = Blueprint('summaries', __name__)
 
-@summaries_bp.route('/show/<int:id>')
-def show(id):
-    summary = Summary.query.get_or_404(id)
-    return render_template('show.html', summary=summary)
-
 @summaries_bp.route('/create', methods=['GET', 'POST'])
 def create():
     form = SummaryForm()
