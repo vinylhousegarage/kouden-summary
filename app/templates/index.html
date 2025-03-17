@@ -12,7 +12,6 @@
 						<th>No.</th>
 						<th>名前</th>
 						<th>金額</th>
-						<th>操作</th>
 				</tr>
 				{% for summary in summaries %}
 				<tr>
@@ -31,7 +30,12 @@
 		</table>
 		<br>
 		<form method='GET' action="{{ url_for('summaries.create')}}">
-			  <button type='submit'>新規作成</button>
+			  <button type='submit'>新規登録</button>
+		</form>
+    <br>
+		<form method='POST' action="{{ url_for('auth.logout')}}">
+        {{ form.hidden_tag() }}
+			  <button type='submit'>ログアウト</button>
 		</form>
 </body>
 </html>
