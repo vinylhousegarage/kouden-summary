@@ -1,6 +1,7 @@
 from flask import Blueprint, session, render_template
 from app.utils.auth_helpers import redirect_to_cognito_login
 from app.models import Summary
+from app.forms import CSRFForm
 
 main_bp = Blueprint('main', __name__)
 
@@ -10,4 +11,6 @@ def main():
         return redirect_to_cognito_login()
 
     summaries = Summary.query.all()
-    return render_template('index.html', summaries=summaries)
+    form = CSRFForm()
+
+    return render_template('index.html', summaries=summaries, form=form)
