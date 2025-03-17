@@ -13,7 +13,7 @@
             <th>{{ form.giver_name.label }}</th>
             <td>
                 {{ form.giver_name(size=20) }}<br>
-                {% if form.giver_name.errors %}
+                {% if form.giver_name.errors and request.method == 'POST' %}
                     {{ form.giver_name.errors[0] }}
                 {% endif %}
             </td>
@@ -23,7 +23,7 @@
             <th>{{ form.amount.label }}</th>
             <td>
                 {{ form.amount(size=20) }}<br>
-                {% if form.amount.errors %}
+                {% if form.amount.errors and request.method == 'POST' %}
                     {{ form.amount.errors[0] }}
                 {% endif %}
             </td>

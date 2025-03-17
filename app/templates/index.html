@@ -21,7 +21,7 @@
 						<td>{{ summary.amount }}</td>
 						<td>
 								<span>
-    								<form method='POST' action="{{ url_for('summaries.show', id=summary.id) }}">
+    								<form method='GET' action="{{ url_for('summaries.show', id=summary.id) }}">
 									    {{ form.hidden_tag() }}
                       <button type='submit'>詳細</button>
 								    </form>
@@ -31,7 +31,7 @@
 				{% endfor %}
 		</table>
 		<br>
-		<form method='POST' action="{{ url_for('summaries.create')}}">
+		<form method='GET' action="{{ url_for('summaries.create')}}">
         {{ form.hidden_tag() }}
 			  <button type='submit'>新規作成</button>
 		</form>
