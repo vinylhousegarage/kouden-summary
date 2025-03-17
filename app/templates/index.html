@@ -22,7 +22,8 @@
 						<td>
 								<span>
     								<form method='POST' action="{{ url_for('summaries.show', id=summary.id) }}">
-									      <button type='submit'>詳細</button>
+									    {{ form.hidden_tag() }}
+                      <button type='submit'>詳細</button>
 								    </form>
 								</span>
 						</td>
@@ -31,6 +32,7 @@
 		</table>
 		<br>
 		<form method='POST' action="{{ url_for('summaries.create')}}">
+        {{ form.hidden_tag() }}
 			  <button type='submit'>新規作成</button>
 		</form>
 </body>
