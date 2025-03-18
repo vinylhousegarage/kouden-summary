@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, jsonify
 from app.forms import SummaryForm
 from app.forms import DeleteForm
 from app.models import Summary
 from app.extensions import db
+from app.utils.database_helpers import database_reset
 
 summaries_bp = Blueprint('summaries', __name__)
 
@@ -57,7 +58,6 @@ def update(id):
 
     return render_template('update.html', form=form)
 
-
 @summaries_bp.route('/delete/<int:id>', methods=['GET', 'POST'])
 def delete(id):
     summary = Summary.query.get_or_404(id)
@@ -77,3 +77,10 @@ def delete(id):
             return render_template('delete.html', form=form, summary=summary)
 
     return render_template('delete.html', form=form, summary=summary)
+
+@summaries_bp.route('/database_reset', methods=['POST'])
+def reset_database_route():
+    if database_reset():
+        return jsonify({"message": "Database reset successful"}), 200
+    else:
+        return jsonify({"error": "Database reset failed"}), 500
