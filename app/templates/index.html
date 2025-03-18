@@ -5,6 +5,7 @@
 {% block content %}
 <h3>香典集計</h3>
 
+{% if summaries %}
 <table>
     <tr>
         <th>No.</th>
@@ -26,6 +27,9 @@
     </tr>
     {% endfor %}
 </table>
+{% else %}
+<p>香典の登録がありません</p>
+{% endif %}
 
 <br>
 <form method="GET" action="{{ url_for('summaries.create') }}">
