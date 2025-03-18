@@ -67,13 +67,17 @@
     </table>
 </form>
     <br>
-    <form method='POST' action="{{ url_for('summaries.delete')}}">
+    <form method="POST" action="{{ url_for('summaries.delete', id=form.id.data) }}" onsubmit="return confirmDelete()">
       {{ form.hidden_tag() }}
       <button type='submit'>削除</button>
     </form>
+
     <br>
     <form method='GET' action="{{ url_for('main.main')}}">
       <button type='submit'>一覧に戻る</button>
     </form>
+{% endblock %}
 
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}
