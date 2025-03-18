@@ -24,7 +24,7 @@ def create():
             db.session.commit()
 
             flash('データが正常に作成されました！', 'success')
-            return redirect(url_for('main.main'))
+            return redirect(url_for('summaries.create'))
 
         except Exception as e:
             db.session.rollback()
