@@ -33,6 +33,11 @@
 			  <button type='submit'>新規登録</button>
 		</form>
     <br>
+		<form method='POST' action="{{ url_for('summaries.database_reset')}}">
+        {{ form.hidden_tag() }}
+			  <button type='submit'>初期状態に戻す</button>
+		</form>
+    <br>
 		<form method='POST' action="{{ url_for('auth.logout')}}">
         {{ form.hidden_tag() }}
 			  <button type='submit'>ログアウト</button>
