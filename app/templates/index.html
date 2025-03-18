@@ -1,46 +1,50 @@
-<!DOCTYPE html>
-<html lang='ja'>
-<head>
-		<meta charset='UTF-8'>
-		<title>香典集計</title>
-</head>
-<body>
-		<h3>香典集計</h3>
+{% extends "base.html" %}
 
-		<table>
-				<tr>
-						<th>No.</th>
-						<th>名前</th>
-						<th>金額</th>
-				</tr>
-				{% for summary in summaries %}
-				<tr>
-						<td>{{ summary.id }}</td>
-						<td>{{ summary.giver_name }}</td>
-						<td>{{ summary.amount }}</td>
-						<td>
-								<span>
-    								<form method='GET' action="{{ url_for('summaries.show', id=summary.id) }}">
-                      <button type='submit'>詳細</button>
-								    </form>
-								</span>
-						</td>
-				</tr>
-				{% endfor %}
-		</table>
-		<br>
-		<form method='GET' action="{{ url_for('summaries.create')}}">
-			  <button type='submit'>新規登録</button>
-		</form>
-    <br>
-		<form method="POST" action="{{ url_for('summaries.reset_database_route') }}" onsubmit="return confirmReset()">
-        {{ form.hidden_tag() }}
-			  <button type='submit'>初期状態に戻す</button>
-		</form>
-    <br>
-		<form method='POST' action="{{ url_for('auth.logout')}}">
-        {{ form.hidden_tag() }}
-			  <button type='submit'>ログアウト</button>
-		</form>
-</body>
-</html>
+{% block title %}香典集計{% endblock %}
+
+{% block content %}
+<h3>香典集計</h3>
+
+{% if summaries %}
+<table>
+    <tr>
+        <th>No.</th>
+        <th>名前</th>
+        <th>金額</th>
+    </tr>
+    {% for summary in summaries %}
+    <tr>
+        <td>{{ summary.id }}</td>
+        <td>{{ summary.giver_name }}</td>
+        <td>{{ summary.amount }}</td>
+        <td>
+            <span>
+                <form method="GET" action="{{ url_for('summaries.show', id=summary.id) }}">
+                    <button type="submit">詳細</button>
+                </form>
+            </span>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>香典の登録がありません</p>
+{% endif %}
+
+<br>
+<form method="GET" action="{{ url_for('summaries.create') }}">
+    <button type="submit">新規登録</button>
+</form>
+
+<br>
+<form method="POST" action="{{ url_for('summaries.reset_database_route') }}" onsubmit="return confirmReset()">
+    {{ form.hidden_tag() }}
+    <button type="submit">初期状態に戻す</button>
+</form>
+
+<br>
+<form method="POST" action="{{ url_for('auth.logout') }}">
+    {{ form.hidden_tag() }}
+    <button type="submit">ログアウト</button>
+</form>
+{% endblock %}
