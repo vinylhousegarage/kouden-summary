@@ -3,7 +3,7 @@ from app.forms import SummaryForm
 from app.forms import DeleteForm
 from app.models import Summary
 from app.extensions import db
-from app.utils.database_helpers import database_reset
+from app.utils.summaries_helpers import database_reset
 
 summaries_bp = Blueprint('summaries', __name__)
 
