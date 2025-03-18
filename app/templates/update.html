@@ -64,12 +64,16 @@
                 <button type='submit'>編集</button>
             </td>
         </tr>
-
-      </table>
+    </table>
 </form>
     <br>
+    <form method='POST' action="{{ url_for('summaries.delete')}}">
+      {{ form.hidden_tag() }}
+      <button type='submit'>削除</button>
+    </form>
+    <br>
     <form method='GET' action="{{ url_for('main.main')}}">
-      <button type='submit'>一覧</button>
+      <button type='submit'>一覧に戻る</button>
     </form>
 
 {% endblock %}
