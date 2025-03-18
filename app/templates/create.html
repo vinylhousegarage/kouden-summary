@@ -1,11 +1,11 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block title %}新規登録{% endblock %}
 
 {% block content %}
 <h3>新規登録</h3>
 
-<form method='POST' action="{{ url_for('summaries.create') }}">
+<form method="POST" action="{{ url_for('summaries.create') }}">
     {{ form.hidden_tag() }}
 
     <table>
@@ -13,7 +13,7 @@
             <th>{{ form.giver_name.label }}</th>
             <td>
                 {{ form.giver_name(size=20) }}<br>
-                {% if form.giver_name.errors and request.method == 'POST' %}
+                {% if form.giver_name.errors and request.method == "POST" %}
                     {{ form.giver_name.errors[0] }}
                 {% endif %}
             </td>
@@ -23,7 +23,7 @@
             <th>{{ form.amount.label }}</th>
             <td>
                 {{ form.amount(size=20) }}<br>
-                {% if form.amount.errors and request.method == 'POST' %}
+                {% if form.amount.errors and request.method == "POST" %}
                     {{ form.amount.errors[0] }}
                 {% endif %}
             </td>
@@ -62,7 +62,7 @@
     <br>
     <tr>
       <td>
-          <button type='submit'>登録</button>
+          <button type="submit">登録</button>
       </td>
     </tr>
 </form>
