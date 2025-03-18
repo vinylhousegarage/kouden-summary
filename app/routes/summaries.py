@@ -3,7 +3,7 @@ from app.forms import SummaryForm
 from app.forms import DeleteForm
 from app.models import Summary
 from app.extensions import db
-from app.utils.database_helpers import database_reset
+from app.utils.summaries_helpers import database_reset
 
 summaries_bp = Blueprint('summaries', __name__)
 
@@ -81,6 +81,6 @@ def delete(id):
 @summaries_bp.route('/database_reset', methods=['POST'])
 def reset_database_route():
     if database_reset():
-        return jsonify({"message": "Database reset successful"}), 200
+        return jsonify({"message": "初期状態に戻りました"}), 200
     else:
-        return jsonify({"error": "Database reset failed"}), 500
+        return jsonify({"error": "初期化に失敗しました"}), 500
