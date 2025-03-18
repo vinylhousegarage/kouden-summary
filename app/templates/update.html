@@ -1,11 +1,11 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block title %}編集{% endblock %}
 
 {% block content %}
 <h3>編集</h3>
 
-<form method='POST' action="{{ url_for('summaries.update', id=form.id.data) }}">
+<form method="POST" action="{{ url_for('summaries.update', id=form.id.data) }}">
     {{ form.hidden_tag() }}
 
     <table>
@@ -61,7 +61,7 @@
 
         <tr>
             <td>
-                <button type='submit'>編集</button>
+                <button type="submit">編集</button>
             </td>
         </tr>
     </table>
@@ -69,11 +69,11 @@
     <br>
     <form method="POST" action="{{ url_for('summaries.delete', id=form.id.data) }}" onsubmit="return confirmDelete()">
       {{ form.hidden_tag() }}
-      <button type='submit'>削除</button>
+      <button type="submit">削除</button>
     </form>
 
     <br>
-    <form method='GET' action="{{ url_for('main.main')}}">
-      <button type='submit'>一覧に戻る</button>
+    <form method="GET" action="{{ url_for('main.main') }}">
+      <button type="submit">一覧に戻る</button>
     </form>
 {% endblock %}
