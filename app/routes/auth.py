@@ -51,7 +51,7 @@ def callback():
         print(f'❌ 例外発生: {e}', file=sys.stderr, flush=True)
         return redirect_to_login()
 
-@auth_bp.route('/logout')
+@auth_bp.route('/logout', methods=['POST'])
 def logout():
     session.clear()
     return redirect_to_login()
