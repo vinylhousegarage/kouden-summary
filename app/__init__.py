@@ -18,17 +18,19 @@ def create_app():
     app.config.from_object(Config)
     app.secret_key = Config.SECRET_KEY
 
-    app.config['SESSION_SQLALCHEMY'] = db
-    Session(app)
-
     check_existing_handlers(app)
     setup_logging(app)
     setup_request_logging(app)
 
     csrf.init_app(app)
     cognito_auth.init_app(app)
+
     db.init_app(app)
     migrate.init_app(app, db)
+
+    app.config['SESSION_SQLALCHEMY'] = db
+    Session(app)
+
     init_oauth(app)
 
     app.register_blueprint(main_bp)
