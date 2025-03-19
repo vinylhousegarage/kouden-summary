@@ -1,5 +1,4 @@
 import sys
-import json
 from flask import Blueprint, render_template, redirect, url_for, flash, jsonify, request, session
 from app.forms import SummaryForm
 from app.forms import DeleteForm

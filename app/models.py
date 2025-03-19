@@ -1,3 +1,4 @@
+from sqlalchemy.dialects.mysql import BLOB
 from app.extensions import db
 
 class Summary(db.Model):
