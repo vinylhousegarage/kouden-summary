@@ -21,3 +21,8 @@ class Config:
     AWS_COGNITO_METADATA_URL = os.getenv('AWS_COGNITO_METADATA_URL')
     AWS_COGNITO_SCOPE = os.getenv('AWS_COGNITO_SCOPE', 'openid email profile')
     AWS_COGNITO_REDIRECT_URI = os.getenv('AWS_COGNITO_REDIRECT_URI')
+
+    SESSION_TYPE = 'sqlalchemy'
+    SESSION_PERMANENT = False
+    SESSION_USE_SIGNER = True
+    SESSION_SQLALCHEMY_TABLE = 'sessions'
