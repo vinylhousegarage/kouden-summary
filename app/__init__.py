@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_session import Session
 from app.config import Config
 from app.extensions import csrf, cognito_auth, migrate, db
 from app.db import init_db
@@ -18,6 +19,11 @@ def create_app():
     app.config.from_object(Config)
     app.secret_key = Config.SECRET_KEY
 
+    app.config['SESSION_TYPE'] = 'sqlalchemy'
+    app.config['SESSION_SQLALCHEMY'] = db
+
+    Session(app)
+
     check_existing_handlers(app)
     setup_logging(app)
     setup_request_logging(app)
@@ -28,6 +34,8 @@ def create_app():
     init_db(app)
     migrate.init_app(app, db)
     init_oauth(app)
+
+
 
     app.register_blueprint(main_bp)
     app.register_blueprint(health_bp)
