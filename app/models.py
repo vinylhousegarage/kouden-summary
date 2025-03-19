@@ -1,3 +1,4 @@
+from sqlalchemy.dialects.mysql import BLOB
 from app.extensions import db
 
 class Summary(db.Model):
@@ -12,3 +13,13 @@ class Summary(db.Model):
     user_cognito_id = db.Column(db.String(36), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, server_default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, nullable=False, server_default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+
+class Session(db.Model):
+    __tablename__ = 'sessions'
+
+    id = db.Column(db.String(255), primary_key=True)
+    data = db.Column(BLOB)
+    expiry = db.Column(db.DateTime, nullable=False, server_default=db.func.current_timestamp())
+
+    def __repr__(self):
+        return f'<Session id={self.id}, expiry={self.expiry}>'
