@@ -2,7 +2,6 @@ from flask import Flask
 from flask_session import Session
 from app.config import Config
 from app.extensions import csrf, cognito_auth, migrate, db
-from app.db import init_db
 from app.oauth import init_oauth
 from app.routes.main import main_bp
 from app.routes.health import health_bp
@@ -28,12 +27,9 @@ def create_app():
 
     csrf.init_app(app)
     cognito_auth.init_app(app)
-
-    init_db(app)
+    db.init_app(app)
     migrate.init_app(app, db)
     init_oauth(app)
-
-
 
     app.register_blueprint(main_bp)
     app.register_blueprint(health_bp)
