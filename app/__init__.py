@@ -1,15 +1,16 @@
 from flask import Flask
 from app.config import Config
+from app.logging_config import check_existing_handlers, setup_logging
+from app.middleware.request_logging import setup_request_logging
 from app.extensions import csrf, cognito_auth, migrate, db, session
+from app.utils.encrypted_serializer import EncryptedSessionSerializer
 from app.oauth import init_oauth
 from app.routes.main import main_bp
 from app.routes.health import health_bp
 from app.routes.auth import auth_bp
 from app.routes.summaries import summaries_bp
+from app.utils.db_setup import ensure_mediumblob
 from app.middleware.before_request import require_login
-from app.logging_config import check_existing_handlers, setup_logging
-from app.middleware.request_logging import setup_request_logging
-from app.utils.encrypted_serializer import EncryptedSessionSerializer
 
 def create_app():
     from app.models import Summary
@@ -39,6 +40,7 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(summaries_bp)
 
+    ensure_mediumblob(app)
     require_login(app)
 
     return app
