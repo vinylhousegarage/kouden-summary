@@ -8,6 +8,13 @@ services:
       - .env
     volumes:
       - mariadb_data:/var/lib/mysql
+    command: >
+      sh -c "
+      echo 'Waiting for MariaDB to be ready...' &&
+      sleep 10 &&
+      mysql -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD demo_db -e 'ALTER TABLE sessions MODIFY data MEDIUMBLOB;' &&
+      echo 'MEDIUMBLOB applied'
+      "
     healthcheck:
       test: ["CMD-SHELL", "mariadb -u${MYSQL_USER} -p${MYSQL_PASSWORD} -e 'SELECT 1' || exit 1"]
       interval: 10s
