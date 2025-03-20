@@ -7,6 +7,9 @@ if [ ! -d "migrations" ] || [ ! -d "migrations/versions" ]; then
     exit 1
 fi
 
+echo "🔹 Altering 'sessions' table to use MEDIUMBLOB..."
+mysql -h "${DB_HOST}" -u"${MYSQL_USER}" -p"${MYSQL_PASSWORD}" "${MYSQL_DATABASE}" -e "ALTER TABLE sessions MODIFY data MEDIUMBLOB;"
+
 echo "📌 Applying database migrations..."
 flask db upgrade || { echo "❌ Database migration failed!"; exit 1; }
 
