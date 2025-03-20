@@ -40,7 +40,9 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(summaries_bp)
 
-    ensure_mediumblob(app)
+    with app.app_context():
+        ensure_mediumblob(app)
+
     require_login(app)
 
     return app
