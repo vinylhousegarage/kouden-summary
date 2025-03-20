@@ -26,3 +26,4 @@ class Config:
     SESSION_PERMANENT = False
     SESSION_USE_SIGNER = True
     SESSION_SQLALCHEMY_TABLE = 'sessions'
+    SESSION_SERIALIZER = 'app.utils.encrypted_serializer.EncryptedSessionSerializer'

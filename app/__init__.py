@@ -9,6 +9,7 @@ from app.routes.summaries import summaries_bp
 from app.middleware.before_request import require_login
 from app.logging_config import check_existing_handlers, setup_logging
 from app.middleware.request_logging import setup_request_logging
+from app.utils.encrypted_serializer import EncryptedSessionSerializer
 
 def create_app():
     from app.models import Summary
@@ -29,6 +30,7 @@ def create_app():
 
     app.config['SESSION_SQLALCHEMY'] = db
     session.init_app(app)
+    app.session_interface.serializer = EncryptedSessionSerializer(Config.SECRET_KEY)
 
     init_oauth(app)
 
