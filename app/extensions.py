@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_session import Session
 from flask_wtf import CSRFProtect
 from flask_cognito_lib import CognitoAuth
 from authlib.integrations.flask_client import OAuth
@@ -9,3 +10,4 @@ migrate = Migrate()
 csrf = CSRFProtect()
 cognito_auth = CognitoAuth()
 oauth = OAuth()
+session = Session()
