@@ -12,7 +12,7 @@ class EncryptedSessionSerializer:
     def dumps(self, data):
         json_data = json.dumps(data)
         encrypted_data = self.cipher.encrypt(json_data.encode())
-        return base64.b64encode(encrypted_data).decode()
+        return base64.b64encode(encrypted_data)
 
     def loads(self, encrypted_data):
         try:
@@ -21,3 +21,6 @@ class EncryptedSessionSerializer:
         except Exception as e:
             print(f"❌ セッション復号エラー: {e}")
             return None
+
+    encode = dumps
+    decode = loads

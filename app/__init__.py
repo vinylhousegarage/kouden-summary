@@ -30,7 +30,7 @@ def create_app():
 
     app.config['SESSION_SQLALCHEMY'] = db
     session.init_app(app)
-    app.session_interface.serializer = EncryptedSessionSerializer(Config.SECRET_KEY)
+    app.session_interface.serializer = EncryptedSessionSerializer(Config.FERNET_KEY)
 
     init_oauth(app)
 
