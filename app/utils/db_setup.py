@@ -3,7 +3,7 @@ import logging
 from flask import session, current_app
 from app.config import Config
 
-def ensure_mediumblob():
+def ensure_mediumblob(app):
     with current_app.app_context():
         session['init'] = 'dummy'
 
