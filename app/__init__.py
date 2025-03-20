@@ -1,7 +1,6 @@
 from flask import Flask
-from flask_session import Session
 from app.config import Config
-from app.extensions import csrf, cognito_auth, migrate, db
+from app.extensions import csrf, cognito_auth, migrate, db, session
 from app.oauth import init_oauth
 from app.routes.main import main_bp
 from app.routes.health import health_bp
@@ -29,7 +28,7 @@ def create_app():
     migrate.init_app(app, db)
 
     app.config['SESSION_SQLALCHEMY'] = db
-    Session(app)
+    session.init_app(app)
 
     init_oauth(app)
 
