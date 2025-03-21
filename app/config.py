@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 class Config:
     DB_HOST = os.getenv('DB_HOST', 'db')
@@ -23,9 +24,11 @@ class Config:
     AWS_COGNITO_REDIRECT_URI = os.getenv('AWS_COGNITO_REDIRECT_URI')
 
     SESSION_TYPE = 'sqlalchemy'
-    SESSION_PERMANENT = False
+    SESSION_PERMANENT = True
+    PERMANENT_SESSION_LIFETIME = timedelta(days=7)
     SESSION_USE_SIGNER = True
     SESSION_SQLALCHEMY_TABLE = 'sessions'
+    SESSION_CLEANUP_N_REQUESTS = 100
     SESSION_SERIALIZER = 'app.utils.encrypted_serializer.EncryptedSessionSerializer'
 
     FERNET_KEY = os.getenv('FERNET_KEY')
