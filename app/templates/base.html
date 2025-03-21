@@ -5,6 +5,18 @@
     <title>{% block title %}香典集計{% endblock %}</title>
 </head>
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li>
+                        {{ category | capitalize }}: {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
     <main>
         {% block content %}{% endblock %}
     </main>
