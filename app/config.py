@@ -1,5 +1,4 @@
 import os
-from cryptography.fernet import Fernet
 
 class Config:
     DB_HOST = os.getenv('DB_HOST', 'db')
@@ -29,4 +28,4 @@ class Config:
     SESSION_SQLALCHEMY_TABLE = 'sessions'
     SESSION_SERIALIZER = 'app.utils.encrypted_serializer.EncryptedSessionSerializer'
 
-    FERNET_KEY = os.getenv("FERNET_KEY", Fernet.generate_key().decode())
+    FERNET_KEY = os.getenv('FERNET_KEY')

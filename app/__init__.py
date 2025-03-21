@@ -3,7 +3,7 @@ from app.config import Config
 from app.logging_config import check_existing_handlers, setup_logging
 from app.middleware.request_logging import setup_request_logging
 from app.extensions import csrf, cognito_auth, migrate, db, session
-from app.utils.encrypted_serializer import EncryptedSessionSerializer
+from app.session_interface import CustomSession
 from app.oauth import init_oauth
 from app.routes.main import main_bp
 from app.routes.health import health_bp
@@ -31,7 +31,7 @@ def create_app():
 
     app.config['SESSION_SQLALCHEMY'] = db
     session.init_app(app)
-    app.session_interface.serializer = EncryptedSessionSerializer(Config.FERNET_KEY)
+    CustomSession(app)
 
     init_oauth(app)
 
