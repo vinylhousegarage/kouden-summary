@@ -1,9 +1,6 @@
 import json
 import base64
 from cryptography.fernet import Fernet
-from app.config import Config
-
-SECRET_KEY = Config.SECRET_KEY
 
 class EncryptedSessionSerializer:
     def __init__(self, key):
@@ -16,10 +13,10 @@ class EncryptedSessionSerializer:
 
     def loads(self, encrypted_data):
         try:
-            decrypted_data = self.cipher.decrypt(base64.b64decode(encrypted_data))  # 復号
+            decrypted_data = self.cipher.decrypt(base64.b64decode(encrypted_data))
             return json.loads(decrypted_data.decode())
         except Exception as e:
-            print(f"❌ セッション復号エラー: {e}")
+            print(f'❌ セッション復号エラー: {e}')
             return None
 
     encode = dumps
