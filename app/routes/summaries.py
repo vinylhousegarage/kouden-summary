@@ -42,7 +42,8 @@ def create():
                 amount=form.amount.data,
                 address=form.address.data,
                 tel=form.tel.data,
-                note=form.note.data
+                note=form.note.data,
+                user_cognito_id=session.get('user_cognito_id')
             )
 
             print(f'🔹 session の型: {type(session)}', file=sys.stderr, flush=True)
@@ -75,7 +76,16 @@ def create():
 
 @summaries_bp.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
-    summary = Summary.query.get_or_404(id)
+    user_cognito_id = session.get('user_cognito_id')
+    if not user_cognito_id:
+        flash('ログインが必要です。', 'warning')
+        return redirect(url_for('auth.login'))
+
+    summary = Summary.query.filter_by(id=id, user_cognito_id=user_cognito_id).first()
+    if not summary:
+        flash('このデータにアクセスする権限がありません。', 'danger')
+        return redirect(url_for('main.main'))
+
     form = SummaryForm(obj=summary)
 
     if form.validate_on_submit():
@@ -96,11 +106,20 @@ def update(id):
             flash(f'エラーが発生しました: {str(e)}', 'danger')
             return render_template('update.html', form=form)
 
-    return render_template('update.html', form=form)
+    return render_template('update.html', form=form, summary=summary)
 
 @summaries_bp.route('/delete/<int:id>', methods=['GET', 'POST'])
 def delete(id):
-    summary = Summary.query.get_or_404(id)
+    user_cognito_id = session.get('user_cognito_id')
+    if not user_cognito_id:
+        flash('ログインが必要です。', 'warning')
+        return redirect(url_for('auth.login'))
+
+    summary = Summary.query.filter_by(id=id, user_cognito_id=user_cognito_id).first()
+    if not summary:
+        flash('このデータにアクセスする権限がありません。', 'danger')
+        return redirect(url_for('main.main'))
+
     form = DeleteForm()
 
     if form.validate_on_submit():
