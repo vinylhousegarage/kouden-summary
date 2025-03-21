@@ -31,7 +31,6 @@ def create_app():
 
     app.config['SESSION_SQLALCHEMY'] = db
     session.init_app(app)
-    CustomSession(app)
 
     init_oauth(app)
 
