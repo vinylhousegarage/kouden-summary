@@ -22,7 +22,7 @@
         <tr>
             <th>{{ form.amount.label }}</th>
             <td>
-                {{ form.amount(size=20) }}<br>
+                {{ form.amount(size=20) }}円<br>
                 {% if form.amount.errors %}
                     {{ form.amount.errors[0] }}
                 {% endif %}
@@ -69,11 +69,13 @@
     <br>
     <form method="POST" action="{{ url_for('summaries.delete', id=summary.id) }}" onsubmit="return confirmDelete()">
       {{ form.hidden_tag() }}
+      <span>データを削除する</span>
       <button type="submit">削除</button>
     </form>
 
     <br>
     <form method="GET" action="{{ url_for('main.main') }}">
-      <button type="submit">一覧に戻る</button>
+      <span>一覧に戻る　　　</span>
+      <button type="submit">戻る</button>
     </form>
 {% endblock %}
