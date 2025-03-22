@@ -15,11 +15,11 @@
     {% for summary in summaries %}
     <tr>
         <td>{{ summary.id }}</td>
-        <td>{{ summary.giver_name }}</td>
-        <td>{{ summary.amount }}</td>
+        <td>{{ summary.giver_name }}　</td>
+        <td>{{ "{:,}".format(summary.amount) }}円　</td>
         <td>
             <span>
-                <form method="GET" action="{{ url_for('summaries.show', id=summary.id) }}">
+                <form method="GET" action="{{ url_for('summaries.update', id=summary.id) }}">
                     <button type="submit">詳細</button>
                 </form>
             </span>
