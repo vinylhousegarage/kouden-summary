@@ -5,7 +5,7 @@
 {% block content %}
 <h3>編集</h3>
 
-<form method="POST" action="{{ url_for('summaries.update', id=form.id.data) }}">
+<form method="POST" action="{{ url_for('summaries.update', id=summary.id) }}">
     {{ form.hidden_tag() }}
 
     <table>
@@ -67,7 +67,7 @@
     </table>
 </form>
     <br>
-    <form method="POST" action="{{ url_for('summaries.delete', id=form.id.data) }}" onsubmit="return confirmDelete()">
+    <form method="POST" action="{{ url_for('summaries.delete', id=summary.id) }}" onsubmit="return confirmDelete()">
       {{ form.hidden_tag() }}
       <button type="submit">削除</button>
     </form>
