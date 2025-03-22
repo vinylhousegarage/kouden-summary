@@ -140,6 +140,7 @@ def delete(id):
 @summaries_bp.route('/database_reset', methods=['POST'])
 def reset_database_route():
     if database_reset():
-        return jsonify({'message': '初期状態に戻りました'}), 200
+        flash('初期状態に戻りました', 'success')
     else:
-        return jsonify({'error': '初期化に失敗しました'}), 500
+        flash('初期化に失敗しました', 'error')
+    return redirect(url_for('main.main'))
