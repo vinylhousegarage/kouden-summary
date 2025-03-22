@@ -56,14 +56,15 @@ def create():
             db.session.add(new_entry)
             db.session.commit()
 
-            flash('データが正常に作成されました！', 'success')
+            flash('登録されました')
 
             print('🔄 リダイレクトを実行', file=sys.stderr, flush=True)
             return redirect(url_for('summaries.create'))
 
         except Exception as e:
             db.session.rollback()
-            flash(f'エラーが発生しました: {str(e)}', 'danger')
+            print(f'[❌登録エラー] {str(e)}', file=sys.stderr, flush=True)
+            flash('登録に失敗しました')
             return render_template('create.html', form=form)
 
     if form.errors:
@@ -78,12 +79,12 @@ def create():
 def update(id):
     user_cognito_id = session.get('user_cognito_id')
     if not user_cognito_id:
-        flash('ログインが必要です。', 'warning')
+        flash('編集にはログインが必要です')
         return redirect(url_for('auth.login'))
 
     summary = Summary.query.filter_by(id=id, user_cognito_id=user_cognito_id).first()
     if not summary:
-        flash('このデータにアクセスする権限がありません。', 'danger')
+        flash('編集権限がありません')
         return redirect(url_for('main.main'))
 
     form = SummaryForm(obj=summary)
@@ -98,12 +99,13 @@ def update(id):
 
             db.session.commit()
 
-            flash('データが正常に更新されました！', 'success')
+            flash('データが編集されました')
             return redirect(url_for('main.main'))
 
         except Exception as e:
             db.session.rollback()
-            flash(f'エラーが発生しました: {str(e)}', 'danger')
+            print(f'[❌編集エラー] {str(e)}', file=sys.stderr, flush=True)
+            flash('編集に失敗しました')
             return render_template('update.html', form=form)
 
     return render_template('update.html', form=form, summary=summary)
@@ -112,12 +114,12 @@ def update(id):
 def delete(id):
     user_cognito_id = session.get('user_cognito_id')
     if not user_cognito_id:
-        flash('ログインが必要です。', 'warning')
+        flash('削除にはログインが必要です')
         return redirect(url_for('auth.login'))
 
     summary = Summary.query.filter_by(id=id, user_cognito_id=user_cognito_id).first()
     if not summary:
-        flash('このデータにアクセスする権限がありません。', 'danger')
+        flash('削除権限がありません')
         return redirect(url_for('main.main'))
 
     form = DeleteForm()
@@ -127,12 +129,13 @@ def delete(id):
             db.session.delete(summary)
             db.session.commit()
 
-            flash('データが削除されました！', 'success')
+            flash('データが削除されました')
             return redirect(url_for('main.main'))
 
         except Exception as e:
             db.session.rollback()
-            flash(f'削除中にエラーが発生しました: {str(e)}', 'danger')
+            print(f'[❌削除エラー] {str(e)}', file=sys.stderr, flush=True)
+            flash('削除に失敗しました')
             return render_template('delete.html', form=form, summary=summary)
 
     return render_template('delete.html', form=form, summary=summary)
@@ -140,6 +143,7 @@ def delete(id):
 @summaries_bp.route('/database_reset', methods=['POST'])
 def reset_database_route():
     if database_reset():
-        return jsonify({'message': '初期状態に戻りました'}), 200
+        flash('初期状態に戻りました')
     else:
-        return jsonify({'error': '初期化に失敗しました'}), 500
+        flash('初期状態に戻りませんでした')
+    return redirect(url_for('main.main'))

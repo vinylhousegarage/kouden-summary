@@ -28,23 +28,26 @@
     {% endfor %}
 </table>
 {% else %}
-<p>登録してください</p>
+<p>[ 登録してください ]</p>
 {% endif %}
 
 <br>
 <form method="GET" action="{{ url_for('summaries.create') }}">
-    <button type="submit">新規登録</button>
+    <span>データを登録する</span>
+    <button type="submit">登録</button>
 </form>
 
 <br>
 <form method="POST" action="{{ url_for('summaries.reset_database_route') }}" onsubmit="return confirmReset()">
     {{ form.hidden_tag() }}
-    <button type="submit">初期状態に戻す</button>
+    <span>初期状態に戻す　</span>
+    <button type="submit">戻す</button>
 </form>
 
 <br>
 <form method="POST" action="{{ url_for('auth.logout') }}">
     {{ form.hidden_tag() }}
-    <button type="submit">ログアウト</button>
+    <span>ログアウトする　</span>
+    <button type="submit">終了</button>
 </form>
 {% endblock %}
