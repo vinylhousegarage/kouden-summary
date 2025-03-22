@@ -6,12 +6,12 @@ def database_reset():
         db.session.query(Summary).delete()
         db.session.commit()
 
-        db.session.execute('ALTER SEQUENCE summary_id_seq RESTART WITH 1;')
+        db.session.execute('ALTER TABLE summary AUTO_INCREMENT = 1;')
         db.session.commit()
 
         return True
 
     except Exception as e:
         db.session.rollback()
-        print(f'Error: {e}')
+        print(f'Error in database_reset: {e}')
         return False
