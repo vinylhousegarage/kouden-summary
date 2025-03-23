@@ -1,5 +1,5 @@
 import sys
-from flask import Blueprint, render_template, redirect, url_for, flash, jsonify, request, session
+from flask import Blueprint, render_template, redirect, url_for, flash, request, session
 from app.forms import SummaryForm
 from app.forms import DeleteForm
 from app.models import Summary
@@ -83,6 +83,7 @@ def update(id):
         return redirect(url_for('auth.login'))
 
     summary = Summary.query.filter_by(id=id, user_cognito_id=user_cognito_id).first()
+
     if not summary:
         flash('編集権限がありません')
         return redirect(url_for('main.main'))
@@ -110,7 +111,7 @@ def update(id):
 
     return render_template('update.html', form=form, summary=summary)
 
-@summaries_bp.route('/delete/<int:id>', methods=['GET', 'POST'])
+@summaries_bp.route('/delete/<int:id>', methods=['POST'])
 def delete(id):
     user_cognito_id = session.get('user_cognito_id')
     if not user_cognito_id:
@@ -123,22 +124,29 @@ def delete(id):
         return redirect(url_for('main.main'))
 
     form = DeleteForm()
+    form.id.data = summary.id
+    print(f'✅ form.data: {form.data}', file=sys.stderr, flush=True)
+    print(f'✅ form.errors: {form.errors}', file=sys.stderr, flush=True)
+    print(f'📦 request.form: {request.form.to_dict()}', file=sys.stderr, flush=True)
 
     if form.validate_on_submit():
+        if int(form.id.data) != summary.id:
+            flash('不正な削除リクエストです')
+            return redirect(url_for('main.main'))
+
         try:
             db.session.delete(summary)
             db.session.commit()
-
             flash('データが削除されました')
             return redirect(url_for('main.main'))
-
         except Exception as e:
             db.session.rollback()
             print(f'[❌削除エラー] {str(e)}', file=sys.stderr, flush=True)
             flash('削除に失敗しました')
-            return render_template('delete.html', form=form, summary=summary)
+            return render_template('update.html', form=form, summary=summary)
 
-    return render_template('delete.html', form=form, summary=summary)
+    flash('フォームの送信に失敗しました')
+    return redirect(url_for('main.main'))
 
 @summaries_bp.route('/database_reset', methods=['POST'])
 def reset_database_route():
