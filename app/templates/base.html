@@ -5,18 +5,26 @@
     <title>{% block title %}香典集計{% endblock %}</title>
 </head>
 <body>
-    {% with messages = get_flashed_messages() %}
+    <div id="flash-messages">
+        {% set messages = get_flashed_messages() %}
         {% if messages %}
             <p>{{ '[ ' ~ (messages|first) ~ ' ]' }}</p>
         {% endif %}
-    {% endwith %}
+    </div>
+
+    <header>
+        <h4><strong>合計件数：{{ total_count }} 件　合計金額：{{ total_amount }} 円</strong></h4>
+        {% block page_heading %}{% endblock %}
+    </header>
 
     <main>
         {% block content %}{% endblock %}
     </main>
 
-    {% block scripts %}
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    {% endblock %}
+    <div id="confirm-button-script">
+        {% block scripts %}
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        {% endblock %}
+    </div>
 </body>
 </html>
