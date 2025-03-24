@@ -1,4 +1,4 @@
-from utils.aggregates import calculate_totals
+from app.utils.aggregates import calculate_totals
 
 def register_context_processors(app):
     @app.context_processor
