@@ -1,12 +1,17 @@
 import sys
 from flask import Blueprint, render_template, redirect, url_for, flash, request, session
-from app.forms import SummaryForm
-from app.forms import DeleteForm
+from app.forms import SummaryForm, DeleteForm, CSRFForm
 from app.models import Summary
 from app.extensions import db
 from app.utils.summaries_helpers import database_reset
 
 summaries_bp = Blueprint('summaries', __name__)
+
+@summaries_bp.route('/index')
+def index():
+    summaries = Summary.query.filter_by(user_cognito_id=session.get('user_cognito_id')).all()
+    form = CSRFForm()
+    return render_template('index.html', summaries=summaries, form=form)
 
 @summaries_bp.route('/create', methods=['GET', 'POST'])
 def create():
