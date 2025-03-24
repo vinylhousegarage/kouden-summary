@@ -13,4 +13,4 @@ def main():
     summaries = Summary.query.all()
     form = CSRFForm()
 
-    return render_template('index.html', summaries=summaries, form=form)
+    return render_template('dashboard.html', summaries=summaries, form=form)
