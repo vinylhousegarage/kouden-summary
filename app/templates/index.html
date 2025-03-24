@@ -1,53 +1,36 @@
 {% extends "base.html" %}
 
-{% block title %}香典集計{% endblock %}
-{% block page_heading %}<h3>香典集計</h3>{% endblock %}
+{% block title %}集計一覧{% endblock %}
+
+{% block page_heading %}<h3>集計一覧</h3>{% endblock %}
 
 {% block content %}
+    <form method="GET" action="{{ url_for('main.main') }}">
+      <span>ホームに戻る</span>
+      <button type="submit">戻る</button>
+    </form>
 
-{% if summaries %}
-<table>
-    <tr>
-        <th>No.</th>
-        <th>名前</th>
-        <th>金額</th>
-    </tr>
-    {% for summary in summaries %}
-    <tr>
-        <td>{{ summary.id }}</td>
-        <td>{{ summary.giver_name }}　</td>
-        <td>{{ "{:,}".format(summary.amount) }}円　</td>
-        <td>
-            <span>
-                <form method="GET" action="{{ url_for('summaries.update', id=summary.id) }}">
+    {% if summaries %}
+        <table>
+            <tr>
+                <th>No.</th>
+                <th>名前</th>
+                <th>金額</th>
+            </tr>
+            {% for summary in summaries %}
+            <tr>
+                <td>{{ summary.id }}</td>
+                <td>{{ summary.giver_name }}　</td>
+                <td>{{ "{:,}".format(summary.amount) }}円　</td>
+                <td>
+                  <form method="GET" action="{{ url_for('summaries.update', id=summary.id) }}" style="display: inline;">
                     <button type="submit">詳細</button>
-                </form>
-            </span>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-{% else %}
-<p>[ 登録してください ]</p>
-{% endif %}
-
-<br>
-<form method="GET" action="{{ url_for('summaries.create') }}">
-    <span>データを登録する</span>
-    <button type="submit">登録</button>
-</form>
-
-<br>
-<form method="POST" action="{{ url_for('summaries.reset_database_route') }}" onsubmit="return confirmReset()">
-    {{ form.hidden_tag() }}
-    <span>初期状態に戻す　</span>
-    <button type="submit">戻す</button>
-</form>
-
-<br>
-<form method="POST" action="{{ url_for('auth.logout') }}">
-    {{ form.hidden_tag() }}
-    <span>ログアウトする　</span>
-    <button type="submit">終了</button>
-</form>
+                  </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>[ 登録してください ]</p>
+    {% endif %}
 {% endblock %}

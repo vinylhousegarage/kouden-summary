@@ -10,6 +10,12 @@
 </form>
 
 <br>
+<form method="GET" action="{{ url_for('summaries.index') }}">
+    <span>集計の一覧を見る</span>
+    <button type="submit">見る</button>
+</form>
+
+<br>
 <form method="POST" action="{{ url_for('summaries.reset_database_route') }}" onsubmit="return confirmReset()">
     {{ form.hidden_tag() }}
     <span>初期状態に戻す　</span>
