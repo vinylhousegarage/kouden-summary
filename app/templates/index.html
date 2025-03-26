@@ -5,34 +5,35 @@
 {% block page_heading %}<h3>集計一覧</h3>{% endblock %}
 
 {% block content %}
-    <form method="GET" action="{{ url_for('main.main') }}">
-        <button type="submit" style="padding-left: 32px; padding-right: 32px;">
-            ホームに戻る
-        </button>
-    </form>
+  <form class="form-row" method="GET" action="{{ url_for('main.main') }}">
+    <p>ホーム画面に戻る</p>
+    <button type="submit">戻る</button>
+  </form>
 
-    {% if summaries %}
-        <table class="summaries-table">
-            <tr>
-                <th>No.</th>
-                <th>名前</th>
-                <th>金額</th>
-            </tr>
-            {% for summary in summaries %}
-            <tr>
-                <td>{{ summary.id }}</td> {# ルーティング用のため非表示 #}
-                <td>{{ loop.index }}</td>
-                <td>{{ summary.giver_name }}</td> {# 左寄せ #}
-                <td>{{ "{:,}".format(summary.amount) }}円</td>
-                <td>
-                  <form method="GET" action="{{ url_for('summaries.update', id=summary.id) }}">
-                    <button type="submit">詳細</button>
-                  </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>[ 登録してください ]</p>
-    {% endif %}
+  {% if summaries %}
+    <table class="summaries-table">
+      <tr>
+        <th>id</th> {# ルーティング用のため非表示 #}
+        <th>No.</th>
+        <th>名前</th>
+        <th>金額</th>
+        <th></th> {# ボタン用の空列 #}
+      </tr>
+      {% for summary in summaries %}
+        <tr>
+          <td>{{ summary.id }}</td> {# ルーティング用のため非表示 #}
+          <td>{{ loop.index }}</td>
+          <td>{{ summary.giver_name }}</td> {# 左寄せ #}
+          <td>{{ "{:,}".format(summary.amount) }}円</td>
+          <td>
+            <form method="GET" action="{{ url_for('summaries.update', id=summary.id) }}" style="display: inline;">
+              <button type="submit">詳細</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>[ 登録してください ]</p>
+  {% endif %}
 {% endblock %}
