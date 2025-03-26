@@ -22,7 +22,11 @@
   text-align: right;
 }
 
-.summaries-table td:nth-child(2) {
+.summaries-table td:nth-child(1) {
+  display: none;
+}
+
+.summaries-table td:nth-child(3) {
   text-align: left;
 }
 

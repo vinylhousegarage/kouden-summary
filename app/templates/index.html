@@ -20,12 +20,12 @@
             </tr>
             {% for summary in summaries %}
             <tr>
-                <td>{{ summary.id }}</td>
-                <td>{{ summary.giver_name }}</td>
+                <td>{{ summary.id }}</td> {# ルーティング用のため非表示 #}
+                <td>{{ loop.index }}</td>
+                <td>{{ summary.giver_name }}</td> {# 左寄せ #}
                 <td>{{ "{:,}".format(summary.amount) }}円</td>
                 <td>
-                  <form method="POST" action="{{ url_for('summaries.delete', id=summary.id) }}" onsubmit="return confirmDelete()">
-                    {{ form.hidden_tag() }}
+                  <form method="GET" action="{{ url_for('summaries.update', id=summary.id) }}">
                     <button type="submit">詳細</button>
                   </form>
                 </td>
