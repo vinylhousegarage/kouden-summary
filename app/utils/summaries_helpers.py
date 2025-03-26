@@ -1,7 +1,15 @@
 import sys
+from flask import flash, current_app
 from sqlalchemy import text
 from app.extensions import db
 from app.models import Summary
+
+def handle_form_errors(form):
+    for field in form._fields.values():
+        for error in field.errors:
+            message = f"{field.label.text}：{error}"
+            flash(message)
+            current_app.logger.warning(message)
 
 def database_reset():
     try:
