@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request,
 from app.forms import SummaryForm, DeleteForm, CSRFForm
 from app.models import Summary
 from app.extensions import db
-from app.utils.summaries_helpers import database_reset
+from app.utils.summaries_helpers import handle_form_errors, database_reset
 
 summaries_bp = Blueprint('summaries', __name__)
 
@@ -78,10 +78,7 @@ def create():
             )
 
     if form.errors:
-        print(f'⚠️ バリデーションエラー発生！', file=sys.stderr, flush=True)
-        print(f'🔍 `form.errors`: {form.errors}', file=sys.stderr, flush=True)
-    else:
-        print(f'✅ バリデーションエラーなし', file=sys.stderr, flush=True)
+        handle_form_errors(form)
 
     return render_template(
         'create.html',
@@ -129,6 +126,9 @@ def update(id):
                 action=url_for('summaries.update', id=id),
                 submit_label='編集'
             )
+
+    if form.errors:
+        handle_form_errors(form)
 
     return render_template(
         'update.html',
