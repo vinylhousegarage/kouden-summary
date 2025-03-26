@@ -6,7 +6,7 @@
 {% block content %}
   {% include "_form.html" with context %}
 
-  <form method="GET" action="{{ url_for('summaries.index') }}" class="form-row">
+  <form class="form-row" method="GET" action="{{ url_for('summaries.index') }}">
     <p>集計の一覧に戻る</p>
     <button type="submit">戻る</button>
   </form>
