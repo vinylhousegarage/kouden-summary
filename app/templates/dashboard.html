@@ -4,24 +4,23 @@
 {% block page_heading %}<h3>香典集計</h3>{% endblock %}
 
 {% block content %}
-<form method="GET" action="{{ url_for('summaries.create') }}" class="form-row">
-    {{ form.hidden_tag() }}
+<form class="form-row" method="GET" action="{{ url_for('summaries.create') }}">
     <p>データを登録する</p>
     <button type="submit">登録</button>
 </form>
 
-<form method="GET" action="{{ url_for('summaries.index') }}" class="form-row">
+<form class="form-row" method="GET" action="{{ url_for('summaries.index') }}">
   <p>集計の一覧を見る</p>
   <button type="submit">見る</button>
 </form>
 
-<form method="POST" action="{{ url_for('summaries.reset_database_route') }}" class="form-row" onsubmit="return confirmReset()">
+<form  class="form-row" method="POST" action="{{ url_for('summaries.reset_database_route') }}" onsubmit="return confirmReset()">
     {{ form.hidden_tag() }}
     <p>初期状態に戻す</p>
     <button type="submit">戻す</button>
 </form>
 
-<form method="POST" action="{{ url_for('auth.logout') }}" class="form-row">
+<form class="form-row" method="POST" action="{{ url_for('auth.logout') }}">
     {{ form.hidden_tag() }}
     <p>ログアウトする</p>
     <button type="submit">退出</button>
