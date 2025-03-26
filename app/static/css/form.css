@@ -1,6 +1,6 @@
 .form-grid {
   display: grid;
-  grid-template-columns: 32px 194px;
+  grid-template-columns: 32px 162px;
   gap: 0 8px;
   align-items: center;
 }
@@ -12,7 +12,7 @@
 }
 
 .form-submit button {
-  min-width: 128px;
+  min-width: 112px;
 }
 
 .form-row {
