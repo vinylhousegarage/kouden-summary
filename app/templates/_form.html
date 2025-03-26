@@ -1,0 +1,37 @@
+<form class="form-grid" method="POST" action="{{ action }}">
+  {{ form.hidden_tag() }}
+
+  {{ form.giver_name.label }}
+  {{ form.giver_name(id="giver_name") }}
+  {% if form.giver_name.errors and request.method == "POST" %}
+      <span class="form-error">{{ form.giver_name.errors[0] }}</span>
+  {% endif %}
+
+  {{ form.amount.label }}
+  {{ form.amount(id="amount") }}
+  {% if form.amount.errors and request.method == "POST" %}
+      <span class="form-error">{{ form.amount.errors[0] }}</span>
+  {% endif %}
+
+  {{ form.address.label }}
+  {{ form.address(id="address") }}
+  {% if form.address.errors and request.method == "POST" %}
+      <span class="form-error">{{ form.address.errors[0] }}</span>
+  {% endif %}
+
+  {{ form.tel.label }}
+  {{ form.tel(id="tel") }}
+  {% if form.tel.errors and request.method == "POST" %}
+      <span class="form-error">{{ form.tel.errors[0] }}</span>
+  {% endif %}
+
+  {{ form.note.label }}
+  {{ form.note(id="note") }}
+  {% if form.note.errors and request.method == "POST" %}
+      <span class="form-error">{{ form.note.errors[0] }}</span>
+  {% endif %}
+
+  <div class="form-submit">
+    <button type="submit">{{ submit_label }}</button>
+  </div>
+</form>

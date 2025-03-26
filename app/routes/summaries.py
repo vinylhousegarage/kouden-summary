@@ -70,7 +70,12 @@ def create():
             db.session.rollback()
             print(f'[❌登録エラー] {str(e)}', file=sys.stderr, flush=True)
             flash('登録に失敗しました')
-            return render_template('create.html', form=form)
+            return render_template(
+                'create.html',
+                form=form,
+                action=url_for('summaries.create'),
+                submit_label='登録'
+            )
 
     if form.errors:
         print(f'⚠️ バリデーションエラー発生！', file=sys.stderr, flush=True)
@@ -78,7 +83,12 @@ def create():
     else:
         print(f'✅ バリデーションエラーなし', file=sys.stderr, flush=True)
 
-    return render_template('create.html', form=form)
+    return render_template(
+        'create.html',
+        form=form,
+        action=url_for('summaries.create'),
+        submit_label='登録'
+    )
 
 @summaries_bp.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
@@ -106,15 +116,27 @@ def update(id):
             db.session.commit()
 
             flash('データが編集されました')
-            return redirect(url_for('main.main'))
+            return redirect(url_for('summaries.index'))
 
         except Exception as e:
             db.session.rollback()
             print(f'[❌編集エラー] {str(e)}', file=sys.stderr, flush=True)
             flash('編集に失敗しました')
-            return render_template('update.html', form=form)
+            return render_template(
+                'update.html',
+                summary=summary,
+                form=form,
+                action=url_for('summaries.update', id=id),
+                submit_label='編集'
+            )
 
-    return render_template('update.html', form=form, summary=summary)
+    return render_template(
+        'update.html',
+        summary=summary,
+        form=form,
+        action=url_for('summaries.update', id=id),
+        submit_label='編集'
+    )
 
 @summaries_bp.route('/delete/<int:id>', methods=['POST'])
 def delete(id):
@@ -143,15 +165,15 @@ def delete(id):
             db.session.delete(summary)
             db.session.commit()
             flash('データが削除されました')
-            return redirect(url_for('main.main'))
+            return redirect(url_for('summaries.index'))
         except Exception as e:
             db.session.rollback()
             print(f'[❌削除エラー] {str(e)}', file=sys.stderr, flush=True)
             flash('削除に失敗しました')
-            return render_template('update.html', form=form, summary=summary)
+            return render_template('update.html',summary=summary, form=form)
 
     flash('フォームの送信に失敗しました')
-    return redirect(url_for('main.main'))
+    return redirect(url_for('summaries.index'))
 
 @summaries_bp.route('/database_reset', methods=['POST'])
 def reset_database_route():

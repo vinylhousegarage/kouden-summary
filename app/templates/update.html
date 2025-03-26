@@ -4,79 +4,16 @@
 {% block page_heading %}<h3>編集</h3>{% endblock %}
 
 {% block content %}
+  {% include "_form.html" with context %}
 
-<form method="POST" action="{{ url_for('summaries.update', id=summary.id) }}">
+  <form method="POST" action="{{ url_for('summaries.delete', id=summary.id) }}" class="form-row" onsubmit="return confirmDelete()">
     {{ form.hidden_tag() }}
+    <p>データを削除する</p>
+    <button type="submit">削除</button>
+  </form>
 
-    <table>
-        <tr>
-            <th>{{ form.giver_name.label }}</th>
-            <td>
-                {{ form.giver_name(size=20) }}<br>
-                {% if form.giver_name.errors %}
-                    {{ form.giver_name.errors[0] }}
-                {% endif %}
-            </td>
-        </tr>
-
-        <tr>
-            <th>{{ form.amount.label }}</th>
-            <td>
-                {{ form.amount(size=20) }}円<br>
-                {% if form.amount.errors %}
-                    {{ form.amount.errors[0] }}
-                {% endif %}
-            </td>
-        </tr>
-
-        <tr>
-            <th>{{ form.address.label }}</th>
-            <td>
-                {{ form.address(size=20) }}<br>
-                {% if form.address.errors %}
-                    {{ form.address.errors[0] }}
-                {% endif %}
-            </td>
-        </tr>
-
-        <tr>
-            <th>{{ form.tel.label }}</th>
-            <td>
-                {{ form.tel(size=20) }}<br>
-                {% if form.tel.errors %}
-                    {{ form.tel.errors[0] }}
-                {% endif %}
-            </td>
-        </tr>
-
-        <tr>
-            <th>{{ form.note.label }}</th>
-            <td>
-                {{ form.note(size=20) }}<br>
-                {% if form.note.errors %}
-                    {{ form.note.errors[0] }}
-                {% endif %}
-            </td>
-        </tr>
-
-        <tr>
-            <td colspan="2">
-                <span>　　　　</span>
-                <button type="submit">　　編集　　</button>
-            </td>
-        </tr>
-    </table>
-</form>
-    <br>
-    <form method="POST" action="{{ url_for('summaries.delete', id=summary.id) }}" onsubmit="return confirmDelete()">
-      {{ form.hidden_tag() }}
-      <span>データを削除する</span>
-      <button type="submit">削除</button>
-    </form>
-
-    <br>
-    <form method="GET" action="{{ url_for('summaries.index') }}">
-      <span>一覧に戻る　　　</span>
-      <button type="submit">戻る</button>
-    </form>
+  <form method="GET" action="{{ url_for('summaries.index') }}" class="form-row">
+    <p>集計の一覧に戻る</p>
+    <button type="submit">戻る</button>
+  </form>
 {% endblock %}

@@ -1,0 +1,33 @@
+.form-grid {
+  display: grid;
+  grid-template-columns: 32px 194px;
+  gap: 0 8px;
+  align-items: center;
+}
+
+.form-submit {
+  grid-column: 2 / 3;
+  text-align: center;
+  margin: 2px 0 32px 0;
+}
+
+.form-submit button {
+  min-width: 128px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 144px 44px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.form-row p {
+  margin: 0;
+}
+
+.form-error {
+  color: #e74c3c;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}

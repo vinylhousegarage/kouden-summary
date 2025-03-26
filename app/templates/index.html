@@ -6,12 +6,13 @@
 
 {% block content %}
     <form method="GET" action="{{ url_for('main.main') }}">
-      <span>ホームに戻る</span>
-      <button type="submit">戻る</button>
+        <button type="submit" style="padding-left: 32px; padding-right: 32px;">
+            ホームに戻る
+        </button>
     </form>
 
     {% if summaries %}
-        <table>
+        <table class="summaries-table">
             <tr>
                 <th>No.</th>
                 <th>名前</th>
@@ -20,10 +21,11 @@
             {% for summary in summaries %}
             <tr>
                 <td>{{ summary.id }}</td>
-                <td>{{ summary.giver_name }}　</td>
-                <td>{{ "{:,}".format(summary.amount) }}円　</td>
+                <td>{{ summary.giver_name }}</td>
+                <td>{{ "{:,}".format(summary.amount) }}円</td>
                 <td>
-                  <form method="GET" action="{{ url_for('summaries.update', id=summary.id) }}" style="display: inline;">
+                  <form method="POST" action="{{ url_for('summaries.delete', id=summary.id) }}" onsubmit="return confirmDelete()">
+                    {{ form.hidden_tag() }}
                     <button type="submit">詳細</button>
                   </form>
                 </td>

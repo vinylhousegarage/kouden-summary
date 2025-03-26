@@ -4,70 +4,10 @@
 {% block page_heading %}<h3>新規登録</h3>{% endblock %}
 
 {% block content %}
+  {% include "_form.html" with context %}
 
-<form method="POST" action="{{ url_for('summaries.create') }}">
-    {{ form.hidden_tag() }}
-
-    <table>
-        <tr>
-            <th>{{ form.giver_name.label }}</th>
-            <td>
-                {{ form.giver_name(size=20) }}<br>
-                {% if form.giver_name.errors and request.method == "POST" %}
-                    {{ form.giver_name.errors[0] }}
-                {% endif %}
-            </td>
-        </tr>
-
-        <tr>
-            <th>{{ form.amount.label }}</th>
-            <td>
-                {{ form.amount(size=20) }}<br>
-                {% if form.amount.errors and request.method == "POST" %}
-                    {{ form.amount.errors[0] }}
-                {% endif %}
-            </td>
-        </tr>
-
-        <tr>
-            <th>{{ form.address.label }}</th>
-            <td>
-                {{ form.address(size=20) }}<br>
-                {% if form.address.errors %}
-                    {{ form.address.errors[0] }}
-                {% endif %}
-            </td>
-        </tr>
-
-        <tr>
-            <th>{{ form.tel.label }}</th>
-            <td>
-                {{ form.tel(size=20) }}<br>
-                {% if form.tel.errors %}
-                    {{ form.tel.errors[0] }}
-                {% endif %}
-            </td>
-        </tr>
-
-        <tr>
-            <th>{{ form.note.label }}</th>
-            <td>
-                {{ form.note(size=20) }}<br>
-                {% if form.note.errors %}
-                    {{ form.note.errors[0] }}
-                {% endif %}
-            </td>
-        </tr>
-    </table>
-    <br>
-    <tr>
-      <td>
-          <button type="submit">登録</button>
-      </td>
-    </tr>
-</form>
-<br>
-<form method="GET" action="{{ url_for('summaries.index') }}">
-  <button type="submit">一覧に戻る</button>
-</form>
+  <form method="GET" action="{{ url_for('summaries.index') }}" class="form-row">
+    <p>集計の一覧に戻る</p>
+    <button type="submit">戻る</button>
+  </form>
 {% endblock %}
