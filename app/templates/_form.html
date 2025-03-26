@@ -20,7 +20,7 @@
   {% endif %}
 
   {{ form.tel.label }}
-  {{ form.tel(id="tel") }}
+  {{ form.tel(id="tel", placeholder="ハイフンなしの数字") }}
   {% if form.tel.errors and request.method == "POST" %}
       <span class="form-error">{{ form.tel.errors[0] }}</span>
   {% endif %}
