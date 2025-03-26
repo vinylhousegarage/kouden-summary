@@ -6,13 +6,13 @@
 {% block content %}
   {% include "_form.html" with context %}
 
-  <form method="POST" action="{{ url_for('summaries.delete', id=summary.id) }}" class="form-row" onsubmit="return confirmDelete()">
+  <form class="form-row" method="POST" action="{{ url_for('summaries.delete', id=summary.id) }}" onsubmit="return confirmDelete()">
     {{ form.hidden_tag() }}
     <p>データを削除する</p>
     <button type="submit">削除</button>
   </form>
 
-  <form method="GET" action="{{ url_for('summaries.index') }}" class="form-row">
+  <form class="form-row" method="GET" action="{{ url_for('summaries.index') }}">
     <p>集計の一覧に戻る</p>
     <button type="submit">戻る</button>
   </form>
