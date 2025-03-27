@@ -10,6 +10,11 @@
     <button type="submit">戻る</button>
   </form>
 
+  <form class="form-row" method="GET" action="{{ url_for('summaries.create') }}">
+    <p>データを登録する</p>
+    <button type="submit">登録</button>
+</form>
+
   {% if summaries %}
     <table class="summaries-table">
       <tr>
