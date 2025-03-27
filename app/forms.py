@@ -12,7 +12,6 @@ class SummaryForm(FlaskForm, ModelForm):
     tel = StringField('電話', validators=[
         Regexp(r'^\d*$', message='数字ではない文字が入力されました')
     ], render_kw={
-        'required': True,
         'pattern': r'^\d*$',
         'title': 'ハイフンなしの数字'
     })
