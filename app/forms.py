@@ -10,8 +10,12 @@ class SummaryForm(FlaskForm, ModelForm):
         exclude = ['user_cognito_id', 'created_at', 'updated_at']
 
     tel = StringField('電話', validators=[
-        Regexp(r'^\d*$', message='数字のみで入力してください')
-    ])
+        Regexp(r'^\d*$', message='数字ではない文字が入力されました')
+    ], render_kw={
+        'required': True,
+        'pattern': r'^\d*$',
+        'title': 'ハイフンなしの数字'
+    })
 
 class DeleteForm(FlaskForm):
     id = HiddenField('ID', validators=[DataRequired()])
