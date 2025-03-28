@@ -16,7 +16,7 @@ def require_login(app):
             return
 
         if request.endpoint in public_routes:
-            logger.debug('✅ `public_routes` に含まれているためリダイレクトしません')
+            logger.info('✅ `public_routes` に含まれているためリダイレクトしません')
             return
 
         token = session.get('access_token')
@@ -26,7 +26,6 @@ def require_login(app):
             try:
                 claims = cognito_auth.verify_access_token(token, leeway=10)
                 request.user = claims
-                logger.info('✅ sessionの `access_token` の検証成功！', exc_info=True)
                 return
 
             except Exception as e:
@@ -41,11 +40,10 @@ def require_login(app):
                 try:
                     claims = cognito_auth.verify_access_token(new_tokens['access_token'], leeway=10)
                     request.user = claims
-                    logger.info('✅ refresh_token で更新した `access_token` の検証成功！', exc_info=True)
                     return
 
                 except Exception as e:
                     logger.error(f'❌ refresh_token で更新した `access_token` も検証エラー', exc_info=True)
 
-        logger.warning("❌ `session['access_token']` 無効により再ログイン", exc_info=True)
+        logger.warning("❌ `session['access_token']` 無効により再ログイン")
         return redirect_to_cognito_login()
