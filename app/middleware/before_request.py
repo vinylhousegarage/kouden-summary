@@ -1,7 +1,7 @@
-from flask import request, current_app, session
-from app.extensions import cognito_auth
-from app.utils.auth_helpers import redirect_to_cognito_login
+from flask import current_app, session, request
 from app.services.auth_service import refresh_access_token
+from app.utils.auth_helpers import redirect_to_cognito_login
+from app.utils.jwt_helper import verify_cognito_jwt
 
 def require_login(app):
     @app.before_request
@@ -21,7 +21,7 @@ def require_login(app):
 
         if token:
             try:
-                claims = cognito_auth.verify_access_token(token, leeway=10)
+                claims = verify_cognito_jwt(token, leeway=10)
                 request.user = claims
                 return
 
@@ -35,7 +35,7 @@ def require_login(app):
                 session['access_token'] = new_tokens['access_token']
 
                 try:
-                    claims = cognito_auth.verify_access_token(new_tokens['access_token'], leeway=10)
+                    claims = verify_cognito_jwt(new_tokens['access_token'], leeway=10)
                     request.user = claims
                     return
 

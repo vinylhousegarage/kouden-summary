@@ -1,9 +1,10 @@
-import requests, logging
-from flask import redirect, url_for, flash
+import logging
+import requests
+from flask import flash, redirect, url_for
 from jose import jwt
 from jose.utils import base64url_decode
-from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from app.config import Config
 
@@ -50,3 +51,25 @@ def decode_cognito_jwt(id_token, access_token):
         access_token=access_token,
     )
     return claims
+
+def verify_cognito_jwt(access_token, leeway=10):
+    try:
+        jwks = get_cognito_jwk()
+        headers = jwt.get_unverified_header(access_token)
+        kid = headers['kid']
+        pem_key = get_public_key_from_jwk(jwks, kid)
+
+        claims = jwt.decode(
+            access_token,
+            pem_key,
+            algorithms=['RS256'],
+            audience=Config.AWS_COGNITO_USER_POOL_CLIENT_ID,
+            issuer=f'https://cognito-idp.{Config.AWS_REGION}.amazonaws.com/{Config.AWS_COGNITO_USER_POOL_ID}',
+            options={'verify_exp': True},
+            leeway=leeway
+        )
+        return claims
+
+    except Exception:
+        logger.exception('❌ access_token の検証に失敗しました')
+        raise
