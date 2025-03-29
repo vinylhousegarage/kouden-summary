@@ -1,10 +1,7 @@
-import logging
-from flask import request, session
+from flask import request, current_app, session
 from app.extensions import cognito_auth
 from app.utils.auth_helpers import redirect_to_cognito_login
 from app.services.auth_service import refresh_access_token
-
-logger = logging.getLogger(__name__)
 
 def require_login(app):
     @app.before_request
@@ -12,11 +9,11 @@ def require_login(app):
         public_routes = ['health.health_check', 'auth.callback']
 
         if request.endpoint is None:
-            logger.warning('⚠️ `request.endpoint` が `None` なのでリダイレクトしません')
+            current_app.logger.warning('⚠️ `request.endpoint` が `None` なのでリダイレクトしません')
             return
 
         if request.endpoint in public_routes:
-            logger.info('✅ `public_routes` に含まれているためリダイレクトしません')
+            current_app.logger.info('✅ `public_routes` に含まれているためリダイレクトしません')
             return
 
         token = session.get('access_token')
@@ -28,8 +25,8 @@ def require_login(app):
                 request.user = claims
                 return
 
-            except Exception as e:
-                logger.error('❌ sessionの `access_token` 検証エラー', exc_info=True)
+            except Exception:
+                current_app.logger.exception('❌ sessionの `access_token` 検証エラー')
 
         if refresh_token:
             new_tokens = refresh_access_token(refresh_token)
@@ -42,8 +39,8 @@ def require_login(app):
                     request.user = claims
                     return
 
-                except Exception as e:
-                    logger.error(f'❌ refresh_token で更新した `access_token` も検証エラー', exc_info=True)
+                except Exception:
+                    current_app.logger.exception('❌ refresh_token で更新した `access_token` も検証エラー')
 
-        logger.warning("❌ `session['access_token']` 無効により再ログイン")
+        current_app.logger.warning("⚠️ `session['access_token']` 無効により再ログイン")
         return redirect_to_cognito_login()
