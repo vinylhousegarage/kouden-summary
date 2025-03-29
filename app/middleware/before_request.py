@@ -28,8 +28,8 @@ def require_login(app):
                 request.user = claims
                 return
 
-            except Exception as e:
-                logger.error('❌ sessionの `access_token` 検証エラー', exc_info=True)
+            except Exception:
+                logger.exception('❌ sessionの `access_token` 検証エラー')
 
         if refresh_token:
             new_tokens = refresh_access_token(refresh_token)
@@ -42,8 +42,8 @@ def require_login(app):
                     request.user = claims
                     return
 
-                except Exception as e:
-                    logger.error(f'❌ refresh_token で更新した `access_token` も検証エラー', exc_info=True)
+                except Exception:
+                    logger.exception('❌ refresh_token で更新した `access_token` も検証エラー')
 
         logger.warning("❌ `session['access_token']` 無効により再ログイン")
         return redirect_to_cognito_login()
