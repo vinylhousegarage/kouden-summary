@@ -3,7 +3,7 @@ from flask import Blueprint, session, request
 from jose import jwt
 from app.services.auth_service import exchange_code_for_token
 from app.utils.auth_helpers import redirect_to_root, redirect_to_login, redirect_to_cognito_login
-from app.utils.jwt_helper import decode_cognito_jwt
+from app.utils.jwt_helpers import decode_cognito_jwt
 
 logger = logging.getLogger(__name__)
 

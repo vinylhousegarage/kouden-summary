@@ -1,7 +1,7 @@
 from flask import current_app, session, request
 from app.services.auth_service import refresh_access_token
 from app.utils.auth_helpers import redirect_to_cognito_login
-from app.utils.jwt_helper import verify_cognito_jwt
+from app.utils.jwt_helpers import verify_cognito_jwt
 
 def require_login(app):
     @app.before_request
