@@ -3,6 +3,7 @@ from flask import Blueprint, session, request
 from jose import jwt
 from app.services.auth_service import exchange_code_for_token
 from app.utils.auth_helpers import redirect_to_root, redirect_to_login, redirect_to_cognito_login
+from app.utils.jwt_helper import decode_cognito_jwt
 
 logger = logging.getLogger(__name__)
 
@@ -35,22 +36,31 @@ def callback():
         access_token = tokens.get('access_token')
         id_token = tokens.get('id_token')
         refresh_token = tokens.get('refresh_token')
-        claims = jwt.get_unverified_claims(id_token)
-        user_cognito_id = claims.get('sub')
 
         session['access_token'] = access_token
         session['id_token'] = id_token
         session['refresh_token'] = refresh_token
-        session['user_cognito_id'] = user_cognito_id
 
+        claims = decode_cognito_jwt(id_token, access_token)
+        user_cognito_id = claims.get('sub')
+
+        session['user_cognito_id'] = user_cognito_id
         return redirect_to_root()
 
-    except AttributeError as e:
-        logger.error(f'❌ 属性アクセスに失敗', exc_info=True)
+    except jwt.ExpiredSignatureError:
+        logger.warning('❌ トークンの有効期限が切れています')
         return redirect_to_login()
 
-    except Exception as e:
-        logger.error(f'❌ 例外発生', exc_info=True)
+    except jwt.JWTClaimsError:
+        logger.exception('❌ トークンのクレームが不正')
+        return redirect_to_login()
+
+    except AttributeError:
+        logger.exception('❌ 属性アクセスに失敗')
+        return redirect_to_login()
+
+    except Exception:
+        logger.exception('❌ 例外発生')
         return redirect_to_login()
 
 @auth_bp.route('/logout', methods=['POST'])
