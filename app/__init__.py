@@ -2,7 +2,7 @@ from flask import Flask
 from app.config import Config
 from app.logging_config import check_existing_handlers, setup_logging
 from app.middleware.request_logging import setup_request_logging
-from app.extensions import csrf, cognito_auth, migrate, db, session
+from app.extensions import csrf, migrate, db, session
 from app.oauth import init_oauth
 from app.utils.db_setup import ensure_mediumblob
 from app.routes.main import main_bp
@@ -25,7 +25,6 @@ def create_app():
 
     csrf.init_app(app)
 
-    cognito_auth.init_app(app)
     init_oauth(app)
 
     db.init_app(app)
