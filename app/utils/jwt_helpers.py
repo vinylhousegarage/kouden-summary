@@ -1,14 +1,11 @@
-import logging
 import requests
-from flask import flash, redirect, url_for
+from flask import current_app, flash, redirect, url_for
 from jose import jwt
 from jose.utils import base64url_decode
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from app.config import Config
-
-logger = logging.getLogger(__name__)
 
 def get_cognito_jwk():
     jwks_url = f'https://cognito-idp.{Config.AWS_REGION}.amazonaws.com/{Config.AWS_COGNITO_USER_POOL_ID}/.well-known/jwks.json'
@@ -19,8 +16,8 @@ def get_public_key_from_jwk(jwks, kid):
     key = next((k for k in jwks if k['kid'] == kid), None)
 
     if key is None:
-        logger.warning(f'kid={kid} の公開鍵が見つかりませんでした')
-        flash('ログイン状態が期限切れになっています')
+        current_app.logger.warning(f'⚠️ kid={kid} 公開鍵取得失敗')
+        flash('再ログインしてください')
         return redirect(url_for('auth.login'))
 
     n = base64url_decode(key['n'].encode('utf-8'))
@@ -72,4 +69,4 @@ def verify_cognito_jwt(access_token, leeway=10):
         return claims
 
     except Exception:
-        logger.exception('❌ access_token の検証に失敗しました')
+        current_app.logger.exception('❌ access_token の検証に失敗しました')
