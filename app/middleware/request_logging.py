@@ -14,11 +14,11 @@ def setup_request_logging(app):
         if not response.direct_passthrough:
             response_body = response.get_data(as_text=True)
             if not app.debug and len(response_body) > 500:
-                response_body = response_body[:500] + "..."
+                response_body = response_body[:500] + '...'
         else:
-            response_body = "[Direct Passthrough Mode: Response data not available]"
+            response_body = '[Direct Passthrough Mode: Response data not available]'
 
-        app.logger.info(f"Response: {response.status}")
-        app.logger.info(f"Response Headers: {dict(response.headers)}")
-        app.logger.info(f"Response Body: {response_body}")
+        app.logger.info(f'Response: {response.status}')
+        app.logger.info(f'Response Headers: {dict(response.headers)}')
+        app.logger.info(f'Response Body: {response_body}')
         return response
