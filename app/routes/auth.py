@@ -1,11 +1,8 @@
-import logging
-from flask import Blueprint, session, request
+from flask import Blueprint, current_app, session, request
 from jose import jwt
 from app.services.auth_service import exchange_code_for_token
 from app.utils.auth_helpers import redirect_to_root, redirect_to_login, redirect_to_cognito_login
 from app.utils.jwt_helpers import decode_cognito_jwt
-
-logger = logging.getLogger(__name__)
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -23,11 +20,11 @@ def callback():
     error_description = request.args.get('error_description')
 
     if error:
-        logger.error(f'❌ Cognitoからエラーが返されました: error={error}, description={error_description}')
+        current_app.logger.error(f'❌ Cognitoからエラーが返されました: error={error}, description={error_description}')
         return redirect_to_login()
 
     if not code:
-        logger.warning('❌ code が取得できませんでした')
+        current_app.logger.warning('⚠️ code が取得できませんでした')
         return redirect_to_login()
 
     try:
@@ -48,19 +45,19 @@ def callback():
         return redirect_to_root()
 
     except jwt.ExpiredSignatureError:
-        logger.warning('❌ トークンの有効期限が切れています')
+        current_app.logger.warning('⚠️ トークンの有効期限が切れています')
         return redirect_to_login()
 
     except jwt.JWTClaimsError:
-        logger.exception('❌ トークンのクレームが不正')
+        current_app.logger.exception('❌ トークンのクレームが不正')
         return redirect_to_login()
 
     except AttributeError:
-        logger.exception('❌ 属性アクセスに失敗')
+        current_app.logger.exception('❌ 属性アクセスに失敗')
         return redirect_to_login()
 
     except Exception:
-        logger.exception('❌ 例外発生')
+        current_app.logger.exception('❌ 例外発生')
         return redirect_to_login()
 
 @auth_bp.route('/logout', methods=['POST'])
