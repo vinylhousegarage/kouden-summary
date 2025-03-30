@@ -1,6 +1,5 @@
 import pymysql
-import sys
-import logging
+from flask import current_app
 from app.config import Config
 
 def ensure_mediumblob():
@@ -12,24 +11,22 @@ def ensure_mediumblob():
             database=Config.DB_NAME
         )
         cursor = conn.cursor()
-
         cursor.execute("SHOW TABLES LIKE 'sessions'")
         if cursor.fetchone():
-            print('✅ `sessions` テーブルが存在するので ALTER TABLE 実行')
+            current_app.logger.info('✅ `sessions` テーブルが存在するので ALTER TABLE 実行')
 
             cursor.execute("SHOW COLUMNS FROM sessions LIKE 'data'")
             column_info = cursor.fetchone()
-
             if column_info and 'mediumblob' not in column_info[1].lower():
-                print('✅ `data` カラムを `MEDIUMBLOB` に変更', file=sys.stderr, flush=True)
+                current_app.logger.info('✅ `data` カラムを `MEDIUMBLOB` に変更')
+
                 cursor.execute('ALTER TABLE sessions MODIFY data MEDIUMBLOB')
                 conn.commit()
             else:
-                print('✅ `data` カラムはすでに `MEDIUMBLOB`', file=sys.stderr, flush=True)
+                current_app.logger.info('✅ `data` カラムはすでに `MEDIUMBLOB`')
         else:
-            print('⚠️ `sessions` テーブルがまだ作成されていません', file=sys.stderr, flush=True)
-
-    except Exception as e:
-        logging.error(f'❌ ALTER TABLE 実行中にエラー発生: {e}')
+            current_app.logger.warning('⚠️ `sessions` テーブルがまだ作成されていません')
+    except Exception:
+        current_app.logger.exception('❌ ALTER TABLE 実行中にエラー発生')
     finally:
         conn.close()
