@@ -1,11 +1,13 @@
 import requests
-from flask import current_app, flash, redirect, url_for
-from jose import jwt
-from jose.utils import base64url_decode
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
+from flask import current_app, flash, redirect, url_for
+from jose import jwt
+from jose.utils import base64url_decode
+
 from app.config import Config
+
 
 def get_cognito_jwk():
     jwks_url = f'https://cognito-idp.{Config.AWS_REGION}.amazonaws.com/{Config.AWS_COGNITO_USER_POOL_ID}/.well-known/jwks.json'

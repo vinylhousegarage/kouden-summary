@@ -1,5 +1,6 @@
 import logging
 
+
 def check_existing_handlers(app):
     app.logger.info(f'✅ app.logger の現在の `handlers`:\n{app.logger.handlers}')
 

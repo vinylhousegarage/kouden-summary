@@ -1,7 +1,9 @@
 from flask import current_app, flash
 from sqlalchemy import text
+
 from app.extensions import db
 from app.models import Summary
+
 
 def handle_form_errors(form):
     for field in form._fields.values():

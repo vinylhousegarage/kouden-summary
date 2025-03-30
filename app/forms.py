@@ -1,8 +1,10 @@
-from wtforms import StringField, HiddenField
-from wtforms.validators import Regexp, DataRequired
 from flask_wtf import FlaskForm
+from wtforms import HiddenField, StringField
+from wtforms.validators import DataRequired, Regexp
 from wtforms_alchemy import ModelForm
+
 from app.models import Summary
+
 
 class SummaryForm(FlaskForm, ModelForm):
     class Meta:

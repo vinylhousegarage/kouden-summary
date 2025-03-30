@@ -1,8 +1,10 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, session, current_app
-from app.forms import SummaryForm, DeleteForm, CSRFForm
-from app.models import Summary
+from flask import (Blueprint, current_app, flash, redirect, render_template,
+                   request, session, url_for)
+
 from app.extensions import db
-from app.utils.summaries_helpers import handle_form_errors, database_reset
+from app.forms import CSRFForm, DeleteForm, SummaryForm
+from app.models import Summary
+from app.utils.summaries_helpers import database_reset, handle_form_errors
 
 summaries_bp = Blueprint('summaries', __name__)
 
