@@ -1,4 +1,4 @@
-from flask import Blueprint, session, jsonify
+from flask import Blueprint, jsonify, session
 
 health_bp = Blueprint('health', __name__)
 

@@ -1,5 +1,7 @@
 import pymysql
+
 from app.config import Config
+
 
 def ensure_mediumblob(app):
     try:

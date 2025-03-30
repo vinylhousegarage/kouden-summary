@@ -1,6 +1,7 @@
-from flask import Blueprint, session, render_template
-from app.utils.auth_helpers import redirect_to_cognito_login
+from flask import Blueprint, render_template, session
+
 from app.forms import CSRFForm
+from app.utils.auth_helpers import redirect_to_cognito_login
 
 main_bp = Blueprint('main', __name__)
 

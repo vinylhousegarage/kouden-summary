@@ -1,7 +1,9 @@
-import json
 import base64
-from flask import current_app
+import json
+
 from cryptography.fernet import Fernet
+from flask import current_app
+
 
 class EncryptedSessionSerializer:
     def __init__(self, key):

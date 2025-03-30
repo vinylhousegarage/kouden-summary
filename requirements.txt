@@ -14,3 +14,4 @@ cffi==1.17.1
 cryptography==43.0.3
 flask-session==0.8.0
 python-jose==3.4.0
+isort==6.0.1

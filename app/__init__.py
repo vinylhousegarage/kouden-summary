@@ -1,15 +1,17 @@
 from flask import Flask
+
 from app.config import Config
+from app.extensions import csrf, db, migrate, session
 from app.logging_config import check_existing_handlers, setup_logging
-from app.middleware.request_logging import setup_request_logging
-from app.extensions import csrf, migrate, db, session
-from app.utils.db_setup import ensure_mediumblob
-from app.routes.main import main_bp
-from app.routes.health import health_bp
-from app.routes.auth import auth_bp
-from app.routes.summaries import summaries_bp
-from app.middleware.context_processors import register_context_processors
 from app.middleware.before_request import require_login
+from app.middleware.context_processors import register_context_processors
+from app.middleware.request_logging import setup_request_logging
+from app.routes.auth import auth_bp
+from app.routes.health import health_bp
+from app.routes.main import main_bp
+from app.routes.summaries import summaries_bp
+from app.utils.db_setup import ensure_mediumblob
+
 
 def create_app():
     from app.models import Summary

@@ -1,7 +1,10 @@
-import requests
-from flask import redirect, current_app
 from urllib.parse import quote_plus
+
+import requests
+from flask import current_app, redirect
+
 from app.config import Config
+
 
 def redirect_to_root():
     return redirect('/')
