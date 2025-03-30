@@ -20,7 +20,7 @@ def create_app():
 
     check_existing_handlers(app)
     setup_logging(app)
-    setup_request_logging(app)
+   #setup_request_logging(app) #開発終了により停止
 
     csrf.init_app(app)
 
