@@ -1,5 +1,6 @@
 import json
 import base64
+from flask import current_app
 from cryptography.fernet import Fernet
 
 class EncryptedSessionSerializer:
@@ -15,8 +16,8 @@ class EncryptedSessionSerializer:
         try:
             decrypted_data = self.cipher.decrypt(base64.b64decode(encrypted_data))
             return json.loads(decrypted_data.decode())
-        except Exception as e:
-            print(f'❌ セッション復号エラー: {e}')
+        except Exception:
+            current_app.logger.exception('❌ セッション復号エラー')
             return None
 
     encode = dumps
