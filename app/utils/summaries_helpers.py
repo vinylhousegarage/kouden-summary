@@ -1,4 +1,4 @@
-from flask import current_app
+from flask import current_app, flash
 from sqlalchemy import text
 from app.extensions import db
 from app.models import Summary
@@ -6,9 +6,9 @@ from app.models import Summary
 def handle_form_errors(form):
     for field in form._fields.values():
         for error in field.errors:
-            current_app.logger.warning(
-                f'⚠️ [FormValidation] {field.label.text}：{error}'
-            )
+            current_app.logger.error(f'❌ バリデーションエラー {field.label.text}：{error}')
+            message = error
+            flash(message)
 
 def database_reset():
     try:
