@@ -58,18 +58,18 @@ def verify_cognito_jwt(access_token, leeway=10):
         headers = jwt.get_unverified_header(access_token)
         kid = headers['kid']
         pem_key = get_public_key_from_jwk(jwks, kid)
-
         claims = jwt.decode(
             access_token,
             pem_key,
             algorithms=['RS256'],
             audience=Config.AWS_COGNITO_USER_POOL_CLIENT_ID,
             issuer=f'https://cognito-idp.{Config.AWS_REGION}.amazonaws.com/{Config.AWS_COGNITO_USER_POOL_ID}',
-            options={'verify_exp': True},
-            leeway=leeway
+            options={
+                'verify_exp': True,
+                'leeway': leeway,
+            }
         )
         return claims
 
     except Exception:
         logger.exception('❌ access_token の検証に失敗しました')
-        raise
