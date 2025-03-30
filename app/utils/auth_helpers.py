@@ -1,5 +1,3 @@
-from urllib.parse import quote_plus
-
 import requests
 from flask import current_app, redirect
 
