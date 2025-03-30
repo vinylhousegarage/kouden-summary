@@ -28,7 +28,7 @@ def create_app():
     migrate.init_app(app, db)
     app.config['SESSION_SQLALCHEMY'] = db
     session.init_app(app)
-    ensure_mediumblob()
+    ensure_mediumblob(app)
 
     app.register_blueprint(main_bp)
     app.register_blueprint(health_bp)
