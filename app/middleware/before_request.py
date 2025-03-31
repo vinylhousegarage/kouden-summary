@@ -2,7 +2,7 @@ from flask import current_app, request, session
 
 from app.services.auth_service import refresh_access_token
 from app.utils.auth_helpers import redirect_to_cognito_login
-from app.utils.jwt_helpers import verify_cognito_jwt
+from app.utils.jwt_helpers import validate_access_token, verify_cognito_jwt
 
 
 def require_login(app):
@@ -22,11 +22,12 @@ def require_login(app):
         refresh_token = session.get('refresh_token')
 
         if token:
+            claims = validate_access_token(token)
+
             try:
                 claims = verify_cognito_jwt(token, leeway=10)
                 request.user = claims
                 return
-
             except Exception:
                 current_app.logger.exception('❌ sessionの `access_token` 検証エラー')
 
@@ -40,7 +41,6 @@ def require_login(app):
                     claims = verify_cognito_jwt(new_tokens['access_token'], leeway=10)
                     request.user = claims
                     return
-
                 except Exception:
                     current_app.logger.exception('❌ refresh_token で更新した `access_token` も検証エラー')
 

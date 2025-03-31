@@ -2,7 +2,7 @@ import requests
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
-from flask import current_app, flash, redirect, url_for
+from flask import current_app, flash, redirect, session, url_for
 from jose import jwt
 from jose.utils import base64url_decode
 
@@ -71,4 +71,12 @@ def verify_cognito_jwt(access_token, leeway=10):
         return claims
 
     except Exception:
-        current_app.logger.exception('❌ access_token の検証に失敗しました')
+        current_app.logger.exception('❌ access_token 検証失敗')
+
+def validate_access_token(token):
+    claims = verify_cognito_jwt(token)
+    if claims:
+        return claims
+    current_app.logger.info('✅ 無効なトークンのためセッションをクリア')
+    session.clear()
+    return None
