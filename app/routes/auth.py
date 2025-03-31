@@ -1,7 +1,7 @@
 from flask import Blueprint, current_app, request, session
 from jose import jwt
 
-from app.extensions import db
+from app.extensions import csrf, db
 from app.services.auth_service import exchange_code_for_token
 from app.utils.auth_helpers import (redirect_to_cognito_login,
                                     redirect_to_login, redirect_to_root)
@@ -64,6 +64,7 @@ def callback():
         return redirect_to_login()
 
 @auth_bp.route('/logout', methods=['POST'])
+@csrf.exempt
 def logout():
     session_id = session.get('_id')
     session.clear()
