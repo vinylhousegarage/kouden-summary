@@ -1,10 +1,9 @@
-from flask import Blueprint, current_app, request, session
+from flask import Blueprint, current_app, redirect, request, session
 from jose import jwt
 
 from app.extensions import csrf, db
 from app.services.auth_service import exchange_code_for_token
-from app.utils.auth_helpers import (redirect_to_cognito_login,
-                                    redirect_to_login, redirect_to_root)
+from app.utils.auth_helpers import (generate_cognito_logout_url, redirect_to_cognito_login, redirect_to_login, redirect_to_root)
 from app.utils.jwt_helpers import decode_cognito_jwt
 
 auth_bp = Blueprint('auth', __name__)
@@ -77,6 +76,6 @@ def logout():
                 db.session.delete(db_session)
                 db.session.commit()
 
-    response = redirect_to_login()
+    response = redirect(generate_cognito_logout_url())
     response.set_cookie('session', '', expires=0)
     return response
