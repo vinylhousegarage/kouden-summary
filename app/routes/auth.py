@@ -77,4 +77,6 @@ def logout():
                 db.session.delete(db_session)
                 db.session.commit()
 
-    return redirect_to_login()
+    response = redirect_to_login()
+    response.set_cookie('session', '', expires=0)
+    return response
