@@ -1,5 +1,4 @@
-from flask import (Blueprint, current_app, flash, redirect, render_template,
-                   request, session, url_for)
+from flask import (Blueprint, current_app, flash, redirect, render_template, request, session, url_for)
 
 from app.extensions import db
 from app.forms import CSRFForm, DeleteForm, SummaryForm
