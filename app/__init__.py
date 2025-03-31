@@ -10,7 +10,6 @@ from app.routes.auth import auth_bp
 from app.routes.health import health_bp
 from app.routes.main import main_bp
 from app.routes.summaries import summaries_bp
-from app.utils.db_setup import ensure_mediumblob
 
 
 def create_app():
@@ -30,7 +29,6 @@ def create_app():
     migrate.init_app(app, db)
     app.config['SESSION_SQLALCHEMY'] = db
     session.init_app(app)
-    ensure_mediumblob(app)
 
     app.register_blueprint(main_bp)
     app.register_blueprint(health_bp)
