@@ -1,4 +1,4 @@
-from flask import Response, g, request
+from flask import g, request, Response
 
 
 def setup_request_logging(app):
