@@ -11,7 +11,7 @@ def redirect_to_login():
     return redirect('/login')
 
 def generate_cognito_url(endpoint, params):
-    base_url = f'https://{Config.AWS_COGNITO_DOMAIN}/{endpoint}'
+    base_url = f'{Config.AWS_COGNITO_DOMAIN}/{endpoint}'
     query = '&'.join(f'{key}={value}' for key, value in params.items())
     return f'{base_url}?{query}'
 
