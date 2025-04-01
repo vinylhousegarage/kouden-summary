@@ -1,0 +1,26 @@
+services:
+  db:
+    image: mariadb:11.4.4
+    restart: always
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb -u${MYSQL_USER} -p${MYSQL_PASSWORD} -e 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
