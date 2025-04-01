@@ -2,4 +2,4 @@
 set -e
 
 echo "Running ruff lint check..."
-ruff .
+ruff check .
