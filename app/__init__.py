@@ -5,7 +5,7 @@ from app.extensions import csrf, db, migrate, session
 from app.logging_config import check_existing_handlers, setup_logging
 from app.middleware.before_request import require_login
 from app.middleware.context_processors import register_context_processors
-from app.middleware.request_logging import setup_request_logging
+from app.middleware.request_logging import setup_request_logging # noqa: F401
 from app.routes.auth import auth_bp
 from app.routes.health import health_bp
 from app.routes.main import main_bp
@@ -13,7 +13,7 @@ from app.routes.summaries import summaries_bp
 
 
 def create_app():
-    from app.models import Summary
+    from app.models import Summary # noqa: F401
 
     app = Flask(__name__)
     app.config.from_object(Config)
