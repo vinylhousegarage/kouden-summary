@@ -36,7 +36,7 @@ def get_public_key_from_jwk(jwks, kid):
     )
     return pem_key
 
-def decode_cognito_jwt(id_token, access_token):
+def decode_cognito_jwt(id_token):
     jwks = get_cognito_jwk()
     headers = jwt.get_unverified_header(id_token)
     kid = headers['kid']
@@ -47,7 +47,7 @@ def decode_cognito_jwt(id_token, access_token):
         pem_key,
         algorithms=['RS256'],
         audience=Config.AWS_COGNITO_USER_POOL_CLIENT_ID,
-        access_token=access_token,
+        issuer=f'https://cognito-idp.{Config.AWS_REGION}.amazonaws.com/{Config.AWS_COGNITO_USER_POOL_ID}'
     )
     return claims
 
@@ -73,8 +73,8 @@ def verify_cognito_jwt(access_token, leeway=10):
     except Exception:
         current_app.logger.exception('❌ access_token 検証失敗')
 
-def validate_access_token(token):
-    claims = verify_cognito_jwt(token)
+def validate_access_token(access_token):
+    claims = verify_cognito_jwt(access_token)
     if claims:
         return claims
     current_app.logger.info('✅ 無効なトークンのためセッションをクリア')
