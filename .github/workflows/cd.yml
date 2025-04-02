@@ -46,6 +46,11 @@ jobs:
             --query 'taskDefinition' \
             --output json > ecs-task-def.json
 
+      - name: Remove unsupported fields from task definition
+        run: |
+          jq 'del(.enableFaultInjection)' ecs-task-def.json > ecs-task-def.cleaned.json
+          mv ecs-task-def.cleaned.json ecs-task-def.json
+
       - name: Extract Image Digest
         id: image-digest
         run: |
