@@ -73,8 +73,8 @@ def verify_cognito_jwt(access_token, leeway=10):
     except Exception:
         current_app.logger.exception('❌ access_token 検証失敗')
 
-def validate_access_token(token):
-    claims = verify_cognito_jwt(token)
+def validate_access_token(access_token):
+    claims = verify_cognito_jwt(access_token)
     if claims:
         return claims
     current_app.logger.info('✅ 無効なトークンのためセッションをクリア')

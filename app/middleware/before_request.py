@@ -18,14 +18,14 @@ def require_login(app):
             current_app.logger.info('✅ `public_routes` に含まれているためリダイレクトしません')
             return
 
-        token = session.get('access_token')
+        access_token = session.get('access_token')
         refresh_token = session.get('refresh_token')
 
-        if token:
-            claims = validate_access_token(token)
+        if access_token:
+            claims = validate_access_token(access_token)
 
             try:
-                claims = verify_cognito_jwt(token, leeway=10)
+                claims = verify_cognito_jwt(access_token, leeway=10)
                 request.user = claims
                 return
             except Exception:
