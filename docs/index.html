@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h2 id="%E9%A6%99%E5%85%B8%E9%9B%86%E8%A8%88--kouden-summary-app">香典集計 ( kouden summary app )</h2>
+<h3 id="1-%E6%A6%82%E8%A6%81">1. 概要</h3>
+<ul>
+<li>
+<p><strong>目的</strong></p>
+<ul>
+<li>本アプリは、Ruby on Rails で作成した「みんなで香典集計」を Flask で書き換えたものです。</li>
+<li>FastAPI による API 分離を見据え、Flask で記述しています。</li>
+<li>AWS Cognito を利用したログイン機能を導入し、セキュリティを強化しました。</li>
+<li>GitHub Actions による CI/CD パイプラインを構築し、自動で AWS ECS にデプロイしています。</li>
+</ul>
+</li>
+<li>
+<p><strong>範囲</strong></p>
+<ul>
+<li><strong>対象ユーザー</strong>
+<ul>
+<li>AWS Cognito で認証されたユーザー（ログインして香典情報を登録・編集・削除）</li>
+</ul>
+</li>
+<li><strong>提供機能</strong>
+<ul>
+<li>ログイン機能（AWS Cognito）</li>
+<li>香典情報の登録・編集・削除</li>
+<li>集計画面の表示</li>
+<li>サーバーサイドセッション管理</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>前作からの変更点</strong></p>
+<ul>
+<li>QRコードによる投稿者招待機能は、セキュリティロジック簡素化のため除外しています。</li>
+</ul>
+</li>
+<li>
+<p><strong>URL</strong></p>
+<ul>
+<li><strong>GitHubリポジトリ</strong>
+<ul>
+<li><a href="https://github.com/vinylhousegarage/kouden-summary">https://github.com/vinylhousegarage/kouden-summary</a></li>
+</ul>
+</li>
+<li><strong>AWSデプロイ</strong>
+<ul>
+<li><a href="https://kouden-summary.com">https://kouden-summary.com</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E8%A8%AD%E8%A8%88">2. セキュリティ設計</h3>
+<ul>
+<li>
+<p><strong>認証方式：OAuth2.0 / OIDC準拠 + Cognito 実装</strong></p>
+<ul>
+<li>OAuth2.0 / OpenID Connect（OIDC）に準拠した AWS Cognito を認証に使用</li>
+<li>認証成功後、Cognito から返される <code>authorization_code</code> を元にトークン（<code>id_token</code>, <code>access_token</code>, <code>refresh_token</code>）を取得し、検証</li>
+<li>トークンはサーバー（Flask-Session + MariaDB）に保存し、管理</li>
+<li>ログアウト時、Cognito の <code>logout</code> エンドポイントにリダイレクト</li>
+</ul>
+</li>
+<li>
+<p><strong>セッション管理：Flask-Session + MariaDB + Fernet</strong></p>
+<ul>
+<li>Flask-Session によりサーバーサイドセッションを実装</li>
+<li>Fernet で暗号化したトークンをサーバーに格納</li>
+<li>暗号化によるサイズの増加を考慮し、セッションデータのカラムは <code>mediumBLOB</code> に変更</li>
+<li><code>id_token</code> の <code>sub</code> のみをセッションキーとして抽出し、管理</li>
+<li>ログアウト時、セッションキーとトークンを削除し、ログイン状態を無効化</li>
+</ul>
+</li>
+<li>
+<p><strong>トークン検証：<code>verify_cognito_jwt</code> 関数作成</strong></p>
+<ul>
+<li>Cognito の JWKs を取得し、<code>kid</code> を抽出して公開鍵を作成</li>
+<li>リクエスト実行前に、<code>access_token</code> の署名と標準クレーム（<code>aud</code>・<code>iss</code>・<code>exp</code>）を自動検証</li>
+</ul>
+</li>
+<li>
+<p><strong>構成管理：AWS システムマネージャー</strong></p>
+<ul>
+<li>envファイルに秘匿情報を置かず、AWS システムマネージャーに環境変数として登録</li>
+<li>AWS IAM ロールの権限で、AWS システムマネージャーの環境変数を参照</li>
+</ul>
+</li>
+<li>
+<p><strong>CD統合：GitHub Actions + ECS</strong></p>
+<ul>
+<li>GitHub Actions で Dockerイメージを更新し、AWS ECR にプッシュ</li>
+<li>更新した Dockerイメージで、AWS ECS のタスク定義を更新</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-%E3%83%87%E3%83%BC%E3%82%BF%E8%A6%81%E4%BB%B6">3. データ要件</h3>
+<ul>
+<li>
+<p><strong>summaries テーブル（香典情報を管理）</strong></p>
+<table>
+<thead>
+<tr>
+<th>カラム名</th>
+<th>データ型</th>
+<th>制約</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>int(11)</td>
+<td>PRIMARY KEY</td>
+<td>香典情報の一意な識別子</td>
+</tr>
+<tr>
+<td>giver_name</td>
+<td>varchar(100)</td>
+<td>NOT NULL</td>
+<td>氏名</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>int(11)</td>
+<td>NOT NULL</td>
+<td>金額</td>
+</tr>
+<tr>
+<td>address</td>
+<td>varchar(250)</td>
+<td>NULL 可</td>
+<td>住所</td>
+</tr>
+<tr>
+<td>tel</td>
+<td>varchar(20)</td>
+<td>NULL 可</td>
+<td>電話</td>
+</tr>
+<tr>
+<td>note</td>
+<td>varchar(250)</td>
+<td>NULL 可</td>
+<td>備考</td>
+</tr>
+<tr>
+<td>user_cognito_id</td>
+<td>varchar(36)</td>
+<td>NOT NULL</td>
+<td>ユーザーの Cognito ID</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>datetime</td>
+<td>NOT NULL</td>
+<td>登録日時</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>datetime</td>
+<td>NOT NULL</td>
+<td>更新日時</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><strong>sessions テーブル（Flask-Session による自動生成）</strong></p>
+<table>
+<thead>
+<tr>
+<th>カラム名</th>
+<th>データ型</th>
+<th>制約</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>int(11)</td>
+<td>PRIMARY KEY</td>
+<td>セッションの一意な識別子</td>
+</tr>
+<tr>
+<td>session_id</td>
+<td>varchar(255)</td>
+<td>UNIQUE</td>
+<td>ユーザーごとのセッションID</td>
+</tr>
+<tr>
+<td>data</td>
+<td>blob</td>
+<td>NULL 可</td>
+<td>トークンデータ</td>
+</tr>
+<tr>
+<td>expiry</td>
+<td>datetime</td>
+<td>NULL 可</td>
+<td>セッションの有効期限</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><strong>補足</strong></p>
+<ul>
+<li><code>sessions.data</code> カラムは初期状態では <code>blob</code> 型ですが、暗号化トークンの保存に備え、初回リクエスト時に <code>mediumblob</code> に自動でマイグレーションされます。</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E8%A6%81%E4%BB%B6">4. システム要件</h3>
+<ul>
+<li>
+<p><strong>技術スタック</strong></p>
+<ul>
+<li>プログラミング言語：Python 3.13.2</li>
+<li>フレームワーク：Flask 3.1.0</li>
+<li>データベース：MariaDB 11.4.4</li>
+<li>仮想環境構築：Docker
+<ul>
+<li>開発環境：Docker Compose で Dockerコンテナを起動</li>
+<li>本番環境：AWS ECSタスクで Dockerコンテナを起動</li>
+</ul>
+</li>
+<li>テスト環境構築：GitHub Actions 上の runner で ruff を起動</li>
+<li>ソースコードのローカルバージョン管理：Git</li>
+<li>リモートリポジトリのホスティング：GitHub</li>
+<li>CI/CD：GitHub Actions
+<ul>
+<li>CI：テスト
+<ul>
+<li>テスト：Ruff 0.11.2 によるリントチェックを実行</li>
+</ul>
+</li>
+<li>CD：ビルド / デプロイ
+<ul>
+<li>ビルド：Dockerイメージと AWS ECSタスク定義の更新</li>
+<li>デプロイ：AWS ECSサービスで更新されたタスク定義を反映</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>インフラ要件</strong></p>
+<ul>
+<li>開発環境サーバー：Werkzeug</li>
+<li>本番環境サーバー：Gunicorn</li>
+<li>ネットワーク要件：AWS
+<ul>
+<li>アプリケーションホスティング：ECS EC2モード</li>
+<li>ドメイン取得・DNS管理：Route 53</li>
+</ul>
+</li>
+<li>ドメイン：<a href="https://kouden-summary.com">https://kouden-summary.com</a></li>
+</ul>
+</li>
+<li>
+<p><strong>開発環境</strong></p>
+<ul>
+<li>OS：Windows 10</li>
+<li>エディタ/IDE：Visual Studio Code</li>
+<li>コンテナ開発環境：Docker Compose</li>
+<li>バージョン管理の方法：
+<ul>
+<li>ブランチ戦略
+<ul>
+<li>mainブランチと作業ブランチに分けて管理</li>
+<li>Pull Requestを通してmainブランチにマージ</li>
+<li>現在は個人開発であるため、コードレビューは任意で行うことが可能</li>
+</ul>
+</li>
+<li>コミットメッセージ規約
+<ul>
+<li>Conventional Commits (feature, refactor, docs などを使用)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</body>
+</html>
