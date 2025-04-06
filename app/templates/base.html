@@ -1,36 +1,42 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}香典集計{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/summaries-table.css') }}">
-    {% block extra_css %}{% endblock %}
+  <meta charset="UTF-8">
+  <title>{% block title %}香典集計{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/summaries-table.css') }}">
+  {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <div id="flash-messages">
-        {% set messages = get_flashed_messages() %}
-        {% if messages %}
-            <p>{{ '[ ' ~ (messages|first) ~ ' ]' }}</p>
-        {% endif %}
+  <div id="flash-messages">
+    {% set messages = get_flashed_messages() %}
+    {% if messages %}
+    <p>{{ '[ ' ~ (messages|first) ~ ' ]' }}</p>
+    {% endif %}
+  </div>
+
+  <header>
+    <div class="summary-info">
+      <h4><strong>合計件数：{{ total_count }} 件</strong></h4>
+      <h4><strong>合計金額：{{ "{:,}".format(total_amount) }} 円</strong></h4>
     </div>
+    {% block page_heading %}{% endblock %}
+  </header>
 
-    <header>
-        <div class="summary-info">
-            <h4><strong>合計件数：{{ total_count }} 件</strong></h4>
-            <h4><strong>合計金額：{{ "{:,}".format(total_amount) }} 円</strong></h4>
-        </div>
-        {% block page_heading %}{% endblock %}
-    </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
 
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+  <div id="confirm-button-script">
+    {% block scripts %}
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% endblock %}
+  </div>
 
-    <div id="confirm-button-script">
-        {% block scripts %}
-        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-        {% endblock %}
-    </div>
+  {% if show_license %}
+  <footer>
+    <p>&copy; 2025 vinylhousegarage — <a href="{{ url_for('license') }}">利用許諾（MIT License）</a></p>
+  </footer>
+  {% endif %}
 </body>
 </html>
