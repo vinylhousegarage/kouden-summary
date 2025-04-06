@@ -8,6 +8,7 @@ from app.middleware.context_processors import register_context_processors
 from app.middleware.request_logging import setup_request_logging # noqa: F401
 from app.routes.auth import auth_bp
 from app.routes.health import health_bp
+from app.routes.license import license_bp
 from app.routes.main import main_bp
 from app.routes.summaries import summaries_bp
 
@@ -34,6 +35,7 @@ def create_app():
     app.register_blueprint(health_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(summaries_bp)
+    app.register_blueprint(license_bp)
 
     register_context_processors(app)
     require_login(app)
