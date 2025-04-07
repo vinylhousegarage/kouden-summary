@@ -371,105 +371,92 @@ code {
 <li>
 <p><strong>目的</strong></p>
 <ul>
-<li>本アプリは、Ruby on Rails で作成した「みんなで香典集計」を Flask で書き換えたものです。</li>
-<li>FastAPI による API 分離を見据え、Flask で記述しています。</li>
-<li>AWS Cognito を利用したログイン機能を導入し、セキュリティを強化しました。</li>
-<li>GitHub Actions による CI/CD パイプラインを構築し、自動で AWS ECS にデプロイしています。</li>
+<li>本アプリは、Ruby on Rails にて開発した香典集計アプリを Flask によって再構築したものです。</li>
+<li>FastAPI を用いた認証機能の API化 を見据え、フレームワークを Flask に変更しました。</li>
+<li>AWS Cognito を導入した認証機能により、セキュリティを強化しています。</li>
+<li>GitHub Actions による CI/CDワークフロー を実装し、自動で AWS ECS にデプロイします。</li>
 </ul>
 </li>
 <li>
-<p><strong>範囲</strong></p>
+<p><strong>対象ユーザー</strong></p>
 <ul>
-<li><strong>対象ユーザー</strong>
-<ul>
-<li>AWS Cognito で認証されたユーザー（ログインして香典情報を登録・編集・削除）</li>
+<li>AWS Cognito による認証を受けたユーザー</li>
 </ul>
 </li>
-<li><strong>提供機能</strong>
+<li>
+<p><strong>提供機能</strong></p>
 <ul>
-<li>ログイン機能（AWS Cognito）</li>
-<li>香典情報の登録・編集・削除</li>
-<li>集計画面の表示</li>
-<li>サーバーサイドセッション管理</li>
-</ul>
-</li>
+<li>認証機能 ( AWS Cognito )</li>
+<li>香典情報の表示・登録・編集・削除</li>
+<li>香典情報の集計表示</li>
+<li>香典情報の一括削除 ( 初期状態へのリセット )</li>
 </ul>
 </li>
 <li>
 <p><strong>前作からの変更点</strong></p>
 <ul>
-<li>QRコードによる投稿者招待機能は、セキュリティロジック簡素化のため除外しています。</li>
-</ul>
-</li>
-<li>
-<p><strong>URL</strong></p>
-<ul>
-<li><strong>GitHubリポジトリ</strong>
-<ul>
-<li><a href="https://github.com/vinylhousegarage/kouden-summary">https://github.com/vinylhousegarage/kouden-summary</a></li>
-</ul>
-</li>
-<li><strong>AWSデプロイ</strong>
-<ul>
-<li><a href="https://kouden-summary.com">https://kouden-summary.com</a></li>
-</ul>
-</li>
+<li>QRコード による投稿者招待機能は、セキュリティロジック簡素化のため除外しています。</li>
 </ul>
 </li>
 </ul>
 <h3 id="2-%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E8%A8%AD%E8%A8%88">2. セキュリティ設計</h3>
 <ul>
 <li>
-<p><strong>認証方式：OAuth2.0 / OIDC準拠 + Cognito 実装</strong></p>
+<p><strong>認証方式</strong></p>
 <ul>
-<li>OAuth2.0 / OpenID Connect（OIDC）に準拠した AWS Cognito を認証に使用</li>
-<li>認証成功後、Cognito から返される <code>authorization_code</code> を元にトークン（<code>id_token</code>, <code>access_token</code>, <code>refresh_token</code>）を取得し、検証</li>
-<li>トークンはサーバー（Flask-Session + MariaDB）に保存し、管理</li>
-<li>ログアウト時、Cognito の <code>logout</code> エンドポイントにリダイレクト</li>
+<li>OAuth2.0 / OpenID Connect ( OIDC ) に準拠した AWS Cognito をユーザーの認証に使用</li>
+<li>認証成功後、Cognito のリダイレクトURIに付与された code ( 認可コード ) を用いて、トークン ( id_token ・ access_token ・ refresh_token ) を取得し、検証</li>
+<li>トークンをデータベースに保存し、管理</li>
+<li>ログアウト時、Cognito の logoutエンドポイント にリダイレクト</li>
 </ul>
 </li>
 <li>
-<p><strong>セッション管理：Flask-Session + MariaDB + Fernet</strong></p>
+<p><strong>セッション管理</strong></p>
 <ul>
-<li>Flask-Session によりサーバーサイドセッションを実装</li>
-<li>Fernet で暗号化したトークンをサーバーに格納</li>
-<li>暗号化によるサイズの増加を考慮し、セッションデータのカラムは <code>mediumBLOB</code> に変更</li>
-<li><code>id_token</code> の <code>sub</code> のみをセッションキーとして抽出し、管理</li>
-<li>ログアウト時、セッションキーとトークンを削除し、ログイン状態を無効化</li>
+<li>Flask-Session が自動でデータベースに sessionsテーブル を生成</li>
+<li>暗号化によるサイズの増加を考慮し、sessionsテーブル の dataカラム を mediumblob型 に変更</li>
+<li>Fernet によって暗号化したトークンを dataカラム に格納</li>
+<li>id_token から sub を抽出し、session_id に格納</li>
+<li>ログアウト時、session_id とトークンを削除し、ログイン状態を無効化</li>
 </ul>
 </li>
 <li>
-<p><strong>トークン検証：<code>verify_cognito_jwt</code> 関数作成</strong></p>
+<p><strong>トークン検証</strong></p>
 <ul>
-<li>Cognito の JWKs を取得し、<code>kid</code> を抽出して公開鍵を作成</li>
-<li>リクエスト実行前に、<code>access_token</code> の署名と標準クレーム（<code>aud</code>・<code>iss</code>・<code>exp</code>）を自動検証</li>
+<li>Cognito の JSON Web Key Set ( JWKs ) を取得し Key ID を抽出</li>
+<li>抽出した Key ID と access_token の Key ID を照合し、一致する Key を PEM形式 の公開鍵に変換</li>
+<li>変換した公開鍵を用いて、リクエスト実行前に access_token の署名と標準クレーム ( aud ・ iss ・ exp ) を自動検証</li>
 </ul>
 </li>
 <li>
-<p><strong>構成管理：AWS システムマネージャー</strong></p>
+<p><strong>秘匿情報管理</strong></p>
 <ul>
-<li>envファイルに秘匿情報を置かず、AWS システムマネージャーに環境変数として登録</li>
-<li>AWS IAM ロールの権限で、AWS システムマネージャーの環境変数を参照</li>
+<li>秘匿情報を AWS SSM ( パラメータストア ) にて、パラメータとして登録</li>
+<li>AWS ECS タスク定義にてパラメータを参照し、環境変数として設定</li>
+<li>AWS IAM ロールの権限により、環境変数を取得</li>
 </ul>
 </li>
 <li>
-<p><strong>CD統合：GitHub Actions + ECS</strong></p>
+<p><strong>CI/CD構成</strong></p>
 <ul>
-<li>GitHub Actions で Dockerイメージを更新し、AWS ECR にプッシュ</li>
-<li>更新した Dockerイメージで、AWS ECS のタスク定義を更新</li>
+<li>GitHub Actions による CI/CDワークフロー を実装、テスト・ビルド・デプロイを自動化</li>
+<li>ruff によるリントチェックを実行し、構文やスタイルを検証</li>
+<li>Dockerイメージ をビルドし、AWS ECR にプッシュ</li>
+<li>ビルドした Dockerイメージ で AWS ECS のタスク定義を更新し、デプロイ</li>
 </ul>
 </li>
 </ul>
-<h3 id="3-%E3%83%87%E3%83%BC%E3%82%BF%E8%A6%81%E4%BB%B6">3. データ要件</h3>
+<h3 id="3-%E3%83%87%E3%83%BC%E3%82%BF%E6%A7%8B%E9%80%A0">3. データ構造</h3>
 <ul>
 <li>
-<p><strong>summaries テーブル（香典情報を管理）</strong></p>
+<p><strong>summaries テーブル</strong></p>
 <table>
 <thead>
 <tr>
 <th>カラム名</th>
 <th>データ型</th>
 <th>制約</th>
+<th>初期値</th>
 <th>説明</th>
 </tr>
 </thead>
@@ -477,68 +464,78 @@ code {
 <tr>
 <td>id</td>
 <td>int(11)</td>
-<td>PRIMARY KEY</td>
+<td>PRIMARY KEY, auto_increment</td>
+<td>NULL</td>
 <td>香典情報の一意な識別子</td>
 </tr>
 <tr>
 <td>giver_name</td>
 <td>varchar(100)</td>
 <td>NOT NULL</td>
+<td>NULL</td>
 <td>氏名</td>
 </tr>
 <tr>
 <td>amount</td>
 <td>int(11)</td>
 <td>NOT NULL</td>
+<td>NULL</td>
 <td>金額</td>
 </tr>
 <tr>
 <td>address</td>
 <td>varchar(250)</td>
-<td>NULL 可</td>
+<td>NULLABLE</td>
+<td>NULL</td>
 <td>住所</td>
 </tr>
 <tr>
 <td>tel</td>
 <td>varchar(20)</td>
-<td>NULL 可</td>
+<td>NULLABLE</td>
+<td>NULL</td>
 <td>電話</td>
 </tr>
 <tr>
 <td>note</td>
 <td>varchar(250)</td>
-<td>NULL 可</td>
+<td>NULLABLE</td>
+<td>NULL</td>
 <td>備考</td>
 </tr>
 <tr>
 <td>user_cognito_id</td>
 <td>varchar(36)</td>
 <td>NOT NULL</td>
-<td>ユーザーの Cognito ID</td>
+<td>NULL</td>
+<td>ユーザー識別ID</td>
 </tr>
 <tr>
 <td>created_at</td>
 <td>datetime</td>
 <td>NOT NULL</td>
+<td>current_timestamp()</td>
 <td>登録日時</td>
 </tr>
 <tr>
 <td>updated_at</td>
 <td>datetime</td>
 <td>NOT NULL</td>
+<td>current_timestamp()</td>
 <td>更新日時</td>
 </tr>
 </tbody>
 </table>
 </li>
 <li>
-<p><strong>sessions テーブル（Flask-Session による自動生成）</strong></p>
+<p><strong>sessions テーブル</strong></p>
 <table>
 <thead>
 <tr>
 <th>カラム名</th>
 <th>データ型</th>
 <th>制約</th>
+<th>初期値</th>
 <th>説明</th>
 </tr>
 </thead>
@@ -546,38 +543,42 @@ code {
 <tr>
 <td>id</td>
 <td>int(11)</td>
-<td>PRIMARY KEY</td>
-<td>セッションの一意な識別子</td>
+<td>PRIMARY KEY, auto_increment</td>
+<td>NULL</td>
+<td>session の一意な識別子</td>
 </tr>
 <tr>
 <td>session_id</td>
 <td>varchar(255)</td>
 <td>UNIQUE</td>
-<td>ユーザーごとのセッションID</td>
+<td>NULL</td>
+<td>id_token から抽出した sub</td>
 </tr>
 <tr>
 <td>data</td>
 <td>blob</td>
-<td>NULL 可</td>
-<td>トークンデータ</td>
+<td>NULLABLE</td>
+<td>NULL</td>
+<td>暗号化されたトークン</td>
 </tr>
 <tr>
 <td>expiry</td>
 <td>datetime</td>
-<td>NULL 可</td>
-<td>セッションの有効期限</td>
+<td>NULLABLE</td>
+<td>NULL</td>
+<td>session の有効期限</td>
 </tr>
 </tbody>
 </table>
 </li>
 <li>
-<p><strong>補足</strong></p>
-<ul>
-<li><code>sessions.data</code> カラムは初期状態では <code>blob</code> 型ですが、暗号化トークンの保存に備え、初回リクエスト時に <code>mediumblob</code> に自動でマイグレーションされます。</li>
-</ul>
+<p>id_token の sub属性を抽出し、session_idカラム に格納することで、ユーザーを識別しています。</p>
+</li>
+<li>
+<p>初回アクセス時、暗号化トークンの格納に備え、dataカラム は blob型 から mediumblob型 に変更されます。</p>
 </li>
 </ul>
-<h3 id="4-%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E8%A6%81%E4%BB%B6">4. システム要件</h3>
+<h3 id="4-%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E6%A7%8B%E6%88%90">4. システム構成</h3>
 <ul>
 <li>
 <p><strong>技術スタック</strong></p>
@@ -588,67 +589,41 @@ code {
 <li>仮想環境構築：Docker
 <ul>
 <li>開発環境：Docker Compose で Dockerコンテナを起動</li>
-<li>本番環境：AWS ECSタスクで Dockerコンテナを起動</li>
+<li>本番環境：AWS ECS 上で Dockerコンテナを起動</li>
 </ul>
 </li>
-<li>テスト環境構築：GitHub Actions 上の runner で ruff を起動</li>
+<li>テスト環境：GitHub Actions</li>
 <li>ソースコードのローカルバージョン管理：Git</li>
-<li>リモートリポジトリのホスティング：GitHub</li>
-<li>CI/CD：GitHub Actions
+<li>リモートリポジトリのホスティング：GitHub
 <ul>
-<li>CI：テスト
-<ul>
-<li>テスト：Ruff 0.11.2 によるリントチェックを実行</li>
+<li>URL：<a href="https://github.com/vinylhousegarage/kouden-summary">https://github.com/vinylhousegarage/kouden-summary</a></li>
 </ul>
 </li>
-<li>CD：ビルド / デプロイ
-<ul>
-<li>ビルド：Dockerイメージと AWS ECSタスク定義の更新</li>
-<li>デプロイ：AWS ECSサービスで更新されたタスク定義を反映</li>
-</ul>
-</li>
-</ul>
-</li>
+<li>CI/CD：GitHub Actions</li>
 </ul>
 </li>
 <li>
-<p><strong>インフラ要件</strong></p>
+<p><strong>インフラ構成</strong></p>
 <ul>
 <li>開発環境サーバー：Werkzeug</li>
 <li>本番環境サーバー：Gunicorn</li>
-<li>ネットワーク要件：AWS
+<li>クラウドサービス：AWS
 <ul>
-<li>アプリケーションホスティング：ECS EC2モード</li>
-<li>ドメイン取得・DNS管理：Route 53</li>
+<li>アプリケーションホスティング：ECS ( EC2モード )</li>
+<li>ロードバランサー：ALB</li>
+<li>データベース：RDS ( MariaDB 11.4.4 )</li>
+<li>イメージレジストリ：ECR</li>
+<li>構成管理：SSM ( パラメータストア )</li>
+<li>ドメイン・DNS管理：Route 53</li>
 </ul>
 </li>
-<li>ドメイン：<a href="https://kouden-summary.com">https://kouden-summary.com</a></li>
+<li>アプリ公開URL：<a href="https://kouden-summary.com">https://kouden-summary.com</a></li>
 </ul>
 </li>
-<li>
-<p><strong>開発環境</strong></p>
+</ul>
+<h3 id="5-%E3%83%A9%E3%82%A4%E3%82%BB%E3%83%B3%E3%82%B9">5. ライセンス</h3>
 <ul>
-<li>OS：Windows 10</li>
-<li>エディタ/IDE：Visual Studio Code</li>
-<li>コンテナ開発環境：Docker Compose</li>
-<li>バージョン管理の方法：
-<ul>
-<li>ブランチ戦略
-<ul>
-<li>mainブランチと作業ブランチに分けて管理</li>
-<li>Pull Requestを通してmainブランチにマージ</li>
-<li>現在は個人開発であるため、コードレビューは任意で行うことが可能</li>
-</ul>
-</li>
-<li>コミットメッセージ規約
-<ul>
-<li>Conventional Commits (feature, refactor, docs などを使用)</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<li>このプロジェクトは <a href="https://kouden-summary/license">MIT License</a> のもとで公開されています。</li>
 </ul>
 
 </body>
