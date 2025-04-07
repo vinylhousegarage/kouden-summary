@@ -103,4 +103,4 @@
     - アプリ公開URL：[https://kouden-summary.com](https://kouden-summary.com)
 
 ### 5. ライセンス
-  - このプロジェクトは [MIT License](https://kouden-summary/license) のもとで公開されています。
+  - このプロジェクトは [MIT License](https://github.com/vinylhousegarage/kouden-summary/blob/main/LICENSE) のもとで公開されています。
