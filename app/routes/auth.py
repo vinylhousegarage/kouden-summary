@@ -40,7 +40,7 @@ def callback():
         session['id_token'] = id_token
         session['refresh_token'] = refresh_token
 
-        claims = decode_cognito_jwt(id_token)
+        claims = decode_cognito_jwt(id_token, access_token)
         user_cognito_id = claims.get('sub')
 
         session['user_cognito_id'] = user_cognito_id
