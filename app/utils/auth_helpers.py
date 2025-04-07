@@ -27,7 +27,7 @@ def generate_cognito_login_url():
 def generate_cognito_logout_url():
     return generate_cognito_url('logout', {
         'client_id': Config.AWS_COGNITO_USER_POOL_CLIENT_ID,
-        'logout_uri': Config.AWS_COGNITO_REDIRECT_URI,
+        'logout_uri': Config.AWS_COGNITO_LOGOUT_URI,
     })
 
 def redirect_to_cognito_login():
