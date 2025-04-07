@@ -36,7 +36,7 @@ def get_public_key_from_jwk(jwks, kid):
     )
     return pem_key
 
-def decode_cognito_jwt(id_token):
+def decode_cognito_jwt(id_token, access_token):
     jwks = get_cognito_jwk()
     headers = jwt.get_unverified_header(id_token)
     kid = headers['kid']
@@ -47,7 +47,8 @@ def decode_cognito_jwt(id_token):
         pem_key,
         algorithms=['RS256'],
         audience=Config.AWS_COGNITO_USER_POOL_CLIENT_ID,
-        issuer=f'https://cognito-idp.{Config.AWS_REGION}.amazonaws.com/{Config.AWS_COGNITO_USER_POOL_ID}'
+        issuer=f'https://cognito-idp.{Config.AWS_REGION}.amazonaws.com/{Config.AWS_COGNITO_USER_POOL_ID}',
+        access_token=access_token
     )
     return claims
 
