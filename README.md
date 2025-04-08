@@ -73,7 +73,7 @@
     | data       | blob            | NULLABLE                          | NULL   | 暗号化されたトークン           |
     | expiry     | datetime        | NULLABLE                          | NULL   | session の有効期限           |
 
-  - id_token の sub属性を抽出し、session_idカラム に格納することで、ユーザーを識別しています。
+  - id_token の sub属性 を抽出し、session_idカラム に格納することで、ユーザーを識別しています。
   - 初回アクセス時、暗号化トークンの格納に備え、dataカラム は blob型 から mediumblob型 に変更されます。
 
 ### 4. システム構成
