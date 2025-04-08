@@ -2,7 +2,7 @@
 
 ### 1. 概要
   - **目的**
-    - 本アプリは、Ruby on Rails にて開発した香典集計アプリを Flask によって再構築したものです。
+    - 本アプリは、Ruby on Rails にて開発した香典集計アプリを Flask にて再構築したものです。
     - FastAPI を用いた認証機能の API化 を見据え、フレームワークを Flask に変更しました。
     - AWS Cognito を導入した認証機能により、セキュリティを強化しています。
     - GitHub Actions による CI/CDワークフロー を実装し、自動で AWS ECS にデプロイします。
