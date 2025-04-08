@@ -9,7 +9,7 @@ class Config:
     DB_PASSWORD = os.getenv('MYSQL_PASSWORD')
     DB_NAME = os.getenv('MYSQL_DATABASE')
 
-    SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}'
+    SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}?charset=utf8mb4'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     SECRET_KEY = os.getenv('SECRET_KEY', 'default-secret-key')
