@@ -73,7 +73,7 @@
     | data       | blob            | NULLABLE                          | NULL   | 暗号化されたトークン           |
     | expiry     | datetime        | NULLABLE                          | NULL   | session の有効期限           |
 
-  - id_token の sub属性を抽出し、session_idカラム に格納することで、ユーザーを識別しています。
+  - id_token の sub属性 を抽出し、session_idカラム に格納することで、ユーザーを識別しています。
   - 初回アクセス時、暗号化トークンの格納に備え、dataカラム は blob型 から mediumblob型 に変更されます。
 
 ### 4. システム構成
@@ -87,20 +87,24 @@
     - テスト環境：GitHub Actions
     - ソースコードのローカルバージョン管理：Git
     - リモートリポジトリのホスティング：GitHub
-      - URL：[https://github.com/vinylhousegarage/kouden-summary](https://github.com/vinylhousegarage/kouden-summary)
     - CI/CD：GitHub Actions
 
   - **インフラ構成**
     - 開発環境サーバー：Werkzeug
     - 本番環境サーバー：Gunicorn
-    - クラウドサービス：AWS
-      - アプリケーションホスティング：ECS ( EC2モード )
-      - ロードバランサー：ALB
+    - アプリのホスティング：AWS
+      - コンテナ実行：ECS ( EC2モード )
+      - イメージ管理：ECR
       - データベース：RDS ( MariaDB 11.4.4 )
-      - イメージレジストリ：ECR
+      - ロードバランサー：ALB
       - 構成管理：SSM ( パラメータストア )
       - ドメイン・DNS管理：Route 53
-    - アプリ公開URL：[https://kouden-summary.com](https://kouden-summary.com)
 
-### 5. ライセンス
+### 5. アクセス情報
+  - **GitHubリポジトリURL**
+    - [https://github.com/vinylhousegarage/kouden-summary](https://github.com/vinylhousegarage/kouden-summary)
+  - **アプリURL**
+    - [https://kouden-summary.com](https://kouden-summary.com)
+
+### 6. ライセンス
   - このプロジェクトは [MIT License](https://github.com/vinylhousegarage/kouden-summary/blob/main/LICENSE) のもとで公開されています。

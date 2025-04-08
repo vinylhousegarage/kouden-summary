@@ -572,7 +572,7 @@ code {
 </table>
 </li>
 <li>
-<p>id_token の sub属性を抽出し、session_idカラム に格納することで、ユーザーを識別しています。</p>
+<p>id_token の sub属性 を抽出し、session_idカラム に格納することで、ユーザーを識別しています。</p>
 </li>
 <li>
 <p>初回アクセス時、暗号化トークンの格納に備え、dataカラム は blob型 から mediumblob型 に変更されます。</p>
@@ -594,11 +594,7 @@ code {
 </li>
 <li>テスト環境：GitHub Actions</li>
 <li>ソースコードのローカルバージョン管理：Git</li>
-<li>リモートリポジトリのホスティング：GitHub
-<ul>
-<li>URL：<a href="https://github.com/vinylhousegarage/kouden-summary">https://github.com/vinylhousegarage/kouden-summary</a></li>
-</ul>
-</li>
+<li>リモートリポジトリのホスティング：GitHub</li>
 <li>CI/CD：GitHub Actions</li>
 </ul>
 </li>
@@ -607,21 +603,33 @@ code {
 <ul>
 <li>開発環境サーバー：Werkzeug</li>
 <li>本番環境サーバー：Gunicorn</li>
-<li>クラウドサービス：AWS
+<li>アプリのホスティング：AWS
 <ul>
-<li>アプリケーションホスティング：ECS ( EC2モード )</li>
-<li>ロードバランサー：ALB</li>
+<li>コンテナ実行：ECS ( EC2モード )</li>
+<li>イメージ管理：ECR</li>
 <li>データベース：RDS ( MariaDB 11.4.4 )</li>
-<li>イメージレジストリ：ECR</li>
+<li>ロードバランサー：ALB</li>
 <li>構成管理：SSM ( パラメータストア )</li>
 <li>ドメイン・DNS管理：Route 53</li>
 </ul>
 </li>
-<li>アプリ公開URL：<a href="https://kouden-summary.com">https://kouden-summary.com</a></li>
 </ul>
 </li>
 </ul>
-<h3 id="5-%E3%83%A9%E3%82%A4%E3%82%BB%E3%83%B3%E3%82%B9">5. ライセンス</h3>
+<h3 id="5-%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E6%83%85%E5%A0%B1">5. アクセス情報</h3>
+<ul>
+<li><strong>GitHubリポジトリURL</strong>
+<ul>
+<li><a href="https://github.com/vinylhousegarage/kouden-summary">https://github.com/vinylhousegarage/kouden-summary</a></li>
+</ul>
+</li>
+<li><strong>アプリURL</strong>
+<ul>
+<li><a href="https://kouden-summary.com">https://kouden-summary.com</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="6-%E3%83%A9%E3%82%A4%E3%82%BB%E3%83%B3%E3%82%B9">6. ライセンス</h3>
 <ul>
 <li>このプロジェクトは <a href="https://github.com/vinylhousegarage/kouden-summary/blob/main/LICENSE">MIT License</a> のもとで公開されています。</li>
 </ul>
