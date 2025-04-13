@@ -99,6 +99,9 @@
       - ロードバランサー：ALB
       - 構成管理：SSM ( パラメータストア )
       - ドメイン・DNS管理：Route 53
+    - AWS構成図
+      - [https://vinylhousegarage.github.io/kouden-summary/aws-diagram.svg](https://vinylhousegarage.github.io/kouden-summary/aws-diagram.svg)
+
 
 ### 5. アクセス情報
   - **GitHubリポジトリURL**
