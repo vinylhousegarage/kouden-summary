@@ -1,8 +1,11 @@
 FROM python:3.13-slim-bookworm
 WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    bash curl nano mariadb-client git && \
-    rm -rf /var/lib/apt/lists/*
+    bash curl nano mariadb-client git \
+    build-essential libssl-dev libffi-dev \
+    && curl https://sh.rustup.rs -sSf | sh -s -- -y \
+    && rm -rf /var/lib/apt/lists/*
+ENV PATH="/root/.cargo/bin:${PATH}"
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app
