@@ -19,10 +19,65 @@
   - **前作からの変更点**
     - QRコード による投稿者招待機能は、セキュリティロジック簡素化のため除外しています。
 
-### 2. セキュリティ設計
+### 2. 設計意図
+  - **スケーラビリティ**
+    - コンテナオーケストレーションとして ECS を採用し、将来的な負荷増加に対応可能な構成としました。
+
+  - **セキュリティ**
+    - 認証基盤として AWS Cognito を採用し、OAuth2.0 / OIDC に準拠した安全な認証を採用しました。
+    - JWT の署名およびクレーム検証を実装し、不正なリクエストを防止します。
+
+  - **運用性**
+    - GitHub Actions による CI/CD を導入し、デプロイの自動化と品質の担保を実現しました。
+
+  - **機密情報管理**
+    - AWS SSM Parameter Store を用いて秘匿情報を安全に管理し、コードへのハードコーディングを排除しました。
+
+  - **拡張性**
+    - 将来的に FastAPI による API 分離や、Lambda 構成への移行を見据えた設計としました。
+
+### 3. アーキテクチャ設計
+  - 本アプリは、設計意図で示した方針（スケーラビリティ・セキュリティ・運用性）をもとに、以下の構成としています。
+
+  - **AWS構成図**
+    - [https://vinylhousegarage.github.io/kouden-summary/aws-diagram.svg](https://vinylhousegarage.github.io/kouden-summary/aws-diagram.svg)
+
+  - **ALB**
+    - 外部からのリクエストを受け付け、ECS へルーティング
+    - → リバースプロキシとして機能し、アプリケーションを直接公開しない構成とする
+
+  - **ECS（EC2モード）**
+    - EC2インスタンス 上で Flask アプリケーションをコンテナとして実行
+    - → コンテナ化による環境差異の排除とスケーラビリティ確保
+
+  - **RDS（MariaDB）**
+    - アプリケーションデータを管理
+    - → マネージドサービスにより運用負荷を軽減
+
+  - **ECR**
+    - Dockerイメージの管理
+    - → CI/CD パイプラインとの連携のため採用
+
+  - **NAT（インスタンスタイプ）**
+    - プライベートサブネット上の ECS から外部への通信に使用
+    - → インスタンスで構築することでコストを軽減
+
+  - **Cognito**
+    - ユーザー認証を担当
+    - → 認証機能を外部化し、セキュリティと実装コストを最適化
+
+  - **SSM Parameter Store**
+    - 環境変数・シークレット管理
+    - → ソースコードから秘匿情報を分離し、安全性を確保
+
+  - **GitHub Actions**
+    - CI/CD を実行
+    - → テスト・ビルド・デプロイの自動化により品質と開発効率を向上
+
+### 4. セキュリティ設計
   - **認証方式**
     - OAuth2.0 / OpenID Connect ( OIDC ) に準拠した AWS Cognito をユーザーの認証に使用
-    - 認証成功後、Cognito のリダイレクトURIに付与された code ( 認可コード ) を用いて、トークン ( id_token ・ access_token ・ refresh_token ) を取得し、検証
+    - 認証成功後、Cognito の リダイレクトURI に付与された code ( 認可コード ) を用いて、トークン ( id_token ・ access_token ・ refresh_token ) を取得し、検証
     - トークンをデータベースに保存し、管理
     - ログアウト時、Cognito の logoutエンドポイント にリダイレクト
 
@@ -49,7 +104,7 @@
     - Dockerイメージ をビルドし、AWS ECR にプッシュ
     - ビルドした Dockerイメージ で AWS ECS のタスク定義を更新し、デプロイ
 
-### 3. データ構造
+### 5. データ構造
   - **summaries テーブル**
 
     | カラム名         | データ型        | 制約                              | 初期値              | 説明                               |
@@ -76,7 +131,7 @@
   - id_token の sub属性 を抽出し、session_idカラム に格納することで、ユーザーを識別しています。
   - 初回アクセス時、暗号化トークンの格納に備え、dataカラム は blob型 から mediumblob型 に変更されます。
 
-### 4. システム構成
+### 6. システム構成
   - **技術スタック**
     - プログラミング言語：Python 3.13.2
     - フレームワーク：Flask 3.1.0
@@ -99,15 +154,12 @@
       - ロードバランサー：ALB
       - 構成管理：SSM ( パラメータストア )
       - ドメイン・DNS管理：Route 53
-    - AWS構成図
-      - [https://vinylhousegarage.github.io/kouden-summary/aws-diagram.svg](https://vinylhousegarage.github.io/kouden-summary/aws-diagram.svg)
 
-
-### 5. アクセス情報
+### 7. アクセス情報
   - **GitHubリポジトリURL**
     - [https://github.com/vinylhousegarage/kouden-summary](https://github.com/vinylhousegarage/kouden-summary)
   - **アプリURL**
     - [https://kouden-summary.com](https://kouden-summary.com)
 
-### 6. ライセンス
+### 8. ライセンス
   - このプロジェクトは [MIT License](https://github.com/vinylhousegarage/kouden-summary/blob/main/LICENSE) のもとで公開されています。
