@@ -93,10 +93,11 @@
             "startTimeout": 150,
             "stopTimeout": 30,
             "logConfiguration": {
-                "logDriver": "json-file",
+                "logDriver": "awslogs",
                 "options": {
-                    "max-size": "10m",
-                    "max-file": "3"
+                    "awslogs-group": "/ecs/flask-app",
+                    "awslogs-region": "ap-northeast-1",
+                    "awslogs-stream-prefix": "ecs"
                 }
             },
             "healthCheck": {
