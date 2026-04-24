@@ -35,3 +35,5 @@ class Config:
     SESSION_SERIALIZER = 'app.utils.encrypted_serializer.EncryptedSessionSerializer'
 
     FERNET_KEY = os.getenv('FERNET_KEY')
+
+    LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
