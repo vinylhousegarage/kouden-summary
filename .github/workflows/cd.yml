@@ -42,19 +42,6 @@ jobs:
             -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/flask-repository \
             -f Dockerfile.prod .
 
-      - name: Extract Task Definition
-        id: ecs-task-definition
-        run: |
-          aws ecs describe-task-definition \
-            --task-definition flask-task \
-            --query 'taskDefinition' \
-            --output json > ecs-task-def.json
-
-      - name: Remove unsupported fields from task definition
-        run: |
-          jq 'del(.enableFaultInjection)' ecs-task-def.json > ecs-task-def.cleaned.json
-          mv ecs-task-def.cleaned.json ecs-task-def.json
-
       - name: Extract Image Digest
         id: image-digest
         run: |
@@ -69,7 +56,7 @@ jobs:
         id: render-task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ecs-task-def.json
+          task-definition: ecs/task-definition.json
           container-name: flask-web
           image: ${{ steps.image-digest.outputs.image }}
 
