@@ -24,6 +24,10 @@
                 {
                     "name": "MYSQL_DATABASE",
                     "value": "mariadb"
+                },
+                {
+                    "name": "LOG_LEVEL",
+                    "value": "WARNING"
                 }
             ],
             "mountPoints": [],
