@@ -1,0 +1,131 @@
+{
+    "containerDefinitions": [
+        {
+            "name": "flask-web",
+            "image": "626635405187.dkr.ecr.ap-northeast-1.amazonaws.com/flask-repository@sha256:7e56fc6efde487149deb326c4ac9e43a0d23b2c22acc41d6604585e788820fff",
+            "cpu": 512,
+            "memory": 512,
+            "memoryReservation": 307,
+            "portMappings": [
+                {
+                    "containerPort": 5000,
+                    "hostPort": 5000,
+                    "protocol": "tcp",
+                    "name": "flask-web-5000-tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "DB_HOST",
+                    "value": "flask-db-instance.cvy420ay6io1.ap-northeast-1.rds.amazonaws.com"
+                },
+                {
+                    "name": "MYSQL_DATABASE",
+                    "value": "mariadb"
+                },
+                {
+                    "name": "LOG_LEVEL",
+                    "value": "WARNING"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "AWS_COGNITO_AUTHORITY",
+                    "valueFrom": "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_AUTHORITY"
+                },
+                {
+                    "name": "AWS_COGNITO_CLIENT_SECRET",
+                    "valueFrom": "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_CLIENT_SECRET"
+                },
+                {
+                    "name": "AWS_COGNITO_DOMAIN",
+                    "valueFrom": "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_DOMAIN"
+                },
+                {
+                    "name": "AWS_COGNITO_METADATA_URL",
+                    "valueFrom": "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_METADATA_URL"
+                },
+                {
+                    "name": "AWS_COGNITO_REDIRECT_URI",
+                    "valueFrom": "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_REDIRECT_URI"
+                },
+                {
+                    "name": "AWS_COGNITO_SCOPE",
+                    "valueFrom": "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_SCOPE"
+                },
+                {
+                    "name": "AWS_COGNITO_USER_POOL_CLIENT_ID",
+                    "valueFrom": "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_USER_POOL_CLIENT_ID"
+                },
+                {
+                    "name": "AWS_COGNITO_USER_POOL_ID",
+                    "valueFrom": "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_USER_POOL_ID"
+                },
+                {
+                    "name": "AWS_REGION",
+                    "valueFrom": "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_REGION"
+                },
+                {
+                    "name": "FERNET_KEY",
+                    "valueFrom": "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/FERNET_KEY"
+                },
+                {
+                    "name": "MYSQL_PASSWORD",
+                    "valueFrom": "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/MYSQL_PASSWORD"
+                },
+                {
+                    "name": "MYSQL_USER",
+                    "valueFrom": "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/MYSQL_USER"
+                },
+                {
+                    "name": "SECRET_KEY",
+                    "valueFrom": "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/SECRET_KEY"
+                },
+                {
+                    "name": "AWS_COGNITO_LOGOUT_URI",
+                    "valueFrom": "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_LOGOUT_URI"
+                }
+            ],
+            "startTimeout": 150,
+            "stopTimeout": 30,
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/flask-app",
+                    "awslogs-region": "ap-northeast-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "healthCheck": {
+                "command": [
+                    "CMD-SHELL",
+                    "curl -f http://localhost:5000/health || exit 1"
+                ],
+                "interval": 30,
+                "timeout": 10,
+                "retries": 5,
+                "startPeriod": 30
+            },
+            "systemControls": []
+        }
+    ],
+    "family": "flask-task",
+    "taskRoleArn": "arn:aws:iam::626635405187:role/ecsTaskRole",
+    "executionRoleArn": "arn:aws:iam::626635405187:role/ecsTaskExecutionRole",
+    "networkMode": "host",
+    "volumes": [],
+    "placementConstraints": [],
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "requiresCompatibilities": [
+        "EC2"
+    ],
+    "cpu": "512",
+    "memory": "512"
+}
