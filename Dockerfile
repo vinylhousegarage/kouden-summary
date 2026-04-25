@@ -1,4 +1,4 @@
-FROM python:3.12-slim-bookworm
+FROM python:3.12.12-slim-bookworm
 WORKDIR /app
 ENV TERRAFORM_VERSION=1.14.9
 RUN apt-get update && apt-get install -y --no-install-recommends \
