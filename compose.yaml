@@ -9,7 +9,7 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "mariadb -u${MYSQL_USER} -p${MYSQL_PASSWORD} -e 'SELECT 1' || exit 1"]
+      test: ["CMD-SHELL", "mariadb -u$${MYSQL_USER} -p$${MYSQL_PASSWORD} -e 'SELECT 1' || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 8
@@ -22,8 +22,11 @@ services:
       - "5000:5000"
     env_file:
       - .env
+    environment:
+      - AWS_DEFAULT_REGION=ap-northeast-1
     volumes:
       - .:/app
+      - ~/.aws:/root/.aws:ro
     depends_on:
       db:
         condition: service_healthy
