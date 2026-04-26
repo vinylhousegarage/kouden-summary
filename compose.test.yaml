@@ -16,7 +16,8 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile.test
+      dockerfile: Dockerfile
+      target: test
     ports:
       - "5000:5000"
     env_file:
