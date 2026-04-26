@@ -72,11 +72,11 @@ RUN pip install --no-cache-dir /wheels/*
 
 COPY . .
 
-RUN useradd -m flaskuser && chown -R flaskuser:flaskuser /app
-USER flaskuser
+COPY --chmod=755 entrypoint.prod.sh /entrypoint.prod.sh
 
-COPY entrypoint.prod.sh /entrypoint.prod.sh
-RUN chmod +x /entrypoint.prod.sh
+RUN useradd -m flaskuser && chown -R flaskuser:flaskuser /app
+
+USER flaskuser
 
 EXPOSE 5000
 ENTRYPOINT ["/entrypoint.prod.sh"]
