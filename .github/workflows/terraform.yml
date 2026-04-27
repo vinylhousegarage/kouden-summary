@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -26,10 +28,25 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      - name: Detect Changed Directories
+        id: detect
+        run: |
+          CHANGED_DIR=$(git diff --name-only HEAD^ HEAD | grep '^terraform/' | cut -d/ -f2 | sort -u | head -n 1)
+
+          if [ -n "$CHANGED_DIR" ]; then
+            echo "dir=terraform/$CHANGED_DIR" >> $GITHUB_OUTPUT
+            echo "Target directory detected: terraform/$CHANGED_DIR"
+          else
+            echo "dir=" >> $GITHUB_OUTPUT
+            echo "No terraform directory changes detected."
+          fi
+
       - name: Terraform Init
+        if: steps.detect.outputs.dir != '' && steps.detect.outputs.dir != 'terraform/'
         run: terraform init
-        working-directory: ./terraform/remove
+        working-directory: ${{ steps.detect.outputs.dir }}
 
       - name: Terraform Apply
+        if: steps.detect.outputs.dir != '' && steps.detect.outputs.dir != 'terraform/'
         run: terraform apply -auto-approve
-        working-directory: ./terraform/remove
+        working-directory: ${{ steps.detect.outputs.dir }}
