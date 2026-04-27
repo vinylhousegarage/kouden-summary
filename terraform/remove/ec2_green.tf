@@ -31,6 +31,10 @@ resource "aws_security_group" "flask_ec2_sg" {
   description = "Flask EC2 Security Group"
   vpc_id      = "vpc-09a84d9fab986d185"
 
+  tags = {
+    Name = "SG-EC2-Instance"
+  }
+
   # インバウンド・アウトバウンドのルールは長くなるため
   # インポート後に terraform show で確認するのが効率的です
 }
