@@ -26,3 +26,12 @@ resource "aws_route_table_association" "private_c" {
   subnet_id      = "subnet-0a18a0ee8bc6ef495"
   route_table_id = aws_route_table.private_ecs.id
 }
+
+# State管理（S3）
+terraform {
+  backend "s3" {
+    bucket = "kouden-summary-tfstate"
+    key    = "migrate/terraform.tfstate"
+    region = "ap-northeast-1"
+  }
+}
