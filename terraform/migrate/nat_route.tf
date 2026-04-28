@@ -12,7 +12,7 @@ resource "aws_route" "private_nat_route" {
   route_table_id         = aws_route_table.private_ecs.id
   destination_cidr_block = "0.0.0.0/0"
 
-  instance_id            = aws_instance.nat_v2.id
+  network_interface_id   = aws_instance.nat_v2.primary_network_interface_id
 }
 
 # サブネットとの関連付け（AZ:1a）
