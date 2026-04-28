@@ -12,17 +12,28 @@ provider "aws" {
   region = "ap-northeast-1"
 }
 
-# 3.AL2NATインスタンス
-resource "aws_instance" "nat_instance" {
-  ami           = "ami-022282eb775c6a4fa"
-  instance_type = "t2.micro"
+# 3.AL2EC2Greenインスタンス（削除済）
+
+# 4.関連セキュリティグループ（ec2-green-instance）
+resource "aws_security_group" "flask_ec2_sg" {
+  name        = "flask-ec2-sg"
+  description = "Flask EC2 Security Group"
+  vpc_id      = "vpc-09a84d9fab986d185"
 
   tags = {
-    Name = "nat-instance"
+    Name = "SG-EC2-Instance"
   }
 }
 
-# 4.関連セキュリティグループ
+# 5.IAM インスタンスプロファイル（ec2-instance）
+resource "aws_iam_instance_profile" "ecs_instance_role" {
+  name = "ecsInstanceRole"
+  role = "ecsInstanceRole"
+}
+
+# 6.AL2NATインスタンス（削除済）
+
+# 7.関連セキュリティグループ（nat-instance）
 resource "aws_security_group" "flask_nat_instance_sg" {
   name        = "flask-nat-instance-sg"
   description = "Allow private subnet instances to access the internet via NAT"
@@ -33,7 +44,7 @@ resource "aws_security_group" "flask_nat_instance_sg" {
   }
 }
 
-# 5.IAM インスタンスプロファイル
+# 8.IAM インスタンスプロファイル（nat-instance）
 resource "aws_iam_instance_profile" "NAT_Instance_Role" {
   name = "NAT-Instance-Role"
   role = "NAT-Instance-Role"
