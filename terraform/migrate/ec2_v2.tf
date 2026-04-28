@@ -5,7 +5,7 @@ data "aws_ami" "ecs_al2023" {
 
   filter {
     name   = "name"
-    values = ["amzn2023-ami-ecs-hvm-*-x86_64"]
+    values = ["amzn2023-ami-ecs-*-x86_64"]
   }
 }
 
