@@ -1,4 +1,18 @@
-# AL2NATインスタンス
+# 1.State管理（S3）
+terraform {
+  backend "s3" {
+    bucket = "kouden-summary-tfstate"
+    key    = "remove/terraform.tfstate"
+    region = "ap-northeast-1"
+  }
+}
+
+# 2.AWSプロバイダーの設定
+provider "aws" {
+  region = "ap-northeast-1"
+}
+
+# 3.AL2NATインスタンス
 resource "aws_instance" "nat_instance" {
   ami           = "ami-022282eb775c6a4fa"
   instance_type = "t2.micro"
@@ -8,7 +22,7 @@ resource "aws_instance" "nat_instance" {
   }
 }
 
-# 関連セキュリティグループ
+# 4.関連セキュリティグループ
 resource "aws_security_group" "flask_nat_instance_sg" {
   name        = "flask-nat-instance-sg"
   description = "Allow private subnet instances to access the internet via NAT"
@@ -19,7 +33,7 @@ resource "aws_security_group" "flask_nat_instance_sg" {
   }
 }
 
-# IAM インスタンスプロファイル
+# 5.IAM インスタンスプロファイル
 resource "aws_iam_instance_profile" "NAT_Instance_Role" {
   name = "NAT-Instance-Role"
   role = "NAT-Instance-Role"
