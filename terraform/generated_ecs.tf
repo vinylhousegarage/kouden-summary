@@ -34,7 +34,7 @@ resource "aws_ecs_service" "main" {
   scheduling_strategy                = "REPLICA"
   tags                               = {}
   tags_all                           = {}
-  task_definition                    = "flask-task:74"
+  task_definition                    = "flask-task"
   triggers                           = {}
   wait_for_steady_state              = null
   alarms {

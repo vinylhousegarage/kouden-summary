@@ -31,22 +31,18 @@ jobs:
       - name: Detect Changed Directories
         id: detect
         run: |
-          CHANGED_DIR=$(git diff --name-only HEAD^ HEAD | grep '^terraform/' | cut -d/ -f2 | sort -u | head -n 1)
-
-          if [ -n "$CHANGED_DIR" ]; then
-            echo "dir=terraform/$CHANGED_DIR" >> $GITHUB_OUTPUT
-            echo "Target directory detected: terraform/$CHANGED_DIR"
+          if git diff --name-only HEAD^ HEAD | grep -q '^terraform/'; then
+            echo "dir=terraform" >> $GITHUB_OUTPUT
           else
             echo "dir=" >> $GITHUB_OUTPUT
-            echo "No terraform directory changes detected."
           fi
 
       - name: Terraform Init
-        if: steps.detect.outputs.dir != '' && steps.detect.outputs.dir != 'terraform/'
+        if: steps.detect.outputs.dir != ''
         run: terraform init
         working-directory: ${{ steps.detect.outputs.dir }}
 
       - name: Terraform Apply
-        if: steps.detect.outputs.dir != '' && steps.detect.outputs.dir != 'terraform/'
+        if: steps.detect.outputs.dir != ''
         run: terraform apply -auto-approve
         working-directory: ${{ steps.detect.outputs.dir }}
