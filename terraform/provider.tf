@@ -4,7 +4,7 @@ terraform {
 
   backend "s3" {
     bucket = "kouden-summary-tfstate"
-    key    = "remove/terraform.tfstate"
+    key    = "terraform.tfstate"
     region = "ap-northeast-1"
   }
 
