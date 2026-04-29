@@ -76,13 +76,13 @@ resource "aws_ecs_task_definition" "main" {
       value = "mariadb"
     }]
     essential = true
-    healthCheck = {
-      command     = ["CMD-SHELL", "curl -f http://localhost:5000/health || exit 1"]
-      interval    = 30
-      retries     = 5
-      startPeriod = 30
-      timeout     = 10
-    }
+    #healthCheck = {
+    #  command     = ["CMD-SHELL", "curl -f http://localhost:5000/health || exit 1"]
+    #  interval    = 30
+    #  retries     = 5
+    #  startPeriod = 30
+    #  timeout     = 10
+    #}
     image = "626635405187.dkr.ecr.ap-northeast-1.amazonaws.com/flask-repository:db5016345816c2a0425692b757e10b387015ae94"
     logConfiguration = {
       logDriver = "awslogs"
