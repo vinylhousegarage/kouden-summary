@@ -28,10 +28,10 @@ import {
   id = "arn:aws:elasticloadbalancing:ap-northeast-1:626635405187:targetgroup/flask-tg-blue/917f108766d09a04"
 }
 
-# AL2EC2インスタンス
+# AL2EC2023インスタンス
 import {
-  to = aws_instance.al2_ec2_instance
-  id = "i-0bef1c59761988c14"
+  to = aws_instance.ec2_v2
+  id = "i-05d0da7f695962e30"
 }
 
 # インスタンスプロファイル
