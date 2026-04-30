@@ -52,6 +52,7 @@ resource "aws_lb_target_group" "target_group_blue" {
   }
   target_health_state {
     enable_unhealthy_connection_termination = false
+    unhealthy_draining_interval             = 0
   }
 }
 
