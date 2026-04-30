@@ -36,10 +36,6 @@ resource "aws_lb_target_group" "target_group_blue" {
     enabled         = false
     type            = "lb_cookie"
   }
-  target_failover {
-    on_deregistration = "no_rebalance"
-    on_unhealthy      = "no_rebalance"
-  }
   target_group_health {
     dns_failover {
       minimum_healthy_targets_count      = "1"
@@ -49,10 +45,6 @@ resource "aws_lb_target_group" "target_group_blue" {
       minimum_healthy_targets_count      = 1
       minimum_healthy_targets_percentage = "off"
     }
-  }
-  target_health_state {
-    enable_unhealthy_connection_termination = false
-    unhealthy_draining_interval             = 0
   }
 }
 
@@ -257,8 +249,8 @@ resource "aws_ecs_task_definition" "main" {
   container_definitions = jsonencode(
     [
       {
-        cpu = 512
-        environment = [
+        cpu           = 512
+        environment   = [
           {
             name  = "DB_HOST"
             value = "flask-db-instance.cvy420ay6io1.ap-northeast-1.rds.amazonaws.com"
@@ -272,11 +264,11 @@ resource "aws_ecs_task_definition" "main" {
             value = "mariadb"
           },
         ]
-        essential = true
-        image     = "626635405187.dkr.ecr.ap-northeast-1.amazonaws.com/flask-repository:db5016345816c2a0425692b757e10b387015ae94"
+        essential        = true
+        image            = "626635405187.dkr.ecr.ap-northeast-1.amazonaws.com/flask-repository:db5016345816c2a0425692b757e10b387015ae94"
         logConfiguration = {
           logDriver = "awslogs"
-          options = {
+          options   = {
             awslogs-group         = "/ecs/flask-app"
             awslogs-region        = "ap-northeast-1"
             awslogs-stream-prefix = "ecs"
@@ -286,7 +278,7 @@ resource "aws_ecs_task_definition" "main" {
         memoryReservation = 307
         mountPoints       = []
         name              = "flask-web"
-        portMappings = [
+        portMappings      = [
           {
             appProtocol   = "http"
             containerPort = 5000
@@ -295,62 +287,62 @@ resource "aws_ecs_task_definition" "main" {
             protocol      = "tcp"
           },
         ]
-        secrets = [
+        secrets        = [
           {
-            name      = "AWS_COGNITO_AUTHORITY"
-            valueFrom = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_AUTHORITY"
+            name       = "AWS_COGNITO_AUTHORITY"
+            valueFrom  = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_AUTHORITY"
           },
           {
-            name      = "AWS_COGNITO_CLIENT_SECRET"
-            valueFrom = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_CLIENT_SECRET"
+            name       = "AWS_COGNITO_CLIENT_SECRET"
+            valueFrom  = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_CLIENT_SECRET"
           },
           {
-            name      = "AWS_COGNITO_DOMAIN"
-            valueFrom = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_DOMAIN"
+            name       = "AWS_COGNITO_DOMAIN"
+            valueFrom  = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_DOMAIN"
           },
           {
-            name      = "AWS_COGNITO_LOGOUT_URI"
-            valueFrom = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_LOGOUT_URI"
+            name       = "AWS_COGNITO_LOGOUT_URI"
+            valueFrom  = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_LOGOUT_URI"
           },
           {
-            name      = "AWS_COGNITO_METADATA_URL"
-            valueFrom = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_METADATA_URL"
+            name       = "AWS_COGNITO_METADATA_URL"
+            valueFrom  = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_METADATA_URL"
           },
           {
-            name      = "AWS_COGNITO_REDIRECT_URI"
-            valueFrom = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_REDIRECT_URI"
+            name       = "AWS_COGNITO_REDIRECT_URI"
+            valueFrom  = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_REDIRECT_URI"
           },
           {
-            name      = "AWS_COGNITO_SCOPE"
-            valueFrom = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_SCOPE"
+            name       = "AWS_COGNITO_SCOPE"
+            valueFrom  = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_SCOPE"
           },
           {
-            name      = "AWS_COGNITO_USER_POOL_CLIENT_ID"
-            valueFrom = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_USER_POOL_CLIENT_ID"
+            name       = "AWS_COGNITO_USER_POOL_CLIENT_ID"
+            valueFrom  = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_USER_POOL_CLIENT_ID"
           },
           {
-            name      = "AWS_COGNITO_USER_POOL_ID"
-            valueFrom = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_USER_POOL_ID"
+            name       = "AWS_COGNITO_USER_POOL_ID"
+            valueFrom  = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_COGNITO_USER_POOL_ID"
           },
           {
-            name      = "AWS_REGION"
-            valueFrom = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_REGION"
+            name       = "AWS_REGION"
+            valueFrom  = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/AWS_REGION"
           },
           {
-            name      = "FERNET_KEY"
-            valueFrom = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/FERNET_KEY"
+            name       = "FERNET_KEY"
+            valueFrom  = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/FERNET_KEY"
           },
           {
-            name      = "MYSQL_PASSWORD"
-            valueFrom = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/MYSQL_PASSWORD"
+            name       = "MYSQL_PASSWORD"
+            valueFrom  = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/MYSQL_PASSWORD"
           },
           {
-            name      = "MYSQL_USER"
-            valueFrom = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/MYSQL_USER"
+            name       = "MYSQL_USER"
+            valueFrom  = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/MYSQL_USER"
           },
           {
-            name      = "SECRET_KEY"
-            valueFrom = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/SECRET_KEY"
+            name       = "SECRET_KEY"
+            valueFrom  = "arn:aws:ssm:ap-northeast-1:626635405187:parameter/param-store/SECRET_KEY"
           },
         ]
         startTimeout   = 150
@@ -360,21 +352,21 @@ resource "aws_ecs_task_definition" "main" {
       },
     ]
   )
-  cpu                    = "512"
-  enable_fault_injection = false
-  execution_role_arn     = "arn:aws:iam::626635405187:role/ecsTaskExecutionRole"
-  family                 = "flask-task"
-  ipc_mode               = null
-  memory                 = "512"
-  network_mode           = "host"
-  pid_mode               = null
-  requires_compatibilities = [
+  cpu                       = "512"
+  enable_fault_injection    = false
+  execution_role_arn        = "arn:aws:iam::626635405187:role/ecsTaskExecutionRole"
+  family                    = "flask-task"
+  ipc_mode                  = null
+  memory                    = "512"
+  network_mode              = "host"
+  pid_mode                  = null
+  requires_compatibilities  = [
     "EC2",
   ]
-  skip_destroy  = false
-  tags          = {}
-  task_role_arn = "arn:aws:iam::626635405187:role/ecsTaskRole"
-  track_latest  = false
+  skip_destroy              = false
+  tags                      = {}
+  task_role_arn             = "arn:aws:iam::626635405187:role/ecsTaskRole"
+  track_latest              = false
 
   runtime_platform {
     cpu_architecture        = "X86_64"
