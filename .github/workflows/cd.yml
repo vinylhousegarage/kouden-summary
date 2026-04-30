@@ -61,4 +61,3 @@ jobs:
           service: flask-service-rolling-update
           cluster: flask-cluster
           wait-for-service-stability: true
-
