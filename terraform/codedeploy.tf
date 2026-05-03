@@ -41,7 +41,7 @@ resource "aws_lb_target_group" "green_tg" {
 # productionリスナールール
 resource "aws_lb_listener_rule" "production_rule" {
   listener_arn = data.aws_lb_listener.production.arn
-  priority     = 1
+  priority     = 2
 
   action {
     type             = "forward"
@@ -58,7 +58,7 @@ resource "aws_lb_listener_rule" "production_rule" {
 # testリスナールール
 resource "aws_lb_listener_rule" "test_rule" {
   listener_arn = data.aws_lb_listener.test.arn
-  priority     = 2
+  priority     = 3
 
   action {
     type             = "forward"
