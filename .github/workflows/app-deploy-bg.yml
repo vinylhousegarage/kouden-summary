@@ -58,7 +58,7 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.render-task-def.outputs.task-definition }}
-          service: flask-service-codedeploy
+          service: service-codedeploy
           cluster: flask-cluster
           codedeploy-appspec: ecs/appspec.yaml
           codedeploy-application: flask-app
