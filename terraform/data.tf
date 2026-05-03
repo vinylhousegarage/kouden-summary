@@ -1,9 +1,9 @@
-# 443リスナー
-data "aws_lb_listener" "443_listener" {
-  arn = var.alb_443_listener_arn
+# productionリスナー
+data "aws_lb_listener" "production" {
+  arn = var.alb_production_listener_arn
 }
 
-# 4443リスナー
-data "aws_lb_listener" "4443_listener" {
-  arn = var.alb_4443_listener_arn
+# testリスナー
+data "aws_lb_listener" "test" {
+  arn = var.alb_test_listener_arn
 }
