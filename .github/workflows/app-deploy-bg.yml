@@ -61,6 +61,6 @@ jobs:
           service: service-codedeploy
           cluster: flask-cluster
           codedeploy-appspec: ecs/appspec.yaml
-          codedeploy-application: flask-app
-          codedeploy-deployment-group: flask-dg
+          codedeploy-application: codedeploy-app
+          codedeploy-deployment-group: codedeploy-dg
           wait-for-service-stability: true
