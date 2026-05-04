@@ -77,7 +77,7 @@ resource "aws_ecs_service" "service_codedeploy" {
   name            = "service-codedeploy"
   cluster         = var.ecs_cluster_arn
   task_definition = var.initial_task_definition_arn
-  desired_count   = 2
+  desired_count   = 1
   launch_type     = "EC2"
 
   deployment_controller {
