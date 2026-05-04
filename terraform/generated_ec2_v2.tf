@@ -282,7 +282,7 @@ resource "aws_ecs_task_definition" "main" {
   container_definitions = jsonencode(
     [
       {
-        cpu = 512
+        cpu = 128
         environment = [
           {
             name  = "DB_HOST"
@@ -307,8 +307,8 @@ resource "aws_ecs_task_definition" "main" {
             awslogs-stream-prefix = "ecs"
           }
         }
-        memory            = 512
-        memoryReservation = 307
+        memory            = 450
+        memoryReservation = 256
         mountPoints       = []
         name              = "flask-web"
         portMappings = [
@@ -385,12 +385,12 @@ resource "aws_ecs_task_definition" "main" {
       },
     ]
   )
-  cpu                    = "512"
+  cpu                    = "128"
   enable_fault_injection = false
   execution_role_arn     = "arn:aws:iam::626635405187:role/ecsTaskExecutionRole"
   family                 = "flask-task"
   ipc_mode               = null
-  memory                 = "512"
+  memory                 = "450"
   network_mode           = "host"
   pid_mode               = null
   requires_compatibilities = [
