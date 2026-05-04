@@ -81,6 +81,10 @@
     - CI/CD を実行
     - デプロイの自動化により開発効率を向上
 
+  - **Terraform**
+    - Infrastructure as Code によるリソース管理
+    - リソースを Terraform管理下 に置き、コードでリソースを構築
+
 ### 4. セキュリティ設計
   - **認証方式**
     - OAuth2.0 / OpenID Connect（OIDC）に準拠した Cognito をユーザーの認証に使用

@@ -38,48 +38,6 @@ resource "aws_lb_target_group" "green_tg" {
   }
 }
 
-# productionリスナールール
-resource "aws_lb_listener_rule" "production_rule" {
-  listener_arn = data.aws_lb_listener.production.arn
-  priority     = 2
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.blue_tg.arn
-  }
-
-  condition {
-    path_pattern {
-      values = ["/*"]
-    }
-  }
-
-  lifecycle {
-    ignore_changes = [action]
-  }
-}
-
-# testリスナールール
-resource "aws_lb_listener_rule" "test_rule" {
-  listener_arn = data.aws_lb_listener.test.arn
-  priority     = 3
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.green_tg.arn
-  }
-
-  condition {
-    path_pattern {
-      values = ["/*"]
-    }
-  }
-
-  lifecycle {
-    ignore_changes = [action]
-  }
-}
-
 # CodeDeploy用ECSサービス
 resource "aws_ecs_service" "service_codedeploy" {
   name            = "service-codedeploy"
@@ -98,7 +56,10 @@ resource "aws_ecs_service" "service_codedeploy" {
     container_port   = 5000
   }
 
-  depends_on = [aws_lb_listener_rule.production_rule]
+  depends_on = [
+    aws_lb_target_group.blue_tg,
+    aws_lb_target_group.green_tg
+  ]
 
   lifecycle {
     ignore_changes = [
