@@ -53,6 +53,10 @@ resource "aws_lb_listener_rule" "production_rule" {
       values = ["/*"]
     }
   }
+
+  lifecycle {
+    ignore_changes = [action]
+  }
 }
 
 # testリスナールール
@@ -69,6 +73,10 @@ resource "aws_lb_listener_rule" "test_rule" {
     path_pattern {
       values = ["/*"]
     }
+  }
+
+  lifecycle {
+    ignore_changes = [action]
   }
 }
 
