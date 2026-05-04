@@ -121,19 +121,48 @@ resource "aws_instance" "al2_ec2_instance" {
     Name = "ec2-blue-instance"
   }
   tenancy                     = "default"
-  user_data                   = <<EOF
+  user_data = <<EOF
 #!/bin/bash
 echo ECS_CLUSTER=flask-cluster >> /etc/ecs/ecs.config;
+
+yum install -y amazon-cloudwatch-agent
+
+dd if=/dev/zero of=/swapfile bs=1M count=512
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
+
+cat << 'JSON' > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+{
+  "metrics": {
+    "metrics_collected": {
+      "mem": {
+        "measurement": ["mem_used_percent", "mem_used", "mem_available"]
+      },
+      "swap": {
+        "measurement": ["swap_used_percent"]
+      },
+      "disk": {
+        "resources": ["/"],
+        "measurement": ["disk_used_percent"]
+      },
+      "net": {
+        "measurement": ["bytes_sent", "bytes_recv"]
+      }
+    }
+  }
+}
+JSON
+
+/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+  -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
 EOF
-  user_data_replace_on_change = false
+  user_data_replace_on_change = true
   volume_tags                 = null
   vpc_security_group_ids      = ["sg-0e05e4fa1bba7a0a1"]
   capacity_reservation_specification {
     capacity_reservation_preference = "open"
-  }
-  cpu_options {
-    core_count       = 1
-    threads_per_core = 1
   }
   credit_specification {
     cpu_credits = "standard"
@@ -165,13 +194,17 @@ EOF
   root_block_device {
     delete_on_termination = true
     encrypted             = false
-    iops                  = 100
     tags                  = {}
     tags_all              = {}
-    throughput            = 0
     volume_size           = 30
     volume_type           = "gp2"
   }
+}
+
+# CloudWatchエージェント用ポリシー
+resource "aws_iam_role_policy_attachment" "cloudwatch_agent_server_policy" {
+  role       = "ecsInstanceRole"
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
 # aws_ecs_cluster
