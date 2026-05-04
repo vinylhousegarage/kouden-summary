@@ -228,7 +228,7 @@ resource "aws_ecs_service" "main" {
   cluster                            = "arn:aws:ecs:ap-northeast-1:626635405187:cluster/flask-cluster"
   deployment_maximum_percent         = 100
   deployment_minimum_healthy_percent = 0
-  desired_count                      = 1
+  desired_count                      = 0
   enable_ecs_managed_tags            = true
   enable_execute_command             = false
   health_check_grace_period_seconds  = 30
