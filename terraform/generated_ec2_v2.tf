@@ -222,61 +222,6 @@ resource "aws_ecs_cluster" "main" {
   }
 }
 
-# aws_ecs_service
-resource "aws_ecs_service" "main" {
-  availability_zone_rebalancing      = "DISABLED"
-  cluster                            = "arn:aws:ecs:ap-northeast-1:626635405187:cluster/flask-cluster"
-  deployment_maximum_percent         = 100
-  deployment_minimum_healthy_percent = 0
-  desired_count                      = 0
-  enable_ecs_managed_tags            = true
-  enable_execute_command             = false
-  health_check_grace_period_seconds  = 30
-  iam_role                           = "/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS"
-  launch_type                        = "EC2"
-  name                               = "flask-service-rolling-update"
-  platform_version                   = null
-  propagate_tags                     = "NONE"
-  scheduling_strategy                = "REPLICA"
-  tags                               = {}
-  task_definition                    = aws_ecs_task_definition.main.arn
-  triggers                           = {}
-  wait_for_steady_state              = false
-
-  alarms {
-    alarm_names = []
-    enable      = false
-    rollback    = false
-  }
-
-  deployment_circuit_breaker {
-    enable   = true
-    rollback = true
-  }
-
-  deployment_controller {
-    type = "ECS"
-  }
-
-  lifecycle {
-    ignore_changes = [
-      task_definition,
-    ]
-  }
-
-  load_balancer {
-    container_name   = "flask-web"
-    container_port   = 5000
-    elb_name         = null
-    target_group_arn = "arn:aws:elasticloadbalancing:ap-northeast-1:626635405187:targetgroup/flask-tg-blue/917f108766d09a04"
-  }
-
-  ordered_placement_strategy {
-    field = "memory"
-    type  = "binpack"
-  }
-}
-
 # aws_ecs_task_definition
 resource "aws_ecs_task_definition" "main" {
   container_definitions = jsonencode(
