@@ -21,13 +21,13 @@ resource "aws_lb_target_group" "target_group_blue" {
   vpc_id                             = "vpc-09a84d9fab986d185"
   health_check {
     enabled             = true
-    healthy_threshold   = 5
+    healthy_threshold   = 3
     interval            = 30
     matcher             = "200"
     path                = "/health"
     port                = "traffic-port"
     protocol            = "HTTP"
-    timeout             = 5
+    timeout             = 10
     unhealthy_threshold = 2
   }
   stickiness {
@@ -307,7 +307,7 @@ resource "aws_ecs_task_definition" "main" {
             awslogs-stream-prefix = "ecs"
           }
         }
-        memory            = 450
+        memory            = 400
         memoryReservation = 256
         mountPoints       = []
         name              = "flask-web"
@@ -390,7 +390,7 @@ resource "aws_ecs_task_definition" "main" {
   execution_role_arn     = "arn:aws:iam::626635405187:role/ecsTaskExecutionRole"
   family                 = "flask-task"
   ipc_mode               = null
-  memory                 = "450"
+  memory                 = "400"
   network_mode           = "host"
   pid_mode               = null
   requires_compatibilities = [
