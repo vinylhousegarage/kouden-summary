@@ -307,7 +307,7 @@ resource "aws_ecs_task_definition" "main" {
             awslogs-stream-prefix = "ecs"
           }
         }
-        memory            = 450
+        memory            = 400
         memoryReservation = 256
         mountPoints       = []
         name              = "flask-web"
@@ -390,7 +390,7 @@ resource "aws_ecs_task_definition" "main" {
   execution_role_arn     = "arn:aws:iam::626635405187:role/ecsTaskExecutionRole"
   family                 = "flask-task"
   ipc_mode               = null
-  memory                 = "450"
+  memory                 = "400"
   network_mode           = "host"
   pid_mode               = null
   requires_compatibilities = [

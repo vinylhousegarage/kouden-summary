@@ -4,7 +4,7 @@
             "name": "flask-web",
             "image": "626635405187.dkr.ecr.ap-northeast-1.amazonaws.com/flask-repository@sha256:7e56fc6efde487149deb326c4ac9e43a0d23b2c22acc41d6604585e788820fff",
             "cpu": 128,
-            "memory": 450,
+            "memory": 400,
             "memoryReservation": 256,
             "portMappings": [
                 {
@@ -127,5 +127,5 @@
         "EC2"
     ],
     "cpu": "128",
-    "memory": "450"
+    "memory": "400"
 }
