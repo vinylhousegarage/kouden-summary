@@ -21,13 +21,13 @@ resource "aws_lb_target_group" "target_group_blue" {
   vpc_id                             = "vpc-09a84d9fab986d185"
   health_check {
     enabled             = true
-    healthy_threshold   = 5
+    healthy_threshold   = 3
     interval            = 30
     matcher             = "200"
     path                = "/health"
     port                = "traffic-port"
     protocol            = "HTTP"
-    timeout             = 5
+    timeout             = 10
     unhealthy_threshold = 2
   }
   stickiness {
