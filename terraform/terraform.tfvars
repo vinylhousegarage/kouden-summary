@@ -1,6 +1,0 @@
-alb_production_listener_arn = "arn:aws:elasticloadbalancing:ap-northeast-1:626635405187:listener/app/flask-alb/a038f59afa7e9191/981742d1002057f3"
-alb_test_listener_arn       = "arn:aws:elasticloadbalancing:ap-northeast-1:626635405187:listener/app/flask-alb/a038f59afa7e9191/1205685cc6087b64"
-ecs_cluster_arn             = "arn:aws:ecs:ap-northeast-1:626635405187:cluster/flask-cluster"
-ecs_cluster_name            = "flask-cluster"
-initial_task_definition_arn = "arn:aws:ecs:ap-northeast-1:626635405187:task-definition/flask-task:84"
-vpc_id                      = "vpc-09a84d9fab986d185"

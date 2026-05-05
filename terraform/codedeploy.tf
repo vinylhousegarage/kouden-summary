@@ -10,7 +10,7 @@ resource "aws_lb_target_group" "blue_tg" {
   port        = 5000
   protocol    = "HTTP"
   target_type = "instance"
-  vpc_id      = var.vpc_id
+  vpc_id      = data.aws_vpc.main.id
 
   health_check {
     path                = "/health"
@@ -27,7 +27,7 @@ resource "aws_lb_target_group" "green_tg" {
   port        = 5000
   protocol    = "HTTP"
   target_type = "instance"
-  vpc_id      = var.vpc_id
+  vpc_id      = data.aws_vpc.main.id
 
   health_check {
     path                = "/health"
@@ -41,8 +41,8 @@ resource "aws_lb_target_group" "green_tg" {
 # CodeDeploy用ECSサービス
 resource "aws_ecs_service" "service_codedeploy" {
   name            = "service-codedeploy"
-  cluster         = var.ecs_cluster_arn
-  task_definition = var.initial_task_definition_arn
+  cluster         = aws_ecs_cluster.main.arn
+  task_definition = aws_ecs_task_definition.main.arn
   desired_count   = 1
   launch_type     = "EC2"
 
@@ -92,17 +92,17 @@ resource "aws_codedeploy_deployment_group" "codedeploy_dg" {
   }
 
   ecs_service {
-    cluster_name = var.ecs_cluster_name
+    cluster_name = aws_ecs_cluster.main.name
     service_name = aws_ecs_service.service_codedeploy.name
   }
 
   load_balancer_info {
     target_group_pair_info {
       prod_traffic_route {
-        listener_arns = [data.aws_lb_listener.production.arn]
+        listener_arns = [aws_lb_listener.production.arn]
       }
       test_traffic_route {
-        listener_arns = [data.aws_lb_listener.test.arn]
+        listener_arns = [aws_lb_listener.test.arn]
       }
       target_group {
         name = aws_lb_target_group.blue_tg.name
