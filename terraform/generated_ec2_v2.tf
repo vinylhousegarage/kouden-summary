@@ -95,13 +95,6 @@ cat << 'JSON' > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.jso
       },
       "swap": {
         "measurement": ["swap_used_percent"]
-      },
-      "disk": {
-        "resources": ["/"],
-        "measurement": ["disk_used_percent"]
-      },
-      "net": {
-        "measurement": ["bytes_sent", "bytes_recv"]
       }
     }
   }
@@ -171,7 +164,7 @@ resource "aws_ecs_cluster" "main" {
 
   setting {
     name  = "containerInsights"
-    value = "enabled"
+    value = "disabled"
   }
 }
 
