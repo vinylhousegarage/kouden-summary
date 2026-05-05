@@ -2,53 +2,6 @@
 # Please review these resources and move them into your main configuration files.
 
 # __generated__ by Terraform
-resource "aws_lb_target_group" "target_group_blue" {
-  deregistration_delay               = "300"
-  ip_address_type                    = "ipv4"
-  lambda_multi_value_headers_enabled = null
-  load_balancing_algorithm_type      = "round_robin"
-  load_balancing_anomaly_mitigation  = "off"
-  load_balancing_cross_zone_enabled  = "use_load_balancer_configuration"
-  name                               = "flask-tg-blue"
-  port                               = 5000
-  protocol                           = "HTTP"
-  protocol_version                   = "HTTP1"
-  proxy_protocol_v2                  = null
-  slow_start                         = 0
-  tags                               = {}
-  tags_all                           = {}
-  target_type                        = "instance"
-  vpc_id                             = "vpc-09a84d9fab986d185"
-  health_check {
-    enabled             = true
-    healthy_threshold   = 3
-    interval            = 30
-    matcher             = "200"
-    path                = "/health"
-    port                = "traffic-port"
-    protocol            = "HTTP"
-    timeout             = 10
-    unhealthy_threshold = 2
-  }
-  stickiness {
-    cookie_duration = 86400
-    cookie_name     = null
-    enabled         = false
-    type            = "lb_cookie"
-  }
-  target_group_health {
-    dns_failover {
-      minimum_healthy_targets_count      = "1"
-      minimum_healthy_targets_percentage = "off"
-    }
-    unhealthy_state_routing {
-      minimum_healthy_targets_count      = 1
-      minimum_healthy_targets_percentage = "off"
-    }
-  }
-}
-
-# __generated__ by Terraform
 resource "aws_lb" "alb" {
   client_keep_alive                           = 3600
   customer_owned_ipv4_pool                    = null
@@ -213,67 +166,12 @@ resource "aws_ecs_cluster" "main" {
   tags = {}
 
   service_connect_defaults {
-    namespace = "arn:aws:servicediscovery:ap-northeast-1:626635405187:namespace/ns-wncxecmrnmpeb5d4"
+    namespace = data.aws_service_discovery_http_namespace.main.arn
   }
 
   setting {
     name  = "containerInsights"
     value = "enabled"
-  }
-}
-
-# aws_ecs_service
-resource "aws_ecs_service" "main" {
-  availability_zone_rebalancing      = "DISABLED"
-  cluster                            = "arn:aws:ecs:ap-northeast-1:626635405187:cluster/flask-cluster"
-  deployment_maximum_percent         = 100
-  deployment_minimum_healthy_percent = 0
-  desired_count                      = 0
-  enable_ecs_managed_tags            = true
-  enable_execute_command             = false
-  health_check_grace_period_seconds  = 30
-  iam_role                           = "/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS"
-  launch_type                        = "EC2"
-  name                               = "flask-service-rolling-update"
-  platform_version                   = null
-  propagate_tags                     = "NONE"
-  scheduling_strategy                = "REPLICA"
-  tags                               = {}
-  task_definition                    = aws_ecs_task_definition.main.arn
-  triggers                           = {}
-  wait_for_steady_state              = false
-
-  alarms {
-    alarm_names = []
-    enable      = false
-    rollback    = false
-  }
-
-  deployment_circuit_breaker {
-    enable   = true
-    rollback = true
-  }
-
-  deployment_controller {
-    type = "ECS"
-  }
-
-  lifecycle {
-    ignore_changes = [
-      task_definition,
-    ]
-  }
-
-  load_balancer {
-    container_name   = "flask-web"
-    container_port   = 5000
-    elb_name         = null
-    target_group_arn = "arn:aws:elasticloadbalancing:ap-northeast-1:626635405187:targetgroup/flask-tg-blue/917f108766d09a04"
-  }
-
-  ordered_placement_strategy {
-    field = "memory"
-    type  = "binpack"
   }
 }
 
