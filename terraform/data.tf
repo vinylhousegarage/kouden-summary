@@ -11,3 +11,8 @@ data "aws_vpc" "main" {
     values = ["flask-vpc"]
   }
 }
+
+# 名前空間
+data "aws_service_discovery_http_namespace" "main" {
+  name = "flask-cluster"
+}

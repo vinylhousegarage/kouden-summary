@@ -166,7 +166,7 @@ resource "aws_ecs_cluster" "main" {
   tags = {}
 
   service_connect_defaults {
-    namespace = "arn:aws:servicediscovery:ap-northeast-1:626635405187:namespace/ns-wncxecmrnmpeb5d4"
+    namespace = data.aws_service_discovery_http_namespace.main.arn
   }
 
   setting {
