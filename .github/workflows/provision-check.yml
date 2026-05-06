@@ -1,14 +1,14 @@
-name: Infra Deploy
+name: Provisioning Check
 
 on:
-  push:
+  pull_request:
     branches:
       - main
     paths:
       - 'terraform/**'
 
 jobs:
-  terraform:
+  provision-check:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -42,7 +42,12 @@ jobs:
         run: terraform init
         working-directory: ${{ steps.detect.outputs.dir }}
 
-      - name: Terraform Apply
+      - name: Terraform Validate
         if: steps.detect.outputs.dir != ''
-        run: terraform apply -auto-approve
+        run: terraform validate
+        working-directory: ${{ steps.detect.outputs.dir }}
+
+      - name: Terraform Plan
+        if: steps.detect.outputs.dir != ''
+        run: terraform plan
         working-directory: ${{ steps.detect.outputs.dir }}
