@@ -1,4 +1,4 @@
-name: Infra Test
+name: Provisioning Check
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ on:
       - 'terraform/**'
 
 jobs:
-  terraform-plan:
+  provision-check:
     runs-on: ubuntu-latest
     permissions:
       contents: read
