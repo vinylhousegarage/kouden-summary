@@ -164,10 +164,7 @@
       - 秘匿情報管理：SSM Parameter Store（SecureString）
       - ドメイン・DNS管理：Route 53
 
-### 7. アクセス情報
-  - **GitHubリポジトリURL**
-    - [https://github.com/vinylhousegarage/kouden-summary](https://github.com/vinylhousegarage/kouden-summary)
-  - **アプリURL**
+### 7. アプリURL
     - [https://kouden-summary.com](https://kouden-summary.com)
 
 ### 8. ライセンス
