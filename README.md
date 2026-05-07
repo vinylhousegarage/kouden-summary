@@ -165,7 +165,7 @@
       - ドメイン・DNS管理：Route 53
 
 ### 7. アプリURL
-    - [https://kouden-summary.com](https://kouden-summary.com)
+  - [https://kouden-summary.com](https://kouden-summary.com)
 
 ### 8. ライセンス
   - このプロジェクトは [MIT License](https://github.com/vinylhousegarage/kouden-summary/blob/main/LICENSE) のもとで公開されています。
