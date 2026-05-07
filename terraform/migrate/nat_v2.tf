@@ -27,14 +27,14 @@ resource "aws_instance" "nat_v2" {
   # マスカレード（NAT）設定
   user_data = <<-EOT
     #!/bin/bash
+    dnf install -y nftables
     echo "net.ipv4.ip_forward = 1" > /etc/sysctl.d/99-nat.conf
     sysctl -p /etc/sysctl.d/99-nat.conf
     systemctl enable --now nftables
     nft add table ip nat
     nft add chain ip nat postrouting { type nat hook postrouting priority 100 \; }
-    nft add rule ip nat postrouting oifname "eth0" counter masquerade
+    nft add rule ip nat postrouting oifname "enX0" counter masquerade
     nft list ruleset > /etc/nftables/main.nft
-    echo 'include "/etc/nftables/main.nft"' >> /etc/sysctl.conf
   EOT
 
   # 既存インスタンスを削除し新規作成
