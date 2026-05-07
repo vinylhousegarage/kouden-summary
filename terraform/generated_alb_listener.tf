@@ -14,66 +14,13 @@ resource "aws_lb_listener" "production" {
   tags_all                             = {}
   default_action {
     order            = 1
-    target_group_arn = aws_lb_target_group.blue_tg.arn
     type             = "forward"
-    forward {
-      stickiness {
-        duration = 3600
-        enabled  = false
-      }
-      target_group {
-        arn    = aws_lb_target_group.blue_tg.arn
-        weight = 100
-      }
-    }
+    target_group_arn = aws_lb_target_group.rolling_tg.arn
   }
   mutual_authentication {
     ignore_client_certificate_expiry = false
     mode                             = "off"
     trust_store_arn                  = null
-  }
-  lifecycle {
-    ignore_changes = [
-      default_action,
-    ]
-  }
-}
-
-# __generated__ by Terraform from "arn:aws:elasticloadbalancing:ap-northeast-1:626635405187:listener/app/flask-alb/a038f59afa7e9191/1205685cc6087b64"
-resource "aws_lb_listener" "test" {
-  alpn_policy                          = null
-  certificate_arn                      = data.aws_acm_certificate.issued.arn
-  load_balancer_arn                    = aws_lb.alb.arn
-  port                                 = 4443
-  protocol                             = "HTTPS"
-  routing_http_response_server_enabled = true
-  ssl_policy                           = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-  tags                                 = {}
-  tags_all                             = {}
-  default_action {
-    order            = 1
-    target_group_arn = aws_lb_target_group.green_tg.arn
-    type             = "forward"
-    forward {
-      stickiness {
-        duration = 3600
-        enabled  = false
-      }
-      target_group {
-        arn    = aws_lb_target_group.green_tg.arn
-        weight = 1
-      }
-    }
-  }
-  mutual_authentication {
-    ignore_client_certificate_expiry = false
-    mode                             = "off"
-    trust_store_arn                  = null
-  }
-  lifecycle {
-    ignore_changes = [
-      default_action,
-    ]
   }
 }
 
