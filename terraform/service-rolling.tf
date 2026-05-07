@@ -23,10 +23,12 @@ resource "aws_ecs_service" "service_rolling" {
   desired_count   = 1
   launch_type     = "EC2"
 
+  deployment_minimum_healthy_percent = 0
+  deployment_maximum_percent         = 100
+
   deployment_controller {
     type = "ECS"
   }
-
 
   load_balancer {
     target_group_arn = aws_lb_target_group.rolling_tg.arn
