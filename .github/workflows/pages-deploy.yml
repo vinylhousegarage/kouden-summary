@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "README.md"
+      - "aws-diagram.svg"
       - ".github/workflows/pages-deploy.yml"
 
 permissions:
