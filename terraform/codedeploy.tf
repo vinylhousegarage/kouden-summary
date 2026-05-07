@@ -47,7 +47,7 @@ resource "aws_ecs_service" "service_codedeploy" {
   launch_type     = "EC2"
 
   deployment_controller {
-    type = "ECS"
+    type = "CODE_DEPLOY"
   }
 
   load_balancer {
