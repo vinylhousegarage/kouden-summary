@@ -37,17 +37,24 @@
   - **運用性**
     - デプロイを自動化するため、CI/CDワークフロー として GitHub Actions を採用しました。
 
-  - **デプロイ構成**
-    - CodeDeploy による Blue/Greenデプロイ を採用しました。
-    - 本番切り替え前に新環境の正常性を確認します。
-
   - **機密情報管理**
     - 秘匿情報をセキュアに管理するため、SSM Parameter Store（SecureString）を採用しました。
 
   - **拡張性**
     - Fargate への移行で運用負荷の軽減が可能な設計としました。
 
-### 3. アーキテクチャ設計
+### 3. デプロイ戦略
+  - 本アプリは、安全なリリースと継続的な運用を両立するため、状況に応じたデプロイ方式を採用しています。
+
+  - **ローリングアップデート（通常運用時）**
+    - 通常運用時はローリングアップデートを、Minimum healthy percent : 0% / Maximum percent : 100% で実施しています。
+    - 起動するインスタンスを1つに抑え、リソース効率と運用コストを最適化しています。
+
+  - **Blue/Greenデプロイ（インフラ刷新時）**
+    - Amazon Linux 2 サポート終了にともなう Amazon Linux 2023 への移行に際し、CodeDeploy を用いた Blue/Greenデプロイ を採用しました。
+    - 新環境の正常性を確認してからトラフィックを切り替えることで、ダウンタイムの最小化と確実な切り戻し経路を確保しました。
+
+### 4. アーキテクチャ設計
   - 本アプリは、設計意図で示した方針をもとに、以下の構成としています。
 
   - **AWS構成図**
@@ -89,7 +96,7 @@
     - Infrastructure as Code によるリソース管理
     - リソースを Terraform管理下 に置き、コードでリソースを構築
 
-### 4. セキュリティ設計
+### 5. セキュリティ設計
   - **認証方式**
     - OAuth2.0 / OpenID Connect（OIDC）に準拠した Cognito をユーザーの認証に使用
     - 認証成功後、Cognito の リダイレクトURI に付与された code（認可コード）を用いて、トークン（id_token・access_token・refresh_token）を取得し、検証
@@ -113,7 +120,7 @@
     - ECSタスク定義 からパラメータを参照し、環境変数として設定
     - IAM ロールにより、パラメータへのアクセスを制御
 
-### 5. データ構造
+### 6. データ構造
   - **summaries テーブル**
 
     | カラム名         | データ型        | 制約                              | 初期値              | 説明                               |
@@ -140,32 +147,39 @@
   - id_token の sub属性 を抽出し、session_idカラム に格納することで、ユーザーを識別しています。
   - 初回アクセス時、暗号化トークンの格納に備え、dataカラム は blob型 から mediumblob型 に変更されます。
 
-### 6. システム構成
+### 7. システム構成
   - **技術スタック**
-    - プログラミング言語：Python 3.12.12
-    - フレームワーク：Flask 3.1.3
-    - データベース：MariaDB 11.4.9
-    - 仮想環境構築：Docker
-      - 開発環境：Docker Compose で Dockerコンテナを起動
-      - 本番環境：AWS ECS 上で Dockerコンテナを起動
-    - テスト環境：GitHub Actions
-    - ソースコードのローカルバージョン管理：Git
-    - リモートリポジトリのホスティング：GitHub
-    - CI/CD：GitHub Actions
+    ```
+    開発言語　　　：Python 3.12.12
+    フレームワーク：Flask 3.1.3
+    データベース　：MariaDB 11.4.9
+    仮想環境構築　：Docker
+    　開発環境：Docker Compose で Dockerコンテナを起動
+    　本番環境：AWS ECS 上で Dockerコンテナを起動
+    ソース管理：Git
+    リポジトリ：GitHub
+    ＣＩ／ＣＤ：GitHub Actions
+    ```
 
   - **インフラ構成**
-    - 開発環境サーバー：Werkzeug
-    - 本番環境サーバー：Gunicorn
-    - アプリのホスティング：AWS
-      - コンテナ実行：ECS（EC2起動タイプ）
-      - イメージ管理：ECR
-      - データベース：RDS（MariaDB 11.4.9）
-      - ロードバランサー：ALB
-      - 秘匿情報管理：SSM Parameter Store（SecureString）
-      - ドメイン・DNS管理：Route 53
+    ```
+    アプリケーションサーバー
+    　開発環境：Werkzeug
+    　本番環境：Gunicorn
+    ＡＷＳホスティング環境
+    　実行環境　　：Amazon ECS（EC2起動タイプ）
+    　ホストＯＳ　：Amazon Linux 2023
+    　イメージ管理：Amazon ECR
+    　データベース：Amazon RDS（MariaDB 11.4.9）
+    　負荷分散　　：Application Load Balancer (ALB)
+    　秘匿情報管理：AWS Systems Manager Parameter Store（SecureString）
+    　ドメイン登録：Amazon Route 53
+    　ＤＮＳ設定　：Amazon Route 53
+    　証明書管理　：AWS Certificate Manager（ACM）
+    ```
 
-### 7. アプリURL
+### 8. アプリURL
   - [https://kouden-summary.com](https://kouden-summary.com)
 
-### 8. ライセンス
+### 9. ライセンス
   - このプロジェクトは [MIT License](https://github.com/vinylhousegarage/kouden-summary/blob/main/LICENSE) のもとで公開されています。
