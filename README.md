@@ -149,27 +149,34 @@
 
 ### 7. システム構成
   - **技術スタック**
-    - プログラミング言語：Python 3.12.12
-    - フレームワーク：Flask 3.1.3
-    - データベース：MariaDB 11.4.9
-    - 仮想環境構築：Docker
-      - 開発環境：Docker Compose で Dockerコンテナを起動
-      - 本番環境：AWS ECS 上で Dockerコンテナを起動
-    - テスト環境：GitHub Actions
-    - ソースコードのローカルバージョン管理：Git
-    - リモートリポジトリのホスティング：GitHub
-    - CI/CD：GitHub Actions
+    ```
+    開発言語　　　：Python 3.12.12
+    フレームワーク：Flask 3.1.3
+    データベース　：MariaDB 11.4.9
+    仮想環境構築　：Docker
+    　開発環境：Docker Compose で Dockerコンテナを起動
+    　本番環境：AWS ECS 上で Dockerコンテナを起動
+    ソース管理：Git
+    リポジトリ：GitHub
+    ＣＩ／ＣＤ：GitHub Actions
+    ```
 
   - **インフラ構成**
-    - 開発環境サーバー：Werkzeug
-    - 本番環境サーバー：Gunicorn
-    - アプリのホスティング：AWS
-      - コンテナ実行：ECS（EC2起動タイプ）
-      - イメージ管理：ECR
-      - データベース：RDS（MariaDB 11.4.9）
-      - ロードバランサー：ALB
-      - 秘匿情報管理：SSM Parameter Store（SecureString）
-      - ドメイン・DNS管理：Route 53
+    ```
+    アプリケーションサーバー
+    　開発環境：Werkzeug
+    　本番環境：Gunicorn
+    ＡＷＳホスティング環境
+    　実行環境　　：Amazon ECS（EC2起動タイプ）
+    　ホストＯＳ　：Amazon Linux 2023
+    　イメージ管理：Amazon ECR
+    　データベース：Amazon RDS（MariaDB 11.4.9）
+    　負荷分散　　：Application Load Balancer (ALB)
+    　秘匿情報管理：AWS Systems Manager Parameter Store（SecureString）
+    　ドメイン登録：Amazon Route 53
+    　ＤＮＳ設定　：Amazon Route 53
+    　証明書管理　：AWS Certificate Manager（ACM）
+    ```
 
 ### 8. アプリURL
   - [https://kouden-summary.com](https://kouden-summary.com)
