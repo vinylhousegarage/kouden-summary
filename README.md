@@ -6,14 +6,14 @@
     - 処理の責務を明確にするため、軽量なフレームワークの Flask を採用しました。
     - 複雑なクエリを必要としないため、レスポンス性能に優れた MariaDB を採用しました。
     - インフラ全体の構成を柔軟に設計するため、クラウド基盤として AWS を採用しました。
-    - 認証機能のセキュリティを強化するため、認証基盤として AWS Cognito を採用しました。
+    - 認証機能のセキュリティを強化するため、認証基盤として Cognito を採用しました。
     - デプロイを自動化するため、CI/CDワークフロー として GitHub Actions を採用しました。
 
   - **対象ユーザー**
-    - AWS Cognito による認証を受けたユーザー
+    - Cognito による認証を受けたユーザー
 
   - **提供機能**
-    - 認証機能（AWS Cognito）
+    - 認証機能（Cognito）
     - 香典情報の表示・登録・編集・削除
     - 香典情報の集計表示
     - 香典情報の一括削除（初期状態へのリセット）
@@ -166,12 +166,14 @@
     | DNS設定 | Route 53 |
     | 証明書管理 | ACM |
     | 負荷分散 | ALB |
+    | 認証基盤 | Cognito |
     | 実行環境 | ECS (EC2起動タイプ) |
     | ホストOS | Amazon Linux 2023 |
     | アプリサーバー | Gunicorn |
     | データベース | RDS (MariaDB 11.4.9) |
     | 秘匿情報管理 | SSM Parameter Store（SecureString） |
     | イメージ管理 | ECR |
+    | IaC | Terraform |
 
 ### 8. アプリURL
   - [https://kouden-summary.com](https://kouden-summary.com)
