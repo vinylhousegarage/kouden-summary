@@ -166,12 +166,14 @@
     | DNS設定 | Route 53 |
     | 証明書管理 | ACM |
     | 負荷分散 | ALB |
+    | 認証基盤 | Cognito |
     | 実行環境 | ECS (EC2起動タイプ) |
     | ホストOS | Amazon Linux 2023 |
     | アプリサーバー | Gunicorn |
     | データベース | RDS (MariaDB 11.4.9) |
     | 秘匿情報管理 | SSM Parameter Store（SecureString） |
     | イメージ管理 | ECR |
+    | IaC | Terraform |
 
 ### 8. アプリURL
   - [https://kouden-summary.com](https://kouden-summary.com)
