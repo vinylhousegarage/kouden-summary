@@ -34,7 +34,7 @@ resource "aws_instance" "nat_v2" {
     nft add table ip nat
     nft add chain ip nat postrouting { type nat hook postrouting priority 100 \; }
     nft add rule ip nat postrouting oifname "enX0" counter masquerade
-    nft list ruleset > /etc/nftables/main.nft
+    nft list ruleset > /etc/sysconfig/nftables.conf
   EOT
 
   # 既存インスタンスを削除し新規作成
