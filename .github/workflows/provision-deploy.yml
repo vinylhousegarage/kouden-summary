@@ -102,3 +102,4 @@ jobs:
           service: service-rolling
           cluster: flask-cluster
           wait-for-service-stability: true
+
