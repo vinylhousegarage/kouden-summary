@@ -23,3 +23,15 @@ resource "aws_iam_role" "ecs_instance_role" {
   tags                  = {}
   tags_all              = {}
 }
+
+# ポリシーをアタッチ
+resource "aws_iam_role_policy_attachment" "ecs_instance_role_att" {
+  role       = aws_iam_role.ecs_instance_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+}
+
+# インスタンスプロファイル
+resource "aws_iam_instance_profile" "ecs_instance_profile" {
+  name = "ecsInstanceProfile"
+  role = aws_iam_role.ecs_instance_role.name
+}

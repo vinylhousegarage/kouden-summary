@@ -11,7 +11,7 @@ resource "aws_instance" "ec2_v2" {
   ebs_optimized                        = false
   get_password_data                    = false
   hibernation                          = false
-  iam_instance_profile                 = "ecsInstanceRole"
+  iam_instance_profile                 = aws_iam_instance_profile.ecs_instance_profile.name
   instance_initiated_shutdown_behavior = "stop"
   instance_type                        = "t2.micro"
   key_name                             = "instance-key-002"
