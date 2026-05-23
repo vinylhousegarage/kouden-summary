@@ -153,7 +153,7 @@
     | --- | --- |
     | 開発言語 | Python 3.12.12 |
     | フレームワーク | Flask 3.1.3 |
-    | データベース | MariaDB 11.4.9 |
+    | データベース | MariaDB 11.4.10 |
     | ソース管理 | Git |
     | リポジトリ | GitHub |
     | CI/CD | GitHub Actions |
@@ -170,7 +170,7 @@
     | 実行環境 | ECS (EC2起動タイプ) |
     | ホストOS | Amazon Linux 2023 |
     | アプリサーバー | Gunicorn |
-    | データベース | RDS (MariaDB 11.4.9) |
+    | データベース | RDS (MariaDB 11.4.10) |
     | 秘匿情報管理 | SSM Parameter Store（SecureString） |
     | イメージ管理 | ECR |
     | IaC | Terraform |
