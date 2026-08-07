@@ -1,23 +1,23 @@
 import pymysql
-
 from flask import current_app
 
 from app.config import Config
 
-
 _mediumblob_checked = False
+
 
 def ensure_mediumblob():
     global _mediumblob_checked
     if _mediumblob_checked:
         return
 
+    conn = None
     try:
         conn = pymysql.connect(
             host=Config.DB_HOST,
             user=Config.DB_USER,
             password=Config.DB_PASSWORD,
-            database=Config.DB_NAME
+            database=Config.DB_NAME,
         )
         cursor = conn.cursor()
         cursor.execute("SHOW TABLES LIKE 'sessions'")
@@ -39,4 +39,5 @@ def ensure_mediumblob():
     except Exception:
         current_app.logger.exception('❌ ALTER TABLE 実行中にエラー発生')
     finally:
-        conn.close()
+        if conn:
+            conn.close()

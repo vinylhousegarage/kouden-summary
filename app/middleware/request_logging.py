@@ -1,8 +1,7 @@
-from flask import g, request, Response
+from flask import Response, g, request
 
 
 def setup_request_logging(app):
-
     @app.before_request
     def log_request_info():
         g.request_body = request.get_data(as_text=True)
