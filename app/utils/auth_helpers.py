@@ -1,5 +1,5 @@
-from flask import current_app, redirect
 import requests
+from flask import current_app, redirect
 
 from app.config import Config
 
