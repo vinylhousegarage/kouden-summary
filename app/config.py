@@ -1,6 +1,7 @@
 import os
 from datetime import timedelta
 
+
 class Config:
     DB_HOST = os.getenv('DB_HOST', 'db')
     DB_USER = os.getenv('MYSQL_USER')
