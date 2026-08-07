@@ -1,6 +1,5 @@
-import pymysql
-
 from flask import current_app
+import pymysql
 
 from app.config import Config
 

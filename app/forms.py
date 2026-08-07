@@ -9,7 +9,7 @@ from app.models import Summary
 class SummaryForm(FlaskForm, ModelForm):
     class Meta:
         model = Summary
-        exclude = ['user_cognito_id', 'created_at', 'updated_at']
+        exclude = ['user_cognito_id', 'created_at', 'updated_at']  # noqa: RUF012
 
     tel = StringField('電話', validators=[
         Regexp(r'^\d*$', message='数字ではない文字が入力されました')

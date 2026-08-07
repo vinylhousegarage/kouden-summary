@@ -1,7 +1,5 @@
-import os
-
 from datetime import timedelta
-
+import os
 
 class Config:
     DB_HOST = os.getenv('DB_HOST', 'db')

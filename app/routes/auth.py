@@ -3,7 +3,12 @@ from jose import jwt
 
 from app.extensions import csrf, db
 from app.services.auth_service import exchange_code_for_token
-from app.utils.auth_helpers import (generate_cognito_logout_url, redirect_to_cognito_login, redirect_to_login, redirect_to_root)
+from app.utils.auth_helpers import (
+    generate_cognito_logout_url,
+    redirect_to_cognito_login,
+    redirect_to_login,
+    redirect_to_root,
+)
 from app.utils.jwt_helpers import decode_cognito_jwt
 
 auth_bp = Blueprint('auth', __name__)
