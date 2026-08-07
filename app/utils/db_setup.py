@@ -3,7 +3,6 @@ from flask import current_app
 
 from app.config import Config
 
-
 _mediumblob_checked = False
 
 
